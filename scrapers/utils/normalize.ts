@@ -1,5 +1,6 @@
 export type ExperienceLevel = 'new_grad' | 'entry_level' | 'internship';
-export type Role = 'SWE' | 'DS' | 'ML' | 'AI' | 'Analyst' | 'PM';
+export const ROLE_VALUES = ['swe', 'ds', 'ml', 'ai', 'analyst', 'pm'] as const;
+export type Role = (typeof ROLE_VALUES)[number];
 
 export type NormalizedJob = {
   source: string;
@@ -19,14 +20,37 @@ export type NormalizedJob = {
 };
 
 const ROLE_KEYWORDS: Record<Role, string[]> = {
-  SWE:     ['software engineer', 'software developer', 'swe', 'full stack',
-             'fullstack', 'backend', 'frontend', 'web developer'],
-  DS:      ['data scientist', 'data science'],
-  ML:      ['machine learning', 'ml engineer', 'mlops'],
-  AI:      ['ai engineer', 'artificial intelligence', 'deep learning', 'llm'],
-  Analyst: ['data analyst', 'business analyst', 'analyst', 'business intelligence'],
-  PM:      ['product manager', 'product management', ' pm '],
+  swe: ['software engineer', 'software developer', 'swe', 'full stack',
+    'fullstack', 'backend', 'frontend', 'web developer'],
+  ds: ['data scientist', 'data science'],
+  ml: ['machine learning', 'ml engineer', 'mlops'],
+  ai: ['ai engineer', 'artificial intelligence', 'deep learning', 'llm'],
+  analyst: ['data analyst', 'business analyst', 'analyst', 'business intelligence'],
+  pm: ['product manager', 'product management', ' pm '],
 };
+
+const ROLE_ALIASES: Record<string, Role> = {
+  swe: 'swe',
+  ds: 'ds',
+  ml: 'ml',
+  ai: 'ai',
+  analyst: 'analyst',
+  pm: 'pm',
+};
+
+export function normalizeRoleValue(role: string): Role | null {
+  return ROLE_ALIASES[role.trim().toLowerCase()] ?? null;
+}
+
+export function normalizeRoles(roles: readonly string[] | null | undefined): Role[] {
+  if (!roles?.length) return [];
+
+  const normalizedRoles = roles
+    .map(role => normalizeRoleValue(role))
+    .filter((role): role is Role => role !== null);
+
+  return Array.from(new Set(normalizedRoles));
+}
 
 const TECH_TITLE_SIGNAL_PATTERNS = [
   /\bengineer\b/i,
