@@ -872,6 +872,11 @@ export async function scrapeAshby(): Promise<NormalizedJob[]> {
     loadAshbyValidSlugCache(),
   ]);
 
+  const cachedSlugs = new Set(
+    Object.keys(cachedValidSlugs)
+      .map(normalizeAshbySlug)
+      .filter((slug): slug is string => slug !== null),
+  );
   const existingSeedSlugs = new Set(
     Object.keys(COMPANIES)
       .map(normalizeAshbySlug)
@@ -888,6 +893,7 @@ export async function scrapeAshby(): Promise<NormalizedJob[]> {
       ...commonCrawlSlugs,
       ...githubSlugs,
       ...curatedSlugs,
+      ...cachedSlugs,
     ]),
   );
 
@@ -953,6 +959,7 @@ export async function scrapeAshby(): Promise<NormalizedJob[]> {
   console.log(`  [${SOURCE}] Common Crawl discovered: ${commonCrawlSlugs.size}`);
   console.log(`  [${SOURCE}] GitHub discovered: ${githubSlugs.size}`);
   console.log(`  [${SOURCE}] Curated additions: ${curatedSlugs.size}`);
+  console.log(`  [${SOURCE}] Cached valid slugs loaded: ${cachedSlugs.size}`);
   console.log(`  [${SOURCE}] Cached valid slugs reused: ${candidateSlugs.length - slugsToValidate.length}`);
   console.log(`  [${SOURCE}] Newly validated this run: ${Object.keys(newlyValidatedSlugs).length}`);
   console.log(`  [${SOURCE}] Total slugs attempted: ${candidateSlugs.length}`);
