@@ -1,5 +1,11 @@
 import { generateHash } from '../utils/dedup';
-import { inferExperienceLevel, inferRoles, NormalizedJob } from '../utils/normalize';
+import {
+  hasTechTitleSignal,
+  inferExperienceLevel,
+  inferRoles,
+  NormalizedJob,
+} from '../utils/normalize';
+import { isNonUsLocation } from '../utils/location';
 
 const SOURCE = 'workatastartup';
 const APP_ID = '45BWZJ1SGC';
@@ -11,15 +17,8 @@ const FALLBACK_API_KEYS = ['b4b5a7956ec7f55c3d4e8d6e12c0e8b4'];
 const HITS_PER_PAGE = 1000;
 const ROLE_PAGE_URLS = [
   'https://www.workatastartup.com/jobs/l/software-engineer',
-  'https://www.workatastartup.com/jobs/l/designer',
-  'https://www.workatastartup.com/jobs/l/recruiting',
   'https://www.workatastartup.com/jobs/l/science',
   'https://www.workatastartup.com/jobs/l/product-manager',
-  'https://www.workatastartup.com/jobs/l/operations',
-  'https://www.workatastartup.com/jobs/l/sales-manager',
-  'https://www.workatastartup.com/jobs/l/marketing',
-  'https://www.workatastartup.com/jobs/l/legal',
-  'https://www.workatastartup.com/jobs/l/finance',
 ];
 
 type WorkAtAStartupHit = {
@@ -172,6 +171,9 @@ async function scrapeRolePagesFallback(existingIds: Set<string>): Promise<Normal
 
       const location = (pageJob.location ?? '').trim();
       const description = (pageJob.companyOneLiner ?? '').trim() || undefined;
+      if (!hasTechTitleSignal(title)) continue;
+      if (location && isNonUsLocation(location)) continue;
+
       const level = inferExperienceLevel(title, description);
       if (!level) continue;
 
@@ -290,11 +292,16 @@ export async function scrapeWorkAtAStartup(): Promise<NormalizedJob[]> {
         const title = (hit.title ?? '').trim();
         const company = (hit.company_name ?? '').trim();
         if (!sourceId || !title || !company || seenIds.has(sourceId)) continue;
+        if (!hasTechTitleSignal(title)) continue;
 
         const locations = (hit.locations ?? []).filter(
           (location): location is string => typeof location === 'string' && location.trim().length > 0,
         );
-        const location = locations[0] ?? locations.join(', ');
+        const location =
+          locations.find(locationValue => !isNonUsLocation(locationValue)) ??
+          locations[0] ??
+          locations.join(', ');
+        if (location && isNonUsLocation(location)) continue;
         const description = typeof hit.description === 'string'
           ? hit.description.slice(0, 5000)
           : undefined;

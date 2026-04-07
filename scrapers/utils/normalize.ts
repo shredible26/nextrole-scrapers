@@ -28,6 +28,34 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
   PM:      ['product manager', 'product management', ' pm '],
 };
 
+const TECH_TITLE_SIGNAL_PATTERNS = [
+  /\bengineer\b/i,
+  /\bdeveloper\b/i,
+  /\bscientist\b/i,
+  /\banalyst\b/i,
+  /\barchitect\b/i,
+  /\bdevops\b/i,
+  /\bsre\b/i,
+  /\bplatform\b/i,
+  /\bbackend\b/i,
+  /\bfrontend\b/i,
+  /\bfullstack\b/i,
+  /\bfull stack\b/i,
+  /\bmachine learning\b/i,
+  /\bdata\b/i,
+  /\bsoftware\b/i,
+  /\bcloud\b/i,
+  /\bsecurity\b/i,
+  /\binfrastructure\b/i,
+  /\bml\b/i,
+  /\bai\b/i,
+  /\bproduct manager\b/i,
+  /\bprogram manager\b/i,
+  /\btechnical\b/i,
+  /\bit\b/i,
+  /\bsystems\b/i,
+] as const;
+
 export function inferRoles(title: string): Role[] {
   const lower = title.toLowerCase();
   return (Object.entries(ROLE_KEYWORDS) as [Role, string[]][])
@@ -39,6 +67,10 @@ export function inferRemote(location?: string): boolean {
   if (!location) return false;
   return ['remote', 'anywhere', 'distributed', 'work from home', 'wfh']
     .some(k => location.toLowerCase().includes(k));
+}
+
+export function hasTechTitleSignal(title: string): boolean {
+  return TECH_TITLE_SIGNAL_PATTERNS.some(pattern => pattern.test(title));
 }
 
 const EXCLUSION_KEYWORDS = [

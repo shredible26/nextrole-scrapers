@@ -1,7 +1,13 @@
 import { chromium, type Browser, type BrowserContext, type Page } from 'playwright';
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  hasTechTitleSignal,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const SOURCE = 'simplyhired';
 const SEARCH_URL = 'https://www.simplyhired.com/search';
@@ -355,9 +361,10 @@ function mapJob(raw: SimplyHiredJobRecord): NormalizedJob | null {
   const posted_at = parseRelativeDate(String(raw.postedDate ?? ''));
   const remote = raw.isRemote === true || inferRemote(location);
   const salary = parseSalary(String(raw.salary ?? ''));
+  const titleHasTechSignal = hasTechTitleSignal(title);
   const level = inferExperienceLevel(title, description);
 
-  if (!level || !title || !company || !url) return null;
+  if (!level || !title || !company || !url || !titleHasTechSignal) return null;
 
   return {
     source: SOURCE,

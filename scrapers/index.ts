@@ -5,6 +5,12 @@ import { scrapeVanshb03Internships } from './sources/vanshb03-internships';
 import { scrapeAmbicuity }           from './sources/ambicuity';
 import { scrapeSpeedyapplySwe }      from './sources/speedyapply-swe';
 import { scrapeSpeedyapplyAi }       from './sources/speedyapply-ai';
+import { scrapeSpeedyapplyAiNewgrad } from './sources/speedyapply-ai-newgrad';
+import { scrapeSpeedyApplySWENewGrad } from './sources/speedyapply-swe-newgrad';
+import { scrapeJobrightSwe }         from './sources/jobright-swe';
+import { scrapeJobrightData }        from './sources/jobright-data';
+import { scrapeZapplyjobs }          from './sources/zapplyjobs';
+import { scrapeHackerNews }          from './sources/hackernews';
 import { scrapeAdzuna }              from './sources/adzuna';
 import { scrapeRemoteOK }            from './sources/remoteok';
 import { scrapeArbeitnow }           from './sources/arbeitnow';
@@ -13,6 +19,8 @@ import { scrapeJobSpy }              from './sources/jobspy';
 import { scrapeGreenhouse }          from './sources/greenhouse';
 import { scrapeLever }               from './sources/lever';
 import { scrapeWorkday }             from './sources/workday';
+import { scrapeWorkable }            from './sources/workable';
+import { scrapeSmartRecruiters }     from './sources/smartrecruiters';
 import { scrapeZipRecruiter }        from './sources/ziprecruiter';
 import { scrapeGlassdoor }           from './sources/glassdoor';
 import { scrapeCareerjet }           from './sources/careerjet';
@@ -29,6 +37,7 @@ import { scrapeDiceRss }            from './sources/dice-rss';
 import { scrapeUSAJobs }            from './sources/usajobs';
 import { uploadJobs, deactivateStaleJobs } from './utils/upload';
 import { NormalizedJob } from './utils/normalize';
+import { GITHUB_REPO_SOURCE_SET } from '../lib/source-groups';
 
 const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   // Week 1 — active
@@ -39,6 +48,12 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   { name: 'ambicuity',             fn: scrapeAmbicuity },
   { name: 'speedyapply_swe',       fn: scrapeSpeedyapplySwe },
   { name: 'speedyapply_ai',        fn: scrapeSpeedyapplyAi },
+  { name: 'speedyapply_ai_newgrad', fn: scrapeSpeedyapplyAiNewgrad },
+  { name: 'speedyapply_swe_newgrad', fn: scrapeSpeedyApplySWENewGrad },
+  { name: 'jobright_swe',          fn: scrapeJobrightSwe },
+  { name: 'jobright_data',         fn: scrapeJobrightData },
+  { name: 'zapplyjobs',            fn: scrapeZapplyjobs },
+  { name: 'hackernews',            fn: scrapeHackerNews },
   { name: 'adzuna',                fn: scrapeAdzuna },
   { name: 'remoteok',             fn: scrapeRemoteOK },
   { name: 'arbeitnow',            fn: scrapeArbeitnow },
@@ -47,6 +62,8 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   { name: 'greenhouse',           fn: scrapeGreenhouse },
   { name: 'lever',                fn: scrapeLever },
   { name: 'workday',              fn: scrapeWorkday },
+  { name: 'workable',             fn: scrapeWorkable },
+  { name: 'smartrecruiters',      fn: scrapeSmartRecruiters },
   { name: 'ziprecruiter',         fn: scrapeZipRecruiter },
   { name: 'glassdoor',            fn: scrapeGlassdoor },
   { name: 'careerjet',            fn: scrapeCareerjet },
@@ -86,12 +103,45 @@ type FetchResult =
       startedAt: number;
     };
 
-let persistQueue: Promise<void> = Promise.resolve();
+function normalizeUrl(url: string): string {
+  return url.trim().replace(/\/+$/, '');
+}
 
-function enqueuePersistence<T>(task: () => Promise<T>): Promise<T> {
-  const next = persistQueue.then(task, task);
-  persistQueue = next.then(() => undefined, () => undefined);
-  return next;
+function dedupeGitHubRepoJobs(results: FetchResult[]): FetchResult[] {
+  const seenUrls = new Set<string>();
+
+  return results.map(result => {
+    if (!result.success || !GITHUB_REPO_SOURCE_SET.has(result.name)) {
+      return result;
+    }
+
+    const dedupedJobs: NormalizedJob[] = [];
+    let removed = 0;
+
+    for (const job of result.jobs) {
+      const key = normalizeUrl(job.url);
+      if (!key) {
+        dedupedJobs.push(job);
+        continue;
+      }
+
+      if (seenUrls.has(key)) {
+        removed += 1;
+        continue;
+      }
+
+      seenUrls.add(key);
+      dedupedJobs.push(job);
+    }
+
+    if (removed > 0) {
+      console.log(
+        `  [${result.name}] Deduped ${removed} URL duplicates against earlier GitHub repo sources`,
+      );
+    }
+
+    return { ...result, jobs: dedupedJobs };
+  });
 }
 
 async function persistScraper(result: FetchResult) {
@@ -124,20 +174,18 @@ async function persistScraper(result: FetchResult) {
   }
 }
 
-async function runScraper(name: string, fn: () => Promise<NormalizedJob[]>) {
+async function fetchScraper(name: string, fn: () => Promise<NormalizedJob[]>) {
   const start = Date.now();
   console.log(`  [${name}] Starting...`);
 
   try {
     const jobs = await fn();
     console.log(`  [${name}] Fetched ${jobs.length} jobs`);
-    return await enqueuePersistence(() =>
-      persistScraper({ name, jobs, success: true, startedAt: start }),
-    );
+    return { name, jobs, success: true, startedAt: start } satisfies FetchResult;
   } catch (err) {
     const elapsed = ((Date.now() - start) / 1000).toFixed(1);
     console.error(`  [${name}] ✗ Fetch failed after ${elapsed}s:`, (err as Error).message);
-    return { name, count: 0, success: false, elapsed };
+    return { name, jobs: [], success: false, startedAt: start } satisfies FetchResult;
   }
 }
 
@@ -147,15 +195,30 @@ async function run() {
 
   const globalStart = Date.now();
 
-  const results = await Promise.allSettled(
-    SCRAPERS.map(({ name, fn }) => runScraper(name, fn))
+  const fetched = await Promise.allSettled(
+    SCRAPERS.map(({ name, fn }) => fetchScraper(name, fn))
   );
+
+  const fetchResults: FetchResult[] = fetched.map((result, index): FetchResult =>
+    result.status === 'fulfilled'
+      ? result.value
+      : {
+          name: SCRAPERS[index]?.name ?? 'unknown',
+          jobs: [],
+          success: false,
+          startedAt: Date.now(),
+        },
+  );
+
+  const dedupedResults = dedupeGitHubRepoJobs(fetchResults);
+  const summary = [];
+
+  for (const result of dedupedResults) {
+    summary.push(await persistScraper(result));
+  }
 
   // Summarize
   const totalElapsed = ((Date.now() - globalStart) / 1000).toFixed(1);
-  const summary = results.map(r =>
-    r.status === 'fulfilled' ? r.value : { name: 'unknown', count: 0, success: false }
-  );
 
   console.log('\n─── Scrape Summary ───────────────────────────────');
   for (const s of summary) {
