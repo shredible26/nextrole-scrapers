@@ -89,6 +89,16 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   // (wellfound + dice are now active above)
 ];
 
+const SKIPPABLE_SLOW_SOURCE_SET = new Set([
+  'ziprecruiter',
+  'glassdoor',
+  'wellfound',
+  'handshake',
+  'bamboohr',
+  'dice_rss',
+  'rippling',
+]);
+
 type FetchResult =
   | {
       name: string;
@@ -144,6 +154,24 @@ function dedupeGitHubRepoJobs(results: FetchResult[]): FetchResult[] {
   });
 }
 
+function getActiveScrapers() {
+  const skipSlowSources = (process.env.SKIP_SLOW_SOURCES ?? '').toLowerCase() === 'true';
+  if (!skipSlowSources) {
+    return { scrapers: SCRAPERS, skipped: [] as string[] };
+  }
+
+  const skipped: string[] = [];
+  const scrapers = SCRAPERS.filter(({ name }) => {
+    const shouldSkip = SKIPPABLE_SLOW_SOURCE_SET.has(name);
+    if (shouldSkip) {
+      skipped.push(name);
+    }
+    return !shouldSkip;
+  });
+
+  return { scrapers, skipped };
+}
+
 async function persistScraper(result: FetchResult) {
   if (!result.success) {
     return { name: result.name, count: 0, success: false, elapsed: ((Date.now() - result.startedAt) / 1000).toFixed(1) };
@@ -190,20 +218,26 @@ async function fetchScraper(name: string, fn: () => Promise<NormalizedJob[]>) {
 }
 
 async function run() {
+  const { scrapers, skipped } = getActiveScrapers();
+
   console.log(`\n🚀 NextRole scrape run — ${new Date().toISOString()}`);
-  console.log(`   Running ${SCRAPERS.length} scrapers concurrently...\n`);
+  console.log(`   Running ${scrapers.length} scrapers concurrently...`);
+  if (skipped.length > 0) {
+    console.log(`   Skipping ${skipped.length} slow sources via SKIP_SLOW_SOURCES=true: ${skipped.join(', ')}`);
+  }
+  console.log('');
 
   const globalStart = Date.now();
 
   const fetched = await Promise.allSettled(
-    SCRAPERS.map(({ name, fn }) => fetchScraper(name, fn))
+    scrapers.map(({ name, fn }) => fetchScraper(name, fn))
   );
 
   const fetchResults: FetchResult[] = fetched.map((result, index): FetchResult =>
     result.status === 'fulfilled'
       ? result.value
       : {
-          name: SCRAPERS[index]?.name ?? 'unknown',
+          name: scrapers[index]?.name ?? 'unknown',
           jobs: [],
           success: false,
           startedAt: Date.now(),

@@ -6,17 +6,21 @@ on:
     - cron: '0 7 * * *'    # 7 AM UTC = 3 AM EST. Runs before US job seekers wake up.
   workflow_dispatch:         # Manual trigger for testing
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  SKIP_SLOW_SOURCES: 'true'
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
           version: 9
 
