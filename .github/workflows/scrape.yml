@@ -1,0 +1,63 @@
+# .github/workflows/scrape.yml
+name: Daily Job Scrape
+
+on:
+  schedule:
+    - cron: '0 7 * * *'    # 7 AM UTC = 3 AM EST. Runs before US job seekers wake up.
+  workflow_dispatch:         # Manual trigger for testing
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-jobspy-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: pip-jobspy-
+
+      - name: Install python-jobspy
+        run: pip install python-jobspy --quiet
+
+      - name: Run scrapers
+        run: pnpm run scrape
+        env:
+          SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          ADZUNA_APP_ID:        ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY:       ${{ secrets.ADZUNA_APP_KEY }}
+          MUSE_API_KEY:         ${{ secrets.MUSE_API_KEY }}
+          USAJOBS_API_KEY:      ${{ secrets.USAJOBS_API_KEY }}
+          USAJOBS_EMAIL:        ${{ secrets.USAJOBS_EMAIL }}
+          PROXY_SERVER:         ${{ secrets.PROXY_SERVER }}
+          PROXY_USER:           ${{ secrets.PROXY_USER }}
+          PROXY_PASS:           ${{ secrets.PROXY_PASS }}
+          CAREERJET_API_KEY:    ${{ secrets.CAREERJET_API_KEY }}
