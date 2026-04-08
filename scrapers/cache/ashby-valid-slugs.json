@@ -172,5 +172,7 @@
   "equip": "Equip Health",
   "maybern": "Maybern",
   "menlosecurity": "Menlo Security",
-  "hawkeyeinnovations": "Hawk-Eye Innovations (HEI)"
+  "hawkeyeinnovations": "Hawk-Eye Innovations (HEI)",
+  "confluent": "Confluent",
+  "snowflake": "Snowflake"
 }

@@ -1,1106 +1,1222 @@
 {
-  "sap": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "adobe": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "qualcomm": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "amd": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "broadcom": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "juniper": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "arista": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "commvault": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "verint": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "tiaa": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "nuveen": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "invesco": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "sunlife": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "manulife": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "aetna": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "anthem": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "takeda": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "unitedhealth": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "elevancehealth": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "humana": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "cvs": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "mckesson": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "cardinal": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "cerner": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "athenahealth": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "amgen": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "vertex": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "alexion": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ucb": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "astellas": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "deloitte": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "kpmg": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ey": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "accenture": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "booz": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "saic": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "cognizant": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "infosys": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "capgemini": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "dxc": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "gartner": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "wipro": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "hcltech": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "unisys": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "boeing": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "lockheedmartin": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "northropgrumman": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "rtx": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ge": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "gehealthcare": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "geaerospace": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "l3harris": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "baesystems": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "textron": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "collins": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "honeywell": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "parker": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "emerson": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "eaton": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "curtisswright": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "gm": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ford": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "stellantis": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "toyota": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "honda": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "bmw": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "volvo": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "caterpillar": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "deere": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "cummins": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "aptiv": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "borgwarner": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "rockwellautomation": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "3m": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "siemens": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "abb": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "schneider": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ppg": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "sherwinwilliams": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "roper": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ametek": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "xylem": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "idex": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "graco": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "nordson": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "dover": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "illinois": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "pentair": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "flowserve": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "walmart": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "homedepot": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "lowes": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "costco": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "kroger": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "albertsons": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "nike": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "gap": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "nordstrom": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "kohls": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "tjx": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "bestbuy": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "autozone": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "carmax": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "pvh": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "hanesbrands": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "hyvee": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "comcast": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "verizon": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "att": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "tmobile": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "charter": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "lumen": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "nbcuniversal": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "paramount": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "fox": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "discovery": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "amcnetworks": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "iheartmedia": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "uber": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "lyft": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "airbnb": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "doordash": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "instacart": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "atlassian": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "dropbox": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "box": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "zendesk": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "hubspot": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "twilio": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "cloudflare": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "databricks": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "snowflake": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "palantir": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "veeva": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "guidewire": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "paylocity": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "adp": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "paychex": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ceridian": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "medallia": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "qualtrics": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "sprinklr": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "meltwater": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "okta": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "zscaler": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "pagerduty": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "sumo-logic": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "tableau": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "microstrategy": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "nuance": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "talend": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "qlik": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "philips": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "symantec": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "exxonmobil": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "chevron": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "conocophillips": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "bp": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "halliburton": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "schlumberger": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "bakerhughes": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "baker": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "nexteraenergy": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "duke-energy": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "dominion": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "southern": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "exelon": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "eversource": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "firstenergy": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "ameren": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "entergy": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "sempra": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "dte": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "cms": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "alliant": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "avangrid": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "centerpoint": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
-  "atmos": {
-    "zeroCount": 2,
-    "lastAttempt": "2026-04-07"
-  },
   "disney": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "pwc": {
+    "zeroCount": 2,
     "lastAttempt": "2026-04-07"
   },
   "workiva": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "amazon": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "microsoft": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "apple": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "meta": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "google": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "ibm": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "oracle": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "sap": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "adobe": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "qualcomm": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "amd": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "broadcom": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "ti": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "analog": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "xilinx": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "vmware": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "workday": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "servicenow": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "splunk": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "paloaltonetworks": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "fortinet": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "netapp": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "purestorage": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "nutanix": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "elastic": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "mongodb": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "cloudera": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "dynatrace": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "informatica": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "teradata": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "f5": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "juniper": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "arista": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "commvault": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "verint": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "opentext": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "tibco": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "solarwinds": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "jpmorganchase": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "goldmansachs": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "morganstanley": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "bankofamerica": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "wellsfargo": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "citi": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "blackrock": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "fidelity": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "schwab": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "paypal": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "americanexpress": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "discover": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "synchrony": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "ally": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "usbank": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "pnc": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "regions": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "truist": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "vanguard": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "tiaa": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "nuveen": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "invesco": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "pimco": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "principal": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "nationwide": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "progressive": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "citizens": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "huntington": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "comerica": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "stifel": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "tdbank": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "franklintempletonin": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "tdameritrade": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "etrade": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "mckinsey": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "bcg": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "bain": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "lincolnfinancial": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "lincoln": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "metlife": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "unum": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "sunlife": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "manulife": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "aetna": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "anthem": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "cna": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "markel": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "jnj": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "abbvie": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "merck": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "lilly": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "bms": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "gsk": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "novartis": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "roche": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "takeda": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "boehringeringelheim": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "boehringer": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "medtronic": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "stryker": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "becton": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "edwards": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "danaher": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "thermofisher": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "illumina": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "unitedhealth": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "elevancehealth": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "humana": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "cvs": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "mckesson": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "cardinal": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "cerner": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "athenahealth": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "zimmer": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "hologic": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "amerisource": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "allscripts": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "optum": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "regeneron": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "biogen": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
   },
   "gilead": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "amgen": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "vertex": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "alexion": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ucb": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "astellas": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "deloitte": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "kpmg": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ey": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "accenture": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "booz": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "saic": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "caci": {
-    "zeroCount": 3,
+    "zeroCount": 1,
+    "lastAttempt": "2026-04-07"
+  },
+  "cognizant": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "infosys": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "capgemini": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "dxc": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "gartner": {
+    "zeroCount": 0,
     "lastAttempt": "2026-04-07"
   },
   "iqvia": {
-    "zeroCount": 3,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-07"
+  },
+  "wipro": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "hcltech": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "unisys": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "boeing": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "lockheedmartin": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "northropgrumman": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "rtx": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ge": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "gehealthcare": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "geaerospace": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "l3harris": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "baesystems": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "textron": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "collins": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "honeywell": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "parker": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "emerson": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "eaton": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "curtisswright": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "gm": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ford": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "stellantis": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "toyota": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "honda": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "bmw": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "volvo": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "caterpillar": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "deere": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "cummins": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "aptiv": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "borgwarner": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "rockwellautomation": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "3m": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "siemens": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "abb": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "schneider": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ppg": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "sherwinwilliams": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "roper": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ametek": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "xylem": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "idex": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "graco": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "nordson": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "dover": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "illinois": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "pentair": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "flowserve": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "walmart": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "homedepot": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "lowes": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "costco": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "kroger": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "albertsons": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "nike": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "gap": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "nordstrom": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "kohls": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "tjx": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "bestbuy": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "autozone": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "carmax": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "pvh": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "hanesbrands": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "hyvee": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "comcast": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "verizon": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "att": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "tmobile": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "charter": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "lumen": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "nbcuniversal": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "paramount": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "fox": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "discovery": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "amcnetworks": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "iheartmedia": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "uber": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "lyft": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "airbnb": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "doordash": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "instacart": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "atlassian": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "dropbox": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "box": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "zendesk": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "hubspot": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "twilio": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "cloudflare": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "databricks": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "snowflake": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "palantir": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "veeva": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "guidewire": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "paylocity": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "adp": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "paychex": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ceridian": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "medallia": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "qualtrics": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "sprinklr": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "meltwater": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "okta": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "zscaler": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "pagerduty": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "sumo-logic": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "tableau": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "microstrategy": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "nuance": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "talend": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "qlik": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "philips": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "symantec": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "exxonmobil": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "chevron": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "conocophillips": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "bp": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "halliburton": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "schlumberger": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "bakerhughes": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "baker": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "nexteraenergy": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "duke-energy": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "dominion": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "southern": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "exelon": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "eversource": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "firstenergy": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "ameren": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "entergy": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "sempra": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "dte": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "cms": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "alliant": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "avangrid": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "centerpoint": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "atmos": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-07"
+  },
+  "qualys": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "rapid7": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "tenable": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "carbonblack": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "tanium": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "lacework": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "samsara": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "verkada": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "anyscale": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "groq": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "centene": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "molina": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "davita": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "veracyte": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "bectondickinson": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "edgewell": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "genentech": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "boozallen": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "mitre": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "anduril": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "spacex": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "oliver-wyman": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "nttdata": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "hcl": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "dish": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "nbc": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "warnerbros": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
+  },
+  "sony": {
+    "zeroCount": 3,
+    "lastAttempt": "2026-04-08"
   }
 }
