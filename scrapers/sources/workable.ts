@@ -1,136 +1,72 @@
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
-import { inferExperienceLevel, inferRoles, NormalizedJob } from '../utils/normalize';
+import {
+  inferExperienceLevel,
+  inferRemote,
+  inferRoles,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const SOURCE = 'workable';
+const SEARCH_URL = 'https://jobs.workable.com/api/v1/jobs';
+const SEARCH_LOCATION = 'United States';
+const SEARCH_LIMIT = 50;
+const MAX_OFFSET = 500;
+const BATCH_SIZE = 4;
+const BATCH_DELAY_MS = 600;
 
-const BASE_WORKABLE_COMPANIES = [
-  'beekeeper',
-  'docplanner',
-  'preply',
-  'bending-spoons',
-  'travelperk',
-  'factorial',
-  'oyster',
-  'manychat',
-  'collibra',
-  'deliveroo',
-  'bunq',
-  'volt',
-  'payhawk',
-  'wefox',
-  'mews',
-  'hygraph',
-  'soldo',
-  'deel',
-  'remote',
-  'quantexa',
-  'contentsquare',
-  'sumup',
-  'mirakl',
-  'ledger',
-  'algolia',
-  'aircall',
-  'revolut',
-  'klarna',
-  'wise',
-  'n26',
-  'pleo',
-  'babbel',
-  'personiojobs',
+const SEARCH_TERMS = [
+  // Core engineering roles
+  'software engineer', 'software developer',
+  'frontend engineer', 'backend engineer',
+  'full stack engineer', 'fullstack developer',
+  'web developer', 'mobile engineer',
+  'ios engineer', 'android engineer',
+  'embedded engineer', 'firmware engineer',
+
+  // Infrastructure & DevOps
+  'devops engineer', 'site reliability engineer',
+  'platform engineer', 'infrastructure engineer',
+  'cloud engineer', 'systems engineer',
+  'network engineer', 'solutions engineer',
+
+  // Data & ML
+  'data engineer', 'data scientist',
+  'machine learning engineer', 'ml engineer',
+  'ai engineer', 'deep learning engineer',
+  'data analyst', 'business intelligence',
+  'analytics engineer', 'research scientist',
+  'applied scientist', 'quantitative analyst',
+  'quantitative researcher',
+
+  // Security
+  'security engineer', 'application security',
+  'cybersecurity analyst', 'penetration tester',
+  'information security',
+
+  // Product & Design
+  'product manager', 'technical program manager',
+  'product analyst', 'ux engineer',
+  'ui engineer', 'design engineer',
+
+  // General tech
+  'software intern', 'engineer intern',
+  'new grad engineer', 'junior engineer',
+  'junior developer', 'associate engineer',
+  'entry level engineer', 'entry level developer',
+  'graduate software', 'university grad',
 ] as const;
-
-const EXPANDED_WORKABLE_COMPANIES = [
-  'niantic',
-  'typeform',
-  'hotjar',
-  'personio',
-  'learnworlds',
-  'blueground',
-  'taxfix',
-  'vivino',
-  'hack-the-box',
-  'quizlet',
-  'carwow',
-  'primer',
-  'pave',
-  'omnipresent',
-  'juro',
-  'jit',
-  'cyolo',
-  'cato-networks',
-  'checkmarx',
-  'aqua-security',
-  'snyk',
-  'orca-security',
-  'hunters',
-  'axonius',
-  'fireblocks',
-  'alchemy',
-  'chainalysis',
-  'opensea',
-] as const;
-
-const WORKABLE_COMPANIES = Array.from(
-  new Set(
-    BASE_WORKABLE_COMPANIES.length < 50
-      ? [...BASE_WORKABLE_COMPANIES, ...EXPANDED_WORKABLE_COMPANIES]
-      : BASE_WORKABLE_COMPANIES,
-  ),
-);
-
-const TECH_TITLE_SIGNALS = [
-  'engineer',
-  'developer',
-  'scientist',
-  'analyst',
-  'architect',
-  'devops',
-  'sre',
-  'platform',
-  'backend',
-  'frontend',
-  'fullstack',
-  'full stack',
-  'machine learning',
-  'data',
-  'software',
-  'cloud',
-  'security',
-  'infrastructure',
-  'ml',
-  'ai',
-  'product manager',
-  'program manager',
-  'technical',
-  'systems',
-  'mobile',
-  'ios',
-  'android',
-  'web',
-  'api',
-  'database',
-  'network',
-  'cyber',
-  'quantitative',
-  'quant',
-  'researcher',
-  'site reliability',
-] as const;
-
-type WorkableCompany = {
-  name?: string;
-  slug?: string;
-  title?: string;
-};
 
 type WorkableLocation = {
-  city?: string;
-  region?: string;
-  country?: string;
+  city?: string | null;
   subregion?: string | null;
   countryName?: string | null;
-  remote?: boolean;
+};
+
+type WorkableCompany = {
+  id?: string;
+  title?: string;
+  url?: string;
 };
 
 type WorkableJob = {
@@ -138,53 +74,71 @@ type WorkableJob = {
   title?: string;
   state?: string;
   description?: string;
-  company?: WorkableCompany;
+  requirementsSection?: string;
+  url?: string;
+  locations?: string[];
   location?: WorkableLocation;
   created?: string;
-  url?: string;
+  company?: WorkableCompany;
   workplace?: string;
-  locations?: string[];
 };
 
-type WorkableAccountResponse = {
+type WorkableSearchResponse = {
+  title?: string;
+  totalSize?: number;
+  nextPageToken?: string;
   jobs?: WorkableJob[];
-  next_page?: string | null;
+  results?: WorkableJob[];
+  autoAppliedFilters?: Record<string, unknown>;
 };
 
-const stripHtml = (value: string): string =>
-  value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+type WorkableSearchTermResult = {
+  term: string;
+  jobs: WorkableJob[];
+  zeroReason?: string;
+};
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const MAX_RATE_LIMIT_RETRIES = 3;
+
+function normalizeLocationText(value?: string | null): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) return undefined;
+
+  const withoutCountry = trimmed.replace(/,\s*United States$/i, '').trim();
+  return withoutCountry || trimmed;
+}
 
 function buildLocation(job: WorkableJob): string | undefined {
-  const location = [job.location?.city, job.location?.region, job.location?.subregion]
-    .map(value => value?.trim())
+  const listedLocation = (job.locations ?? [])
+    .map(value => normalizeLocationText(value))
+    .find((value): value is string => Boolean(value));
+
+  if (listedLocation) return listedLocation;
+
+  const structuredLocation = [
+    job.location?.city?.trim(),
+    job.location?.subregion?.trim(),
+    job.location?.countryName?.trim(),
+  ]
     .filter((value): value is string => Boolean(value))
     .join(', ');
 
-  return location || undefined;
+  return normalizeLocationText(structuredLocation);
 }
 
-function buildLocationSignal(job: WorkableJob): string {
-  return [job.location?.city, job.location?.region, job.location?.subregion]
-    .map(value => value?.trim())
-    .filter((value): value is string => Boolean(value))
-    .join(' ');
+function buildExperienceSignalText(job: WorkableJob): string | undefined {
+  const sections = [job.description?.trim(), job.requirementsSection?.trim()]
+    .filter((value): value is string => Boolean(value));
+
+  return sections.length ? sections.join('\n') : undefined;
 }
 
-function buildDescription(description?: string): string | undefined {
-  if (!description?.trim()) return undefined;
+function isRemoteJob(job: WorkableJob, location: string | undefined): boolean {
+  if (job.workplace?.trim().toLowerCase() === 'remote') return true;
+  if ((job.locations ?? []).some(entry => inferRemote(entry))) return true;
 
-  const stripped = stripHtml(description);
-  if (!stripped) return undefined;
-
-  return stripped.slice(0, 5_000);
-}
-
-function buildUrl(job: WorkableJob): string | undefined {
-  const url = job.url?.trim();
-  if (url) return url;
-  if (!job.id?.trim()) return undefined;
-
-  return `https://jobs.workable.com/view/${encodeURIComponent(job.id.trim())}`;
+  return inferRemote(location);
 }
 
 function normalizePostedAt(created?: string): string | undefined {
@@ -196,42 +150,32 @@ function normalizePostedAt(created?: string): string | undefined {
   return date.toISOString();
 }
 
-function isRemoteJob(job: WorkableJob): boolean {
-  if (job.location?.remote === true) return true;
-  if (job.workplace?.trim().toLowerCase() === 'remote') return true;
+function getRetryDelayMs(response: Response, attempt: number): number {
+  const retryAfter = response.headers.get('retry-after');
+  const retryAfterSeconds = retryAfter ? Number.parseFloat(retryAfter) : Number.NaN;
 
-  return (job.locations ?? []).some(location => /remote|telecommute/i.test(location));
-}
+  if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0) {
+    return Math.ceil(retryAfterSeconds * 1_000);
+  }
 
-function isUsCountry(country?: string | null): boolean {
-  const normalized = country?.trim().toLowerCase();
-  return normalized === 'us' || normalized === 'united states';
+  return Math.min(8_000, 1_500 * (attempt + 1));
 }
 
 function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
   const sourceId = job.id?.trim();
   const title = job.title?.trim();
-  const company = job.company?.name?.trim() || job.company?.title?.trim();
-  const remote = isRemoteJob(job);
-  const country = job.location?.country ?? job.location?.countryName;
-
-  if (!sourceId || !title || !company) return null;
-  if (job.state?.trim().toLowerCase() !== 'published') return null;
-  if (!isUsCountry(country) && !remote) return null;
-
-  const locationSignal = buildLocationSignal(job);
-  if (isNonUsLocation(locationSignal)) return null;
-
-  const isTechTitle = TECH_TITLE_SIGNALS.some(signal => title.toLowerCase().includes(signal));
-  if (!isTechTitle) return null;
-
-  const description = buildDescription(job.description);
-  const experienceLevel = inferExperienceLevel(title, description);
-  if (experienceLevel === null) return null;
-
+  const company = job.company?.title?.trim();
+  const url = job.url?.trim();
   const location = buildLocation(job);
-  const url = buildUrl(job);
-  if (!url) return null;
+  const description = job.description?.trim() || undefined;
+  const experienceSignalText = buildExperienceSignalText(job);
+
+  if (!sourceId || !title || !company || !url) return null;
+  if (job.state?.trim().toLowerCase() !== 'published') return null;
+  if (location && isNonUsLocation(location)) return null;
+
+  const experienceLevel = inferExperienceLevel(title, experienceSignalText);
+  if (experienceLevel === null) return null;
 
   return {
     source: SOURCE,
@@ -239,7 +183,7 @@ function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
     title,
     company,
     location,
-    remote,
+    remote: isRemoteJob(job, location),
     url,
     description,
     experience_level: experienceLevel,
@@ -249,57 +193,100 @@ function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
   };
 }
 
-async function fetchCompanyJobs(subdomain: string): Promise<WorkableJob[]> {
-  let page: string | null = null;
-  const jobs: WorkableJob[] = [];
+async function fetchSearchTerm(term: string): Promise<WorkableSearchTermResult> {
+  let offset = 0;
+  const termJobs: WorkableJob[] = [];
+  let zeroReason: string | undefined;
 
-  do {
-    const url = page
-      ? `https://www.workable.com/api/accounts/${subdomain}/jobs?details=true&page=${encodeURIComponent(page)}`
-      : `https://www.workable.com/api/accounts/${subdomain}/jobs?details=true`;
-    const response = await fetch(url, {
-      headers: { Accept: 'application/json' },
-      signal: AbortSignal.timeout(10_000),
-    });
+  while (true) {
+    const url =
+      `${SEARCH_URL}?query=${encodeURIComponent(term)}` +
+      `&location=${encodeURIComponent(SEARCH_LOCATION)}` +
+      `&limit=${SEARCH_LIMIT}&offset=${offset}`;
 
-    if (!response.ok) {
-      break;
-    }
-
-    const data = (await response.json()) as WorkableAccountResponse;
-    jobs.push(...(data.jobs ?? []));
-    page = data.next_page ?? null;
-  } while (page !== null);
-
-  return jobs;
-}
-
-export async function scrapeWorkable(): Promise<NormalizedJob[]> {
-  const jobs: NormalizedJob[] = [];
-  const seenIds = new Set<string>();
-
-  for (const subdomain of WORKABLE_COMPANIES) {
     try {
-      const companyJobs = await fetchCompanyJobs(subdomain);
-      console.log(`[workable] ${subdomain}: ${companyJobs.length} jobs`);
+      let attempt = 0;
+      let res: Response;
 
-      for (const job of companyJobs) {
-        const sourceId = job.id?.trim();
-        if (!sourceId || seenIds.has(sourceId)) continue;
+      while (true) {
+        res = await fetch(url, {
+          headers: { Accept: 'application/json' },
+          signal: AbortSignal.timeout(15_000),
+        });
 
-        const normalized = normalizeWorkableJob(job);
-        if (!normalized) continue;
+        if (res.status !== 429 || attempt >= MAX_RATE_LIMIT_RETRIES) break;
 
-        seenIds.add(sourceId);
-        jobs.push(normalized);
+        const retryDelayMs = getRetryDelayMs(res, attempt);
+        attempt += 1;
+        await delay(retryDelayMs);
       }
+
+      if (!res.ok) {
+        if (termJobs.length === 0) zeroReason = `HTTP ${res.status}`;
+        break;
+      }
+
+      const data = (await res.json()) as WorkableSearchResponse;
+      const jobs = data.results ?? data.jobs ?? [];
+
+      if (jobs.length === 0) {
+        if (termJobs.length === 0) zeroReason = 'no results';
+        break;
+      }
+
+      termJobs.push(...jobs);
+
+      if (jobs.length < SEARCH_LIMIT) break;
+
+      offset += SEARCH_LIMIT;
+      if (offset > MAX_OFFSET) break;
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.log(`[workable] ${subdomain}: failed — ${message}`);
+      if (termJobs.length === 0) {
+        zeroReason = error instanceof Error ? error.message : String(error);
+      }
+      break;
     }
   }
 
-  console.log(`[workable] Total unique jobs: ${jobs.length}`);
+  return { term, jobs: termJobs, zeroReason };
+}
 
-  return jobs;
+export async function scrapeWorkable(): Promise<NormalizedJob[]> {
+  const jobsById = new Map<string, WorkableJob>();
+
+  for (let i = 0; i < SEARCH_TERMS.length; i += BATCH_SIZE) {
+    const batch = SEARCH_TERMS.slice(i, i + BATCH_SIZE);
+    const results = await Promise.all(batch.map(term => fetchSearchTerm(term)));
+
+    for (const result of results) {
+      if (result.jobs.length === 0) {
+        console.log(`[workable] ${result.term}: 0 jobs${result.zeroReason ? ` (${result.zeroReason})` : ''}`);
+        continue;
+      }
+
+      console.log(`[workable] ${result.term}: ${result.jobs.length} raw jobs`);
+
+      for (const job of result.jobs) {
+        const sourceId = job.id?.trim();
+        if (!sourceId) continue;
+
+        jobsById.set(sourceId, job);
+      }
+    }
+
+    if (i + BATCH_SIZE < SEARCH_TERMS.length) {
+      await delay(BATCH_DELAY_MS);
+    }
+  }
+
+  const normalized: NormalizedJob[] = [];
+
+  for (const job of jobsById.values()) {
+    const mapped = normalizeWorkableJob(job);
+    if (!mapped) continue;
+    normalized.push(mapped);
+  }
+
+  console.log(`[workable] Total unique jobs: ${normalized.length}`);
+  return normalized;
 }
