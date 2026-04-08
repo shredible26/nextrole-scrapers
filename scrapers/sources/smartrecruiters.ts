@@ -17,29 +17,157 @@ const COMPANY_BATCH_DELAY_MS = 300;
 const DETAIL_BATCH_SIZE = 5;
 
 const SMARTRECRUITERS_COMPANIES = [
-  'Visa', 'McDonald', 'Bosch', 'Siemens', 'Adidas',
-  'Lidl', 'Aldi', 'Carrefour', 'Zalando',
-  'Spotify', 'Klarna', 'Revolut', 'N26', 'Monzo',
-  'Transferwise', 'Wise', 'Starling', 'Atom',
-  'Deliveroo', 'Glovo', 'Getir', 'Gorillas',
-  'Bolt', 'Cabify', 'FREE_NOW', 'MyTaxi',
-  'HelloFresh', 'Flixbus', 'Omio', 'GoEuro',
-  'Zalando', 'AboutYou', 'Westwing', 'Home24',
-  'Personio', 'Kenjo', 'Factorial', 'HiBob',
-  'Workato', 'Celonis', 'UiPath', 'Automation',
-  'SAP', 'Software', 'TeamViewer', 'IFS',
-  'Criteo', 'Adjust', 'AppsFlyer', 'Branch',
-  'Unity', 'Playtika', 'Verizon', 'Comcast',
-  'T-Mobile', 'Sprt', 'AT&T', 'Charter',
-  'Square', 'Block', 'CashApp', 'Afterpay',
-  'Affirm', 'Klarna', 'Sezzle', 'Splitit',
-  'DoorDash', 'Instacart', 'Gopuff', 'Rappi',
-  'Lyft', 'Waymo', 'Cruise', 'Argo',
-  'Rivian', 'Lucid', 'Canoo', 'Arrival',
-  'Relativity', 'Everlaw', 'Disco', 'Logikcull',
-  'Veeva', 'Medidata', 'Flatiron', 'Tempus',
-  'Ro', 'Hims', 'Noom', 'Calibrate',
-  'Oscar', 'Clover', 'Alignment', 'Devoted',
+  // Big Tech & FAANG-adjacent
+  'Verizon', 'Comcast', 'T-Mobile',
+  'Charter', 'Dell', 'HP', 'Lenovo',
+  'Qualcomm', 'Broadcom', 'Marvell',
+  'Zebra-Technologies', 'Trimble',
+  'NCR', 'Fiserv', 'FIS', 'Jack-Henry',
+
+  // Cloud & Enterprise Software
+  'SAP', 'IFS1', 'Celonis', 'UiPath',
+  'AutomationAnywhere1', 'NICE', 'Verint',
+  'Medallia', 'Sprinklr1', 'Qualtrics',
+  'Momentive', 'SurveyMonkey',
+  'Zuora', 'Conga', 'Apttus',
+  'Model-N', 'Vendavo', 'Zilliant',
+  'Icertis', 'Ironclad1', 'LinkSquares',
+  'ContractPodAi', 'Evisort', 'Juro',
+
+  // Cybersecurity
+  'Palo-Alto-Networks', 'Fortinet',
+  'CrowdStrike', 'SentinelOne',
+  'Darktrace', 'Vectra-AI',
+  'Abnormal-Security', 'Proofpoint',
+  'Mimecast', 'Tessian',
+  'Recorded-Future', 'ThreatConnect',
+  'Exabeam', 'LogRhythm', 'Securonix',
+  'Sumo-Logic', 'Rapid7', 'Tenable',
+  'Qualys', 'Orca-Security', 'Wiz',
+  'Lacework', 'Sysdig', 'Aqua-Security',
+  'Snyk', 'Checkmarx', 'Veracode',
+  'WhiteSource', 'Sonatype', 'JFrog',
+  'GitLab', 'HashiCorp',
+
+  // Data & Analytics
+  'Teradata', 'Informatica', 'Talend',
+  'MicroStrategy1', 'ThoughtSpot',
+  'Sisense', 'Looker', 'Sigma-Computing',
+  'Matillion', 'Stitch', 'Fivetran',
+  'dbt-Labs', 'Airbyte', 'StreamSets',
+  'Attunity', 'Precisely', 'Syncsort',
+
+  // Fintech & Payments
+  'Visa', 'Mastercard', 'PayPal',
+  'Stripe', 'Square', 'Adyen',
+  'Checkout', 'Marqeta', 'Galileo',
+  'Green-Dot', 'Chime', 'Current',
+  'Dave', 'Brigit', 'Earnin',
+  'Affirm', 'Klarna', 'Sezzle',
+  'Splitit', 'Paidy', 'Zip',
+  'Blend', 'Roostify', 'Maxwell',
+  'Better', 'LoanSnap', 'Credibly',
+  'Kabbage', 'OnDeck', 'Fundbox',
+  'Brex', 'Ramp', 'Airbase',
+  'Divvy', 'Expensify', 'Concur',
+  'TripActions', 'Navan', 'Spotnana',
+
+  // HR Tech
+  'Workday', 'Personio', 'HiBob',
+  'Rippling', 'Gusto2', 'Justworks',
+  'Zenefits', 'BambooHR', 'Namely',
+  'Lattice', 'Culture-Amp', 'Leapsome',
+  'Betterworks', 'Reflektive', '15Five',
+  'Engagedly', 'Trakstar', 'Reviewsnap',
+  'Greenhouse', 'Lever1', 'Ashby',
+  'iCIMS', 'Jobvite', 'SmartRecruiters',
+  'JazzHR', 'Bullhorn', 'Beamery',
+  'PhenomPeopleInc', 'Eightfold', 'SeekOut',
+
+  // Healthcare & Life Sciences
+  'Veeva', 'Medidata', 'Flatiron',
+  'Tempus', 'Komodo-Health', 'Definitive',
+  'Arcadia', 'Health-Catalyst', 'Innovaccer',
+  'Ro', 'Hims-Hers', 'Noom',
+  'Teladoc', 'Amwell', 'MDLive',
+  'Doceree', 'PatientPoint', 'Outcome',
+  'Evolent', 'PriviaHealth', 'Aledade',
+
+  // E-commerce & Retail Tech
+  'Shopify', 'BigCommerce', 'Magento',
+  'Salesforce-Commerce', 'Commercetools',
+  'Fabric', 'Constructor', 'Bloomreach',
+  'Bazaarvoice', 'PowerReviews', 'Yotpo',
+  'Attentive', 'Postscript', 'SMSBump',
+  'Klaviyo', 'Omnisend', 'Drip',
+  'Listrak', 'Cordial', 'Iterable',
+
+  // Logistics & Supply Chain
+  'project44', 'FourKites', 'Flexport',
+  'Transfix', 'Convoy', 'Uber-Freight',
+  'KeepTruckin', 'Motive', 'Samsara',
+  'Platform-Science', 'Trimble-Transport',
+  'Manhattan-Associates', 'Blue-Yonder',
+  'o9-Solutions', 'Kinaxis', 'Llamasoft',
+
+  // Real Estate Tech
+  'Opendoor', 'Offerpad', 'Knock',
+  'Orchard', 'Ribbon', 'Homeward',
+  'Divvy-Homes', 'Landis', 'ZeroDown',
+  'Roofstock', 'Arrived', 'Fundrise',
+  'Cadre', 'Yardi', 'RealPage',
+  'AppFolio', 'Buildium', 'Entrata',
+  'VTS', 'Procore', 'PlanGrid',
+  'Autodesk', 'Trimble-Buildings',
+
+  // Media & Content
+  'Spotify', 'SoundCloud', 'Deezer',
+  'Tidal', 'Pandora', 'iHeartMedia',
+  'Audacy', 'Cumulus', 'Townsquare',
+  'BuzzFeed', 'Vox-Media', 'Group-Nine',
+  'Vice', 'Complex', 'The-Athletic',
+  'Stack-Overflow', 'Imgur', 'Reddit',
+
+  // Gaming
+  'Unity', 'Playtika', 'Jam-City',
+  'Scopely', 'Kabam', 'Glu-Mobile',
+  'Zynga', 'Electronic-Arts', 'Take-Two',
+  '2K-Games', 'Rockstar', 'Riot-Games',
+  'Epic-Games', 'Roblox', 'Niantic',
+
+  // Travel & Hospitality
+  'Airbnb', 'Vrbo', 'Vacasa',
+  'Sonder', 'Lyric', 'Landing',
+  'Zeus', 'Blueground', 'Anyplace',
+  'Hopper', 'Kiwi', 'Duffel',
+  'TravelPerk', 'TripActions', 'Egencia',
+  'Sabre', 'Amadeus', 'Travelport',
+
+  // Education Tech
+  'Coursera', 'Udemy', 'Udacity',
+  'Pluralsight', 'LinkedIn3',
+  'Degreed', 'EdCast', 'Cornerstone',
+  'Docebo', 'Absorb', 'TalentLMS',
+  'Instructure', 'Anthology', 'Ellucian',
+  'Chegg', 'Course-Hero', 'Quizlet',
+  'Duolingo', 'Babbel', 'Rosetta-Stone',
+
+  // Energy & Climate Tech
+  'Stem', 'Flutura', 'AutoGrid',
+  'Arcadia', 'Urjanet', 'EnerNOC',
+  'Uplight', 'Bidgee', 'Oracle-Utilities',
+  'Itron', 'Landis-Gyr', 'Honeywell',
+  'Siemens', 'Schneider-Electric',
+  'Eaton', 'ABB', 'Emerson',
+  'Turntide', 'Fermata', 'Nuvve',
+  'Volta', 'Blink', 'ChargePoint',
+  'EVgo', 'Electrify-America', 'Tesla',
+
+  // Live-discovered active SmartRecruiters identifiers
+  'BoschGroup', 'Cyberark1', 'ServiceNow',
+  'Experian', 'WesternDigital', 'Freshworks',
+  'NielsenIQ', 'IntegriChain1', 'ATPCO1',
+  'NBCUniversal3',
 ] as const;
 
 const US_COUNTRY_VALUES = new Set([
