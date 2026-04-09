@@ -26,6 +26,9 @@ const BLOCKED_HEADERS: Record<string, string> = {
 };
 const MAX_PAGES = 5;
 const PAGE_DELAY_MS = 500;
+const MAX_URL_ATTEMPTS = 3;
+const SCRAPE_TIMEOUT_MS = 90_000;
+const FULL_BLOCK_ABORT_THRESHOLD = 3;
 
 const SEARCH_TERMS = [
   'software engineer entry level',
@@ -41,6 +44,10 @@ const SEARCH_TERMS = [
 ];
 
 type SimplyHiredJobRecord = Record<string, unknown>;
+type SearchHtmlResult = {
+  html: string | null;
+  cfBlocked: boolean;
+};
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -384,14 +391,21 @@ function mapJob(raw: SimplyHiredJobRecord): NormalizedJob | null {
   };
 }
 
-export async function scrapeSimplyHired(): Promise<NormalizedJob[]> {
-  const jobs: NormalizedJob[] = [];
+async function scrapeSimplyHiredInternal(
+  jobs: NormalizedJob[],
+  shouldStop: () => boolean,
+): Promise<NormalizedJob[]> {
   const seenUrls = new Set<string>();
   let browser: Browser | null = null;
   let context: BrowserContext | null = null;
   let page: Page | null = null;
+  let checkedUrls = 0;
+  let blockedUrls = 0;
 
   const getBrowserPage = async (): Promise<Page> => {
+    if (shouldStop()) {
+      throw new Error('scrape stopped');
+    }
     if (page) return page;
 
     browser = await chromium.launch({ headless: true });
@@ -404,6 +418,8 @@ export async function scrapeSimplyHired(): Promise<NormalizedJob[]> {
   };
 
   const fetchWithBrowser = async (url: string): Promise<string | null> => {
+    if (shouldStop()) return null;
+
     try {
       const browserPage = await getBrowserPage();
       await browserPage.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
@@ -414,7 +430,11 @@ export async function scrapeSimplyHired(): Promise<NormalizedJob[]> {
     }
   };
 
-  const fetchSearchHtml = async (url: string): Promise<string | null> => {
+  const fetchSearchHtmlOnce = async (url: string): Promise<SearchHtmlResult> => {
+    if (shouldStop()) {
+      return { html: null, cfBlocked: false };
+    }
+
     try {
       let res = await fetch(url, {
         headers: BASE_HEADERS,
@@ -434,19 +454,62 @@ export async function scrapeSimplyHired(): Promise<NormalizedJob[]> {
 
       if (res.status === 403 || isChallengePage(html)) {
         console.log(`  [${SOURCE}] challenge detected, using browser fallback`);
-        return await fetchWithBrowser(url);
+        const browserHtml = await fetchWithBrowser(url);
+        if (browserHtml && !isChallengePage(browserHtml)) {
+          return { html: browserHtml, cfBlocked: false };
+        }
+        return { html: null, cfBlocked: true };
       }
 
-      return html;
+      return { html, cfBlocked: false };
     } catch (err) {
       console.warn(`  [${SOURCE}] fetch failed: ${(err as Error).message}`);
-      return await fetchWithBrowser(url);
+      const browserHtml = await fetchWithBrowser(url);
+      if (browserHtml && !isChallengePage(browserHtml)) {
+        return { html: browserHtml, cfBlocked: false };
+      }
+
+      return {
+        html: null,
+        cfBlocked: browserHtml !== null && isChallengePage(browserHtml),
+      };
     }
+  };
+
+  const fetchSearchHtml = async (url: string): Promise<SearchHtmlResult> => {
+    let sawCfBlock = false;
+
+    for (let attempt = 1; attempt <= MAX_URL_ATTEMPTS; attempt += 1) {
+      const result = await fetchSearchHtmlOnce(url);
+      if (result.html) {
+        return result;
+      }
+
+      sawCfBlock ||= result.cfBlocked;
+
+      if (shouldStop()) {
+        return { html: null, cfBlocked: sawCfBlock };
+      }
+
+      if (attempt < MAX_URL_ATTEMPTS) {
+        await sleep(PAGE_DELAY_MS);
+      }
+    }
+
+    if (sawCfBlock) {
+      console.warn(`  [${SOURCE}] CF block on ${url}, skipping`);
+    }
+
+    return { html: null, cfBlocked: sawCfBlock };
   };
 
   try {
     for (const term of SEARCH_TERMS) {
+      if (shouldStop()) break;
+
       for (let pageNumber = 1; pageNumber <= MAX_PAGES; pageNumber += 1) {
+        if (shouldStop()) break;
+
         const params = new URLSearchParams({
           q: term,
           l: 'United States',
@@ -455,21 +518,36 @@ export async function scrapeSimplyHired(): Promise<NormalizedJob[]> {
           pn: String(pageNumber),
         });
         const url = `${SEARCH_URL}?${params}`;
-        const html = await fetchSearchHtml(url);
+        const { html, cfBlocked } = await fetchSearchHtml(url);
+
+        if (checkedUrls < FULL_BLOCK_ABORT_THRESHOLD) {
+          checkedUrls += 1;
+          if (cfBlocked) {
+            blockedUrls += 1;
+          }
+
+          if (checkedUrls === FULL_BLOCK_ABORT_THRESHOLD && blockedUrls === FULL_BLOCK_ABORT_THRESHOLD) {
+            console.warn(`  [${SOURCE}] fully blocked by Cloudflare, returning 0 jobs`);
+            jobs.length = 0;
+            return [];
+          }
+        }
+
         if (!html) break;
 
+        if (shouldStop()) break;
+
+        const jsonLdJobs = extractJsonLdJobs(html);
+        const embeddedJobs = jsonLdJobs.length === 0 ? extractEmbeddedJobs(html) : [];
         const parsedJobs =
-          extractJsonLdJobs(html).length > 0
-            ? extractJsonLdJobs(html)
-            : extractEmbeddedJobs(html).length > 0
-            ? extractEmbeddedJobs(html)
-            : extractHtmlJobs(html);
+          jsonLdJobs.length > 0 ? jsonLdJobs : embeddedJobs.length > 0 ? embeddedJobs : extractHtmlJobs(html);
 
         if (parsedJobs.length === 0) {
           break;
         }
 
         for (const rawJob of parsedJobs) {
+          if (shouldStop()) break;
           const job = mapJob(rawJob);
           if (!job || seenUrls.has(job.url)) continue;
           seenUrls.add(job.url);
@@ -496,4 +574,30 @@ export async function scrapeSimplyHired(): Promise<NormalizedJob[]> {
   }
 
   return jobs;
+}
+
+export async function scrapeSimplyHired(): Promise<NormalizedJob[]> {
+  const collectedJobs: NormalizedJob[] = [];
+  let timedOut = false;
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  const scrapePromise = scrapeSimplyHiredInternal(collectedJobs, () => timedOut)
+    .finally(() => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    });
+
+  const result = await Promise.race([
+    scrapePromise,
+    new Promise<NormalizedJob[]>(resolve => {
+      timeoutId = setTimeout(() => {
+        timedOut = true;
+        console.warn(`  [${SOURCE}] timeout after 90s, returning ${collectedJobs.length} jobs`);
+        resolve(collectedJobs);
+      }, SCRAPE_TIMEOUT_MS);
+    }),
+  ]);
+
+  return result;
 }

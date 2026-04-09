@@ -113,6 +113,45 @@ type FetchResult =
       startedAt: number;
     };
 
+const DEFAULT_SCRAPER_TIMEOUT_MS = 120_000;
+
+function getScraperTimeoutMs(name: string): number {
+  switch (name) {
+    case 'simplyhired':
+      return 90_000;
+    case 'workday':
+      return 300_000;
+    case 'workable':
+      return 120_000;
+    default:
+      return DEFAULT_SCRAPER_TIMEOUT_MS;
+  }
+}
+
+async function withTimeout<T>(
+  fn: () => Promise<T>,
+  timeoutMs: number,
+  name: string,
+): Promise<T | []> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  try {
+    return await Promise.race([
+      fn(),
+      new Promise<[]>(resolve => {
+        timeoutId = setTimeout(() => {
+          console.warn(`  [${name}] timed out after ${timeoutMs / 1000}s`);
+          resolve([]);
+        }, timeoutMs);
+      }),
+    ]);
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
+}
+
 function normalizeUrl(url: string): string {
   return url.trim().replace(/\/+$/, '');
 }
@@ -207,7 +246,7 @@ async function fetchScraper(name: string, fn: () => Promise<NormalizedJob[]>) {
   console.log(`  [${name}] Starting...`);
 
   try {
-    const jobs = await fn();
+    const jobs = await withTimeout(fn, getScraperTimeoutMs(name), name);
     console.log(`  [${name}] Fetched ${jobs.length} jobs`);
     return { name, jobs, success: true, startedAt: start } satisfies FetchResult;
   } catch (err) {

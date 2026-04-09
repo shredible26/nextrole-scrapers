@@ -752,7 +752,7 @@ const WORKDAY_COMPANIES: [string, string][] = [
 ];
 
 const WORKDAY_BATCH_SIZE = 25;
-const WORKDAY_REQUEST_TIMEOUT_MS = 8_000;
+const WORKDAY_REQUEST_TIMEOUT_MS = 25_000;
 const WORKDAY_SKIP_RUNS = 3;
 const WORKDAY_DEAD_CACHE_PATH = join(process.cwd(), 'scrapers', 'cache', 'workday-dead.json');
 
@@ -765,12 +765,28 @@ async function loadWorkdayDeadCache(): Promise<WorkdayDeadCache> {
 
     return Object.fromEntries(
       Object.entries(parsed)
-        .filter(([, value]) => typeof value?.zeroCount === 'number')
+        .filter(([, value]) => value && typeof value === 'object')
         .map(([company, value]) => [
           company,
           {
             zeroCount: Math.max(0, Math.trunc(value.zeroCount ?? 0)),
             lastAttempt: typeof value.lastAttempt === 'string' ? value.lastAttempt : '',
+            knownTargets: Object.fromEntries(
+              Object.entries(value.knownTargets ?? {})
+                .filter(
+                  ([, target]) =>
+                    target &&
+                    typeof target.wdVersion === 'string' &&
+                    typeof target.slug === 'string',
+                )
+                .map(([careerSite, target]) => [
+                  careerSite,
+                  {
+                    wdVersion: target.wdVersion,
+                    slug: target.slug,
+                  },
+                ]),
+            ),
           },
         ]),
     );
@@ -779,9 +795,20 @@ async function loadWorkdayDeadCache(): Promise<WorkdayDeadCache> {
   }
 }
 
+function compactWorkdayDeadCache(cache: WorkdayDeadCache): WorkdayDeadCache {
+  return Object.fromEntries(
+    Object.entries(cache).filter(
+      ([, entry]) => entry.zeroCount > 0 || Object.keys(entry.knownTargets).length > 0,
+    ),
+  );
+}
+
 async function saveWorkdayDeadCache(cache: WorkdayDeadCache): Promise<void> {
   await mkdir(join(process.cwd(), 'scrapers', 'cache'), { recursive: true });
-  await writeFile(WORKDAY_DEAD_CACHE_PATH, `${JSON.stringify(cache, null, 2)}\n`);
+  await writeFile(
+    WORKDAY_DEAD_CACHE_PATH,
+    `${JSON.stringify(compactWorkdayDeadCache(cache), null, 2)}\n`,
+  );
 }
 
 function groupWorkdayCompanies(): Array<{ company: string; careerSites: string[] }> {
@@ -866,9 +893,15 @@ type WorkdayScrapeStats = {
 type WorkdayDeadCacheEntry = {
   zeroCount: number;
   lastAttempt: string;
+  knownTargets: Record<string, WorkdayKnownTarget>;
 };
 
 type WorkdayDeadCache = Record<string, WorkdayDeadCacheEntry>;
+type PersistKnownWorkdayTarget = (
+  company: string,
+  careerSite: string,
+  target: WorkdayKnownTarget,
+) => Promise<void>;
 
 type CompanyScrapeResult = {
   jobs: NormalizedJob[];
@@ -938,6 +971,8 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'accenture|accenturefederal': { wdVersion: 'wd5', slug: 'accenturefederal' },
   'airbnb|airbnb': { wdVersion: 'wd5', slug: 'airbnb' },
   'americanexpress|americanexpress': { wdVersion: 'wd5', slug: 'americanexpress' },
+  'amgen|amgen': { wdVersion: 'wd5', slug: 'amgen' },
+  'amgen|careers': { wdVersion: 'wd5', slug: 'amgen' },
   'amplitude|amplitude': { wdVersion: 'wd5', slug: 'amplitude' },
   'anduril|anduril': { wdVersion: 'wd1', slug: 'anduril' },
   'anthem|anthem': { wdVersion: 'wd5', slug: 'anthem' },
@@ -949,8 +984,10 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'bcg|bcg': { wdVersion: 'wd5', slug: 'bcg' },
   'bectondickinson|bd': { wdVersion: 'wd5', slug: 'bd' },
   'bestbuy|bestbuy': { wdVersion: 'wd5', slug: 'bestbuy' },
+  'biogen|careers': { wdVersion: 'wd5', slug: 'biogen' },
   'biogen|biogen': { wdVersion: 'wd5', slug: 'biogen' },
   'blackrock|blackrock': { wdVersion: 'wd5', slug: 'blackrock' },
+  'bms|bms': { wdVersion: 'wd5', slug: 'bristolmyerssquibb' },
   'bms|bristolmyerssquibb': { wdVersion: 'wd5', slug: 'bristolmyerssquibb' },
   'boeing|boeing': { wdVersion: 'wd5', slug: 'boeing' },
   'bofa|bankofamerica': { wdVersion: 'wd1', slug: 'bankofamerica' },
@@ -972,6 +1009,7 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'coupa|coupa': { wdVersion: 'wd5', slug: 'coupa' },
   'cvs|cvs': { wdVersion: 'wd5', slug: 'cvs' },
   'datadog|datadog': { wdVersion: 'wd5', slug: 'datadog' },
+  'databricks|databricks': { wdVersion: 'wd5', slug: 'databricks' },
   'davita|davita': { wdVersion: 'wd1', slug: 'davita' },
   'deloitte|deloitte': { wdVersion: 'wd5', slug: 'deloitte' },
   'dish|dish': { wdVersion: 'wd1', slug: 'dish' },
@@ -988,7 +1026,8 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'ge|ge': { wdVersion: 'wd5', slug: 'ge' },
   'genentech|genentech': { wdVersion: 'wd5', slug: 'genentech' },
   'generalatomics|ga': { wdVersion: 'wd1', slug: 'ga' },
-  'gilead|gilead': { wdVersion: 'wd5', slug: 'gilead' },
+  'gilead|careers': { wdVersion: 'wd3', slug: 'gilead' },
+  'gilead|gilead': { wdVersion: 'wd3', slug: 'gilead' },
   'gitlab|gitlab': { wdVersion: 'wd5', slug: 'gitlab' },
   'goldmansachs|goldmansachs': { wdVersion: 'wd5', slug: 'goldmansachs' },
   'groq|groq': { wdVersion: 'wd1', slug: 'groq' },
@@ -1006,6 +1045,7 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'illumio|illumio': { wdVersion: 'wd1', slug: 'illumio' },
   'infosys|infosys': { wdVersion: 'wd5', slug: 'infosys' },
   'iterable|iterable': { wdVersion: 'wd1', slug: 'iterable' },
+  'jnj|jnj': { wdVersion: 'wd5', slug: 'jnjcareers' },
   'jnj|jnjcareers': { wdVersion: 'wd5', slug: 'jnjcareers' },
   'jpmorgan|jpmc': { wdVersion: 'wd5', slug: 'jpmc' },
   'klaviyo|klaviyo': { wdVersion: 'wd5', slug: 'klaviyo' },
@@ -1014,7 +1054,7 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'kroger|kroger': { wdVersion: 'wd5', slug: 'kroger' },
   'l3harris|l3harris': { wdVersion: 'wd5', slug: 'l3harris' },
   'lacework|lacework': { wdVersion: 'wd1', slug: 'lacework' },
-  'lilly|lilly': { wdVersion: 'wd5', slug: 'lilly' },
+  'lilly|lilly': { wdVersion: 'wd1', slug: 'lilly' },
   'lincolnfinancial|lincolnfinancial': { wdVersion: 'wd5', slug: 'lincolnfinancial' },
   'lowes|Lowes': { wdVersion: 'wd5', slug: 'Lowes' },
   'lyft|lyft': { wdVersion: 'wd5', slug: 'lyft' },
@@ -1043,7 +1083,8 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'qualys|qualys': { wdVersion: 'wd1', slug: 'qualys' },
   'rapid7|rapid7': { wdVersion: 'wd1', slug: 'rapid7' },
   'raytheon|rtx': { wdVersion: 'wd5', slug: 'rtx' },
-  'regeneron|regeneron': { wdVersion: 'wd5', slug: 'regeneron' },
+  'regeneron|careers': { wdVersion: 'wd1', slug: 'careers' },
+  'regeneron|regeneron': { wdVersion: 'wd1', slug: 'careers' },
   'saic|saic': { wdVersion: 'wd5', slug: 'saic' },
   'samsara|samsara': { wdVersion: 'wd5', slug: 'samsara' },
   'schlumberger|slb': { wdVersion: 'wd5', slug: 'slb' },
@@ -1053,6 +1094,7 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'slalom|slalom': { wdVersion: 'wd5', slug: 'slalom' },
   'sony|sonycareers': { wdVersion: 'wd5', slug: 'sonycareers' },
   'spacex|spacex': { wdVersion: 'wd1', slug: 'spacex' },
+  'snowflake|snowflake': { wdVersion: 'wd5', slug: 'snowflake' },
   'sprinklr|sprinklr': { wdVersion: 'wd5', slug: 'sprinklr' },
   'tanium|tanium': { wdVersion: 'wd1', slug: 'tanium' },
   'teladoc|teladoc': { wdVersion: 'wd1', slug: 'teladoc' },
@@ -1070,6 +1112,7 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'voya|voya': { wdVersion: 'wd1', slug: 'voya' },
   'walmart|walmart': { wdVersion: 'wd5', slug: 'walmart' },
   'warnerbros|warnerbros': { wdVersion: 'wd5', slug: 'warnerbros' },
+  'wellsfargo|wellsfargo': { wdVersion: 'wd5', slug: 'wellsfargojobs' },
   'wellsfargo|wellsfargojobs': { wdVersion: 'wd5', slug: 'wellsfargojobs' },
   'wipro|wipro': { wdVersion: 'wd5', slug: 'wipro' },
   'zendesk|zendesk': { wdVersion: 'wd5', slug: 'zendesk' },
@@ -1077,6 +1120,58 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'zscaler|zscaler': { wdVersion: 'wd5', slug: 'zscaler' },
   'zuora|zuora': { wdVersion: 'wd1', slug: 'zuora' },
 };
+
+function setKnownWorkdayTarget(
+  company: string,
+  careerSite: string,
+  target: WorkdayKnownTarget,
+): void {
+  WORKDAY_KNOWN_TARGETS[`${company}|${careerSite}`] = target;
+}
+
+function getOrCreateWorkdayDeadCacheEntry(
+  cache: WorkdayDeadCache,
+  company: string,
+): WorkdayDeadCacheEntry {
+  if (!cache[company]) {
+    cache[company] = {
+      zeroCount: 0,
+      lastAttempt: '',
+      knownTargets: {},
+    };
+  }
+
+  return cache[company];
+}
+
+function applyCachedWorkdayTargets(cache: WorkdayDeadCache): void {
+  for (const [company, entry] of Object.entries(cache)) {
+    for (const [careerSite, target] of Object.entries(entry.knownTargets)) {
+      setKnownWorkdayTarget(company, careerSite, target);
+    }
+  }
+}
+
+function rememberWorkdayTarget(
+  cache: WorkdayDeadCache,
+  company: string,
+  careerSite: string,
+  target: WorkdayKnownTarget,
+): boolean {
+  const current = getKnownWorkdayTarget(company, careerSite);
+  const entry = getOrCreateWorkdayDeadCacheEntry(cache, company);
+  const cachedTarget = entry.knownTargets[careerSite];
+
+  setKnownWorkdayTarget(company, careerSite, target);
+  entry.knownTargets[careerSite] = target;
+
+  return (
+    current?.wdVersion !== target.wdVersion ||
+    current?.slug !== target.slug ||
+    cachedTarget?.wdVersion !== target.wdVersion ||
+    cachedTarget?.slug !== target.slug
+  );
+}
 
 function getKnownWorkdayTarget(
   company: string,
@@ -1177,7 +1272,7 @@ async function fetchWorkdayResponse(
 /**
  * Try all (wdVersion, slug) combinations until one returns HTTP 200 with valid JSON
  * containing a jobPostings array. Returns the jobs plus the working (wdVersion, slug).
- * Times out each attempt after 8 seconds.
+ * Times out each attempt after 25 seconds.
  */
 async function tryWorkdayCompany(
   company: string,
@@ -1219,6 +1314,7 @@ async function tryWorkdayCompany(
 async function scrapeCompany(
   company: string,
   careerSite: string,
+  persistKnownTarget: PersistKnownWorkdayTarget,
 ): Promise<CompanyScrapeResult> {
   const seen = new Set<string>();
   const seenFetched = new Set<string>();
@@ -1226,6 +1322,7 @@ async function scrapeCompany(
   const stats = createEmptyWorkdayStats();
   let hadSuccessfulResponse = false;
   let hadTimeout = false;
+  let persistedKnownTarget = false;
 
   // Discover which (wdVersion, slug) pair works using the first search term
   let foundVersion: string | null = null;
@@ -1281,6 +1378,11 @@ async function scrapeCompany(
     if (!result) continue;
 
     const { jobs: postings, wdVersion, slug } = result;
+
+    if (!persistedKnownTarget) {
+      await persistKnownTarget(company, careerSite, { wdVersion, slug });
+      persistedKnownTarget = true;
+    }
 
     for (const posting of postings) {
       const title = posting.title ?? '';
@@ -1353,6 +1455,7 @@ async function scrapeCompany(
 async function scrapeCompanyGroup(
   company: string,
   careerSites: string[],
+  persistKnownTarget: PersistKnownWorkdayTarget,
 ): Promise<CompanyGroupScrapeResult> {
   const dedupedJobs = new Map<string, NormalizedJob>();
   const stats = createEmptyWorkdayStats();
@@ -1360,7 +1463,7 @@ async function scrapeCompanyGroup(
   let hadTimeout = false;
 
   for (const careerSite of careerSites) {
-    const result = await scrapeCompany(company, careerSite);
+    const result = await scrapeCompany(company, careerSite, persistKnownTarget);
     hadSuccessfulResponse ||= result.hadSuccessfulResponse;
     hadTimeout ||= result.hadTimeout;
     stats.uniqueFetched += result.stats.uniqueFetched;
@@ -1384,19 +1487,25 @@ async function scrapeCompanyGroup(
 export async function scrapeWorkday(): Promise<NormalizedJob[]> {
   const today = new Date().toISOString().slice(0, 10);
   const deadCache = await loadWorkdayDeadCache();
-  const nextDeadCache: WorkdayDeadCache = {};
+  applyCachedWorkdayTargets(deadCache);
   const companyGroups = groupWorkdayCompanies();
   const companiesToAttempt: Array<{ company: string; careerSites: string[] }> = [];
   let skippedFromCache = 0;
+  let cacheWriteQueue = Promise.resolve();
+
+  const persistKnownTarget: PersistKnownWorkdayTarget = async (company, careerSite, target) => {
+    const changed = rememberWorkdayTarget(deadCache, company, careerSite, target);
+    if (!changed) return;
+
+    cacheWriteQueue = cacheWriteQueue.then(() => saveWorkdayDeadCache(deadCache));
+    await cacheWriteQueue;
+  };
 
   for (const group of companyGroups) {
     const cached = deadCache[group.company];
     if (cached && cached.zeroCount > 0) {
       skippedFromCache += 1;
-      nextDeadCache[group.company] = {
-        zeroCount: Math.max(0, cached.zeroCount - 1),
-        lastAttempt: cached.lastAttempt,
-      };
+      cached.zeroCount = Math.max(0, cached.zeroCount - 1);
       continue;
     }
 
@@ -1411,7 +1520,7 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
   for (let i = 0; i < companiesToAttempt.length; i += WORKDAY_BATCH_SIZE) {
     const batch = companiesToAttempt.slice(i, i + WORKDAY_BATCH_SIZE);
     const results = await Promise.allSettled(
-      batch.map(group => scrapeCompanyGroup(group.company, group.careerSites)),
+      batch.map(group => scrapeCompanyGroup(group.company, group.careerSites, persistKnownTarget)),
     );
 
     for (const result of results) {
@@ -1422,13 +1531,16 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
       stats.filteredNonUs += result.value.stats.filteredNonUs;
       stats.filteredNonTech += result.value.stats.filteredNonTech;
 
+      const cacheEntry = getOrCreateWorkdayDeadCacheEntry(deadCache, result.value.company);
+      cacheEntry.lastAttempt = today;
+
       if (result.value.jobs.length > 0) {
         companiesWithJobs += 1;
+        cacheEntry.zeroCount = 0;
       } else if (result.value.hadSuccessfulResponse || !result.value.hadTimeout) {
-        nextDeadCache[result.value.company] = {
-          zeroCount: WORKDAY_SKIP_RUNS,
-          lastAttempt: today,
-        };
+        cacheEntry.zeroCount = WORKDAY_SKIP_RUNS;
+      } else {
+        cacheEntry.zeroCount = 0;
       }
 
       if (result.value.hadTimeout) {
@@ -1437,7 +1549,8 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
     }
   }
 
-  await saveWorkdayDeadCache(nextDeadCache);
+  await cacheWriteQueue;
+  await saveWorkdayDeadCache(deadCache);
 
   console.log(`  [workday] Cache skipped: ${skippedFromCache} companies`);
   console.log(`  [workday] Attempted: ${companiesToAttempt.length} companies`);
