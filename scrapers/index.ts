@@ -89,6 +89,9 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   // (wellfound + dice are now active above)
 ];
 
+const PRIORITY_SCRAPERS = ['lever', 'workday', 'workable'] as const;
+const PRIORITY_SCRAPER_SET = new Set<string>(PRIORITY_SCRAPERS);
+
 const SKIPPABLE_SLOW_SOURCE_SET = new Set([
   'ziprecruiter',
   'glassdoor',
@@ -117,12 +120,14 @@ const DEFAULT_SCRAPER_TIMEOUT_MS = 120_000;
 
 function getScraperTimeoutMs(name: string): number {
   switch (name) {
+    case 'lever':
+      return 240_000;
     case 'simplyhired':
       return 90_000;
     case 'workday':
-      return 300_000;
+      return 480_000;
     case 'workable':
-      return 120_000;
+      return 180_000;
     default:
       return DEFAULT_SCRAPER_TIMEOUT_MS;
   }
@@ -241,12 +246,19 @@ async function persistScraper(result: FetchResult) {
   }
 }
 
-async function fetchScraper(name: string, fn: () => Promise<NormalizedJob[]>) {
+async function fetchScraper(
+  name: string,
+  fn: () => Promise<NormalizedJob[]>,
+  options?: { useTimeout?: boolean },
+) {
   const start = Date.now();
   console.log(`  [${name}] Starting...`);
 
   try {
-    const jobs = await withTimeout(fn, getScraperTimeoutMs(name), name);
+    const jobs =
+      options?.useTimeout === false
+        ? await fn()
+        : await withTimeout(fn, getScraperTimeoutMs(name), name);
     console.log(`  [${name}] Fetched ${jobs.length} jobs`);
     return { name, jobs, success: true, startedAt: start } satisfies FetchResult;
   } catch (err) {
@@ -256,31 +268,54 @@ async function fetchScraper(name: string, fn: () => Promise<NormalizedJob[]>) {
   }
 }
 
+function getRejectedFetchResult(name: string): FetchResult {
+  return {
+    name,
+    jobs: [],
+    success: false,
+    startedAt: Date.now(),
+  };
+}
+
 async function run() {
   const { scrapers, skipped } = getActiveScrapers();
+  const priorityScrapers = scrapers.filter(({ name }) => PRIORITY_SCRAPER_SET.has(name));
+  const remainingScrapers = scrapers.filter(({ name }) => !PRIORITY_SCRAPER_SET.has(name));
 
   console.log(`\n🚀 NextRole scrape run — ${new Date().toISOString()}`);
-  console.log(`   Running ${scrapers.length} scrapers concurrently...`);
+  console.log(
+    `   Running ${scrapers.length} scrapers in 2 phases ` +
+      `(${priorityScrapers.length} priority sequential, ${remainingScrapers.length} concurrent)...`,
+  );
   if (skipped.length > 0) {
     console.log(`   Skipping ${skipped.length} slow sources via SKIP_SLOW_SOURCES=true: ${skipped.join(', ')}`);
   }
   console.log('');
 
   const globalStart = Date.now();
+  const fetchResultsByName = new Map<string, FetchResult>();
 
-  const fetched = await Promise.allSettled(
-    scrapers.map(({ name, fn }) => fetchScraper(name, fn))
+  console.log('  [pipeline] Phase 1: Running priority scrapers sequentially...');
+  for (const { name, fn } of priorityScrapers) {
+    const result = await fetchScraper(name, fn, { useTimeout: name !== 'workday' });
+    fetchResultsByName.set(name, result);
+  }
+
+  console.log('  [pipeline] Phase 1 complete. Starting Phase 2: concurrent scrapers...');
+  const concurrentFetched = await Promise.allSettled(
+    remainingScrapers.map(({ name, fn }) => fetchScraper(name, fn))
   );
 
-  const fetchResults: FetchResult[] = fetched.map((result, index): FetchResult =>
-    result.status === 'fulfilled'
-      ? result.value
-      : {
-          name: scrapers[index]?.name ?? 'unknown',
-          jobs: [],
-          success: false,
-          startedAt: Date.now(),
-        },
+  concurrentFetched.forEach((result, index) => {
+    const name = remainingScrapers[index]?.name ?? 'unknown';
+    fetchResultsByName.set(
+      name,
+      result.status === 'fulfilled' ? result.value : getRejectedFetchResult(name),
+    );
+  });
+
+  const fetchResults: FetchResult[] = scrapers.map(
+    ({ name }) => fetchResultsByName.get(name) ?? getRejectedFetchResult(name),
   );
 
   const dedupedResults = dedupeGitHubRepoJobs(fetchResults);
