@@ -616,7 +616,20 @@ This section is included as operational reference. In this checkout, scraper cod
     - Resend free tier: 3,000 emails/month
 40. Contact / feedback page — simple /contact form, submits
     via Resend to your email. Helps with user trust.
-41. Rate limiting on API routes:
+41a. Server-enforce Pro-only search — currently search is
+     blocked in the UI for free users but /api/jobs?search=
+     can be called directly to bypass it. Add a server-side
+     check in app/api/jobs/route.ts: if search param is
+     present and user tier is 'free', return 402 with
+     upgrade: true (same pattern as page > 1 check).
+41b. Consolidate profile creation paths — currently profiles
+     can be created via: DB trigger, auth callback, legacy
+     auth webhook, and /api/jobs fallback insert. This risks
+     duplicate rows and race conditions. Audit and remove all
+     paths except the auth callback route (which uses the
+     service role client and is the most reliable). Disable
+     or drop the DB trigger.
+42. Rate limiting on API routes:
     - /api/stripe/webhook (already uses raw body verification)
     - /api/jobs (add per-user rate limit: 100 req/min)
     - /api/profile/display-name (add per-user rate limit)
@@ -626,21 +639,21 @@ This section is included as operational reference. In this checkout, scraper cod
 
 ### PRIORITY 6: RAG PIPELINE (Build in order)
 
-42. Embeddings setup:
+43. Embeddings setup:
     - Enable pgvector extension in Supabase
     - Add embedding column to jobs table: vector(1536)
     - Generate embeddings via OpenAI text-embedding-3-small
       for job title + description concatenated
     - Batch embedding generation after each scrape run
     - Add embedding generation to scrape pipeline
-43. Resume text extraction:
+44. Resume text extraction:
     - Parse uploaded PDF from Supabase Storage on upload
     - Use pdf-parse (Node.js) to extract clean text
     - Store extracted text in profiles.resume_text column
     - Re-extract automatically when resume is replaced
     - Generate and store resume embedding in
       profiles.resume_embedding column
-44. Match scoring:
+45. Match scoring:
     - Compute cosine similarity: resume_embedding vs job
       embedding via pgvector <=> operator
     - Convert to A-F grade:
@@ -653,7 +666,7 @@ This section is included as operational reference. In this checkout, scraper cod
     - Cache scores: job_scores(user_id, job_id, score,
       grade, computed_at)
     - Invalidate cache when user uploads new resume
-45. Match scoring UI:
+46. Match scoring UI:
     - Grade badge on job card (A/B/C/D/F, color coded:
       A=green, B=teal, C=yellow, D=orange, F=red)
     - Pro users only — show lock icon for free users
@@ -661,7 +674,7 @@ This section is included as operational reference. In this checkout, scraper cod
       without resume uploaded
     - "Best Match" sort option in job feed (sort by grade)
     - Grade shown on job detail page with brief explanation
-46. Agent/Chat (Claude-powered, build last):
+47. Agent/Chat (Claude-powered, build last):
     - /chat page or sidebar on /jobs
     - System prompt: user's resume text + job preferences
     - RAG retrieval: pgvector similarity search for top 10
@@ -674,41 +687,41 @@ This section is included as operational reference. In this checkout, scraper cod
 
 ### PRIORITY 7: TESTING
 
-47. End-to-end Stripe purchase test — buy a Pro subscription
+48. End-to-end Stripe purchase test — buy a Pro subscription
     with a real card, verify webhook fires, tier updates,
     Pro features unlock correctly
-48. Full UI flow test — every page, every button, every
+49. Full UI flow test — every page, every button, every
     filter combination, all edge cases
-49. Mobile device testing — iPhone Safari, Android Chrome,
+50. Mobile device testing — iPhone Safari, Android Chrome,
     tablet landscape/portrait
-50. Search accuracy testing — test 20+ queries, verify
+51. Search accuracy testing — test 20+ queries, verify
     ranked results are correct and relevant
-51. Role filter accuracy testing — click each chip, verify
+52. Role filter accuracy testing — click each chip, verify
     job counts and results are correct per source
 
 ---
 
 ### PRIORITY 8: ANALYTICS & MONITORING
 
-52. Verify Vercel Analytics is capturing data (already added)
+53. Verify Vercel Analytics is capturing data (already added)
     — check dashboard for drop-off points
-53. Add Posthog for deeper funnel analysis — track: job
+54. Add Posthog for deeper funnel analysis — track: job
     card clicks, apply button clicks, upgrade modal views,
     search usage, filter usage
-54. Add Sentry for error monitoring — add once real users
+55. Add Sentry for error monitoring — add once real users
     are on the site. Capture frontend + API route errors.
 
 ---
 
 ### PRIORITY 9: MARKETING
 
-55. SEO — verify Google Search Console is indexing job pages,
+56. SEO — verify Google Search Console is indexing job pages,
     check coverage report, fix any crawl errors. Already have
     sitemap submitted.
-56. Reddit — r/cscareerquestions, r/csMajors,
+57. Reddit — r/cscareerquestions, r/csMajors,
     r/learnprogramming. Share as a resource post, not an ad.
     Time for peak engagement (weekday mornings US time).
-57. CS Discord servers — target new grad focused servers
+58. CS Discord servers — target new grad focused servers
     (CS Career Hub, Blind, Levels.fyi Discord etc)
-58. ProductHunt launch — after UI polish + RAG scoring live.
+59. ProductHunt launch — after UI polish + RAG scoring live.
     Prepare assets: logo, tagline, screenshots, demo GIF.
