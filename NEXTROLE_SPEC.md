@@ -485,24 +485,28 @@ This section is included as operational reference. In this checkout, scraper cod
 
 ### PRIORITY 1: SCRAPER STABILITY
 
-1a. Fix lever/workday/workable concurrent timeout — run heavy
-   scrapers in a prioritized early sequential batch before the
+1a.[COMPLETED ✅]: Fix lever/workday/workable concurrent timeout — run
+   heavy scrapers in a prioritized early sequential batch before the
    other 34 scrapers start competing for resources. Lever needs
    200s+, Workday needs 300s+, currently getting starved.
 1b.Contact workable support (support@workable.com) or fix scraper to
    bypass rate limit / ip detection.    
-2. Remove dead scrapers: speedyapply-swe.ts, speedyapply-ai.ts
-   (always 0 jobs, confirmed stubs), make sure to remove correct scrapers
+2. [COMPLETED ✅]: Remove dead scrapers: speedyapply-swe.ts, 
+   speedyapply-ai.ts (always 0 jobs, confirmed stubs), make sure to remove correct scrapers
 3. Fix careerjet (0 jobs every run — check if API key expired
-   or endpoint changed)
-4. Fix rippling if possible (do research) (2 jobs, fragile Next.js 
-   build ID). If absolutely not possible, then deactivate/remove
-5a.Potentially remove source filtering, or redesign it so that users
-   cannot easily just go to the sources and search there instead. Add AI
+   or endpoint changed). Right now, it gracefully fails, but returns 0 jobs (not fixed, but no longer crashes)
+4. [COMPLETED ✅]: Fix rippling if possible (do research) (2 jobs,
+   fragile next.js build ID). If absolutely not possible, then deactivate/remove
+5a.[COMPLETED ✅]: Potentially remove source filtering, or redesign it so 
+   that users cannot easily just go to the sources and search there instead. 
    to design this / figure it out
 5b.Set up local caffeinate cron for CF-blocked scrapers
    (simplyhired, workable) that fail in GitHub Actions:
    `caffeinate -i pnpm scrape` at 7AM daily via crontab
+5c.When a user is not signed in and tries to access the site, it says
+   'unauthorized' or something like that, and shows 0 jobs. However, the description in the pricing tab says that users can view jobs even without an account. Can we fix this? Should users actually be able to view jobs without having an account? Figure this out, plan it, and then implement it.
+5d.When a user signs in and it automatically goes to the job page, it
+   always shows 0 jobs until the user refreshes the page. Then the jobs load. Fix this- the jobs should load immediately after signing in/signing up. 
 
 ---
 
@@ -510,12 +514,12 @@ This section is included as operational reference. In this checkout, scraper cod
 
 6. Fix Workable — currently 10 jobs. 429 rate limiting on
    entry-level search terms. Add exponential backoff + retry,
-   run failed terms again after delay.
+   run failed terms again after delay. (workable scraper kept - email sent to support)
 7. Expand Ashby slug list (currently 255 valid slugs, target
    400+ via Common Crawl + additional GitHub repos)
-8. Expand Lever company list (currently ~115 slugs)
-9. Expand Workday company list — currently 26/365 companies
-   returning jobs. Verify wdVersions for remaining 339.
+8. [COMPLETED ✅]: Expand Lever company list (currently ~115 slugs)
+9. [COMPLETED ✅]: Expand Workday company list — currently 26/365
+   companies returning jobs. Verify wdVersions for remaining 339.
 10. Add Recruitee source:
     GET https://{company}.recruitee.com/api/offers/
     No auth required. Large list of companies available.
@@ -575,7 +579,7 @@ This section is included as operational reference. In this checkout, scraper cod
 
 ### PRIORITY 4: UI & DESIGN
 
-28. Home page full rewrite:
+28. [COMPLETED ✅]: Home page full rewrite:
     - New headline + subheadline (largest new grad/entry-level
       tech job aggregator, all company types including startups)
     - Advertise job count (55k+), source count (25+), daily
@@ -583,7 +587,7 @@ This section is included as operational reference. In this checkout, scraper cod
     - Feature highlights: search, filters, tracker, pro scoring
     - Add social proof when available (users, applications
       tracked, etc.)
-29. Pricing page text rewrite — clarify free vs pro tiers,
+29. [COMPLETED ✅]: Pricing page text rewrite — clarify free vs pro tiers,
     update feature list, mark coming-soon features clearly
 30. Full site color scheme overhaul — dark mode improvements,
     more vibrant and modern palette, consistent across all pages
@@ -603,15 +607,16 @@ This section is included as operational reference. In this checkout, scraper cod
 
 ### PRIORITY 5: FEATURE COMPLETENESS
 
-36. Job view limit for free users — free users see page 1
-    only (20 jobs per page, already implemented). Confirm
+36. [COMPLETED ✅]: Job view limit for free users — free users see page 1
+    only (30 jobs per filter configuration, already implemented). Confirm
     this works correctly end-to-end including upgrade modal.
 37. Job tracker limit — cap at 100 tracked jobs for free
     users, unlimited for pro. Show "Upgrade to track more"
     when limit hit.
-38. Similar jobs on job detail page — show 5 similar jobs
+38a.Similar jobs on job detail page — show 5 similar jobs
     by title/role using existing FTS + pgvector when ready.
-    For now use textSearch similarity.
+    For now use textSearch similarity. 
+38b.Upgrade modal copy still says "20 jobs", needs update to "30 jobs"
 39. Job alerts via email (Resend):
     - User sets filter preferences (role, experience level,
       remote, location) — store in profiles table
