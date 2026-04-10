@@ -3,8 +3,6 @@ import { scrapeSimplifyInternships } from './sources/simplify-internships';
 import { scrapeVanshb03Newgrad }     from './sources/vanshb03-newgrad';
 import { scrapeVanshb03Internships } from './sources/vanshb03-internships';
 import { scrapeAmbicuity }           from './sources/ambicuity';
-import { scrapeSpeedyapplySwe }      from './sources/speedyapply-swe';
-import { scrapeSpeedyapplyAi }       from './sources/speedyapply-ai';
 import { scrapeSpeedyapplyAiNewgrad } from './sources/speedyapply-ai-newgrad';
 import { scrapeSpeedyApplySWENewGrad } from './sources/speedyapply-swe-newgrad';
 import { scrapeJobrightSwe }         from './sources/jobright-swe';
@@ -32,7 +30,10 @@ import { scrapeSimplyHired }         from './sources/simplyhired';
 import { scrapeHandshake }           from './sources/handshake';
 import { scrapeAshby }              from './sources/ashby';
 import { scrapeBambooHR }           from './sources/bamboohr';
-import { scrapeRippling }           from './sources/rippling';
+// Rippling disabled: Next.js build IDs change on
+// every deployment, breaking this scraper. Only
+// ever returned 2 jobs. Re-enable if stable API found.
+// import { scrapeRippling } from './sources/rippling';
 import { scrapeDiceRss }            from './sources/dice-rss';
 import { scrapeUSAJobs }            from './sources/usajobs';
 import { uploadJobs, deactivateStaleJobs } from './utils/upload';
@@ -46,8 +47,6 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   { name: 'vanshb03_newgrad',      fn: scrapeVanshb03Newgrad },
   { name: 'vanshb03_internships',  fn: scrapeVanshb03Internships },
   { name: 'ambicuity',             fn: scrapeAmbicuity },
-  { name: 'speedyapply_swe',       fn: scrapeSpeedyapplySwe },
-  { name: 'speedyapply_ai',        fn: scrapeSpeedyapplyAi },
   { name: 'speedyapply_ai_newgrad', fn: scrapeSpeedyapplyAiNewgrad },
   { name: 'speedyapply_swe_newgrad', fn: scrapeSpeedyApplySWENewGrad },
   { name: 'jobright_swe',          fn: scrapeJobrightSwe },
@@ -75,7 +74,6 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   { name: 'handshake',            fn: scrapeHandshake },
   { name: 'ashby',               fn: scrapeAshby },
   { name: 'bamboohr',            fn: scrapeBambooHR },
-  { name: 'rippling',            fn: scrapeRippling },
   { name: 'dice_rss',            fn: scrapeDiceRss },
   { name: 'usajobs',             fn: scrapeUSAJobs },
   // Week 2 (uncomment when ready):
@@ -99,7 +97,6 @@ const SKIPPABLE_SLOW_SOURCE_SET = new Set([
   'handshake',
   'bamboohr',
   'dice_rss',
-  'rippling',
 ]);
 
 type FetchResult =

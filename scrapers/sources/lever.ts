@@ -58,12 +58,94 @@ const LIVE_MANUAL_VERIFIED_LEVER_COMPANIES = [
   'transcarent',
 ];
 
-const LEVER_COMPANIES = [
-  ...new Set([
-    ...UPSTREAM_VERIFIED_LEVER_COMPANIES,
-    ...LIVE_MANUAL_VERIFIED_LEVER_COMPANIES,
-  ]),
+const ADDITIONAL_HIGH_VALUE_VERIFIED_LEVER_COMPANIES = [
+  'stripe', 'lyft', 'airbnb', 'notion', 'linear',
+  'figma', 'airtable', 'asana', 'zendesk', 'hubspot',
+  'twilio', 'segment', 'amplitude', 'mixpanel',
+  'intercom', 'freshworks', 'gong', 'outreach',
+  'salesloft', 'clari', 'plaid', 'brex', 'ramp',
+  'mercury', 'moderntreasury', 'unit', 'marqeta',
+  'snyk', 'lacework', 'wiz', 'abnormal', 'netskope',
+  'illumio', 'semgrep', 'chainguard',
+  'scale-ai', 'labelbox', 'snorkel-ai',
+  'sourcegraph', 'gitpod', 'render',
+  'ro', 'cityblock', 'spring-health', 'lyra-health',
+  'alma', 'headway', 'cerebral',
+  'project44', 'fourkites', 'shipbob', 'flexport',
+  'opendoor', 'roofstock',
+  'benchling', 'ginkgo', 'recursion',
+  'coursera', 'duolingo', 'quizlet',
+  'rippling', 'deel', 'remote', 'lattice',
+  'persona', 'verkada', 'samsara', 'anduril',
+  'databricks', 'confluent', 'dbtlabs',
+  'retool', 'replit', 'coreweave',
+  'perplexity', 'mistral', 'together',
+  'modal', 'weights-biases', 'determined-ai',
 ];
+
+type LeverDiscoveryListing = {
+  url?: unknown;
+  link?: unknown;
+  apply_url?: unknown;
+};
+
+function extractLeverSlug(value: unknown): string | null {
+  if (!value) return null;
+
+  const match = String(value).match(/jobs\.lever\.co\/([^\/\?\s#]+)/i);
+  return match ? match[1] : null;
+}
+
+async function discoverLeverSlugs(): Promise<string[]> {
+  const sources = [
+    'https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json',
+    'https://raw.githubusercontent.com/SimplifyJobs/Summer2026-Internships/dev/.github/scripts/listings.json',
+    'https://raw.githubusercontent.com/vanshb03/Summer2026-Internships/dev/.github/scripts/listings.json',
+  ] as const;
+
+  const slugSet = new Set<string>();
+
+  for (const url of sources) {
+    try {
+      const res = await fetch(url, {
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (!res.ok) continue;
+
+      const data: unknown = await res.json();
+      if (!Array.isArray(data)) continue;
+
+      for (const item of data) {
+        if (!item || typeof item !== 'object') continue;
+
+        const listing = item as LeverDiscoveryListing;
+        const urls = [listing.url, listing.link, listing.apply_url].filter(Boolean);
+        for (const value of urls) {
+          const slug = extractLeverSlug(value);
+          if (slug) slugSet.add(slug);
+        }
+      }
+    } catch {
+      // Skip failed sources silently
+    }
+  }
+
+  try {
+    const res = await fetch(
+      'https://raw.githubusercontent.com/ReaVNaiL/New-Grad-2024/main/README.md',
+      { signal: AbortSignal.timeout(10_000) }
+    );
+    if (res.ok) {
+      const text = await res.text();
+      const matches = text.matchAll(/jobs\.lever\.co\/([^\/\?\s\)"'#]+)/gi);
+      for (const match of matches) {
+        slugSet.add(match[1]);
+      }
+    }
+  } catch {}
+
+  return Array.from(slugSet);
+}
 
 // Lever's postings endpoint is slug-only and does not return company metadata.
 const COMPANY_NAME_OVERRIDES: Record<string, string> = {
@@ -166,9 +248,19 @@ export async function scrapeLever(): Promise<NormalizedJob[]> {
   const BATCH_SIZE = 10;
   const DELAY_MS = 200;
   const all: NormalizedJob[] = [];
+  const discoveredSlugs = await discoverLeverSlugs();
+  const allSlugs = [...new Set([
+    ...UPSTREAM_VERIFIED_LEVER_COMPANIES,
+    ...LIVE_MANUAL_VERIFIED_LEVER_COMPANIES,
+    ...discoveredSlugs,
+    ...ADDITIONAL_HIGH_VALUE_VERIFIED_LEVER_COMPANIES,
+  ].map(slug => slug.toLowerCase()))];
 
-  for (let i = 0; i < LEVER_COMPANIES.length; i += BATCH_SIZE) {
-    const batch = LEVER_COMPANIES.slice(i, i + BATCH_SIZE);
+  console.log(`  [lever] Discovered ${discoveredSlugs.length} slugs from GitHub repos`);
+  console.log(`  [lever] Total unique slugs: ${allSlugs.length}`);
+
+  for (let i = 0; i < allSlugs.length; i += BATCH_SIZE) {
+    const batch = allSlugs.slice(i, i + BATCH_SIZE);
     const results = await Promise.allSettled(batch.map(fetchCompany));
 
     for (const result of results) {
@@ -177,7 +269,7 @@ export async function scrapeLever(): Promise<NormalizedJob[]> {
       }
     }
 
-    if (i + BATCH_SIZE < LEVER_COMPANIES.length) {
+    if (i + BATCH_SIZE < allSlugs.length) {
       await sleep(DELAY_MS);
     }
   }
