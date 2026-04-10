@@ -1491,14 +1491,20 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
   const companyGroups = groupWorkdayCompanies();
   const companiesToAttempt: Array<{ company: string; careerSites: string[] }> = [];
   let skippedFromCache = 0;
-  let cacheWriteQueue = Promise.resolve();
 
   const persistKnownTarget: PersistKnownWorkdayTarget = async (company, careerSite, target) => {
     const changed = rememberWorkdayTarget(deadCache, company, careerSite, target);
     if (!changed) return;
-
-    cacheWriteQueue = cacheWriteQueue.then(() => saveWorkdayDeadCache(deadCache));
-    await cacheWriteQueue;
+    try {
+      await Promise.race([
+        saveWorkdayDeadCache(deadCache),
+        new Promise<void>((_, reject) =>
+          setTimeout(() => reject(new Error('cache write timeout')), 5000),
+        ),
+      ]);
+    } catch {
+      // Cache write failed or timed out — not fatal
+    }
   };
 
   for (const group of companyGroups) {
@@ -1537,7 +1543,12 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
       if (result.value.jobs.length > 0) {
         companiesWithJobs += 1;
         cacheEntry.zeroCount = 0;
-      } else if (result.value.hadSuccessfulResponse || !result.value.hadTimeout) {
+      } else if (result.value.hadTimeout) {
+        cacheEntry.zeroCount = 0;
+      } else if (
+        result.value.stats.uniqueFetched === 0 &&
+        result.value.hadSuccessfulResponse
+      ) {
         cacheEntry.zeroCount = WORKDAY_SKIP_RUNS;
       } else {
         cacheEntry.zeroCount = 0;
@@ -1549,8 +1560,16 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
     }
   }
 
-  await cacheWriteQueue;
-  await saveWorkdayDeadCache(deadCache);
+  try {
+    await Promise.race([
+      saveWorkdayDeadCache(deadCache),
+      new Promise<void>((_, reject) =>
+        setTimeout(() => reject(new Error('final cache write timeout')), 10000),
+      ),
+    ]);
+  } catch {
+    console.warn('  [workday] Cache write timed out — skipping');
+  }
 
   console.log(`  [workday] Cache skipped: ${skippedFromCache} companies`);
   console.log(`  [workday] Attempted: ${companiesToAttempt.length} companies`);
