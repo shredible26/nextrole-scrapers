@@ -197,107 +197,236 @@ MUSE_API_KEY, USAJOBS_API_KEY, USAJOBS_EMAIL
 
 ---
 
-## GOALS:
-- [FEATURE]: Fix description text when you click on any job.
-- [FEATURE]: Add more startups
-- [FEATURE]: Fix sources where job count = 0 (ziprecruiter, glassdoor, dice, etc), use codex to figure out correct methods/logic
-- [FEATURE]: Fix Ashby (commoncrawl, slugs) and workatastartup (try to get more jobs)
-- [FEATURE]: Improve sources, especially ones that are showing low numbers
-- [FEATURE]: Other sources & github repos (super extensive search, figure out how to do so)
-- [FEATURE]: Job tracker: limit to like 100 for free users, unlimited for pro
-- [FEATURE]: Change job view logic to 50-100 total jobs can view for free user
-- [FEATURE]: Add more role and experience level filters for better filterins + higher job count
-- [FEATURE]: Job Search fix: Make just one big horizontal bar (remove duplicate role filters, replace that space with the search bar). Search should only be available to pro users. 
-- [FEATURE]: Profile page with necessary info and option to upload resume
-- [FEATURE]: Agentic RAG (Claude chat)
-  - [FEATURE]: Embeddings Setup
-  - [FEATURE]: Resume Upload
-  - [FEATURE]: Match Scoring UI
-  - [FEATURE]: Agent/Chat
-- [FEATURE]: Add some form of contact for questions, help, etc
-- [FEATURE]: SEO: Submit sitemap to Google Search Console, add meta descriptions per job page — you have 40k+ indexed pages, this is free organic traffic
-- [FEATURE]: Email notifications: "New jobs matching your profile" weekly digest — drives retention
-- [FEATURE]: Rate limiting on API routes: Protect /api/stripe/webhook and job fetch endpoints ???
-- Filtering Feature: Make sure all filters on the site work properly, especially role filtering
-- Filtering Logic: For each source, make sure the keyword search and job filtering (jobs to include, exclude, etc) are as best as possible. Do very extensive research for best results. Make sure as many tech jobs as possible (within available roles on the site) show up.
-- UI: Update all pricing page text
-- UI: Update all home page text (advertise as a huge job aggregate - including all types of companies (startups too), all tech, specific roles)
-- UI: Improve design & color for filter navigation
-- UI: Improve design & color for Application Tracker
-- UI: Improve design & color for Home Page
-- UI: Improve rest of the site color scheme (dark mode, better color scheme more vibrant, etc), make it look modern and nice
-- TEST: Make sure pricing works via an actual purchase
-- TEST: UI flow for everything, edge cases, all functionality, features, and links
-- TEST: UI on different devices (mobile, etc)
-- ANALYTICS: Add Posthog or Vercel Analytics to see where users drop off
-- ANALYTICS: Add Sentry for Error Monitoring (once real users hit the site)
-- MARKETING: r/cscareerquestions, r/csMajors, CS Discord servers
-- [FEATURE (MAYBE)]: LinkedIn Jobs
-- Try to implement Monster and bypass ClowdFlare Protection (Playwright + stealth plugins)
+## NextRole — Master TODO (April 2026)
 
+---
 
-## Current sources to add:
-High Priority:
-- SmartRecruiters (GET https://api.smartrecruiters.com/v1/companies/{company}/postings)
-- Recruitee (GET https://{company}.recruitee.com/api/offers/)
-- TeamTailor (GET https://api.teamtailor.com/v1/jobs)
-- Presonio (XML)
-- SpeedApply (https://github.com/speedyapply)
-- rabiuk/job-scraper (GitHub)
+### PRIORITY 1: SCRAPER STABILITY
 
-Medium Priority:
-- HackerNews (GET https://hacker-news.firebaseio.com/v0/item/{thread_id}.json)
-- Workable (GET https://jobs.workable.com/api/v1/jobs?q=software+engineer&location=United+States)
-- Cavuno’s 2026 roundup — confirms six no-auth public ATS sources and adds implementation details for Greenhouse, Lever, Ashby, Workable, Recruitee, and Personio.
-- Fantastic Jobs ATS article — separately documents public APIs for Ashby, Greenhouse, Lever, and Recruitee, useful as a second source for endpoint validation.
-- No-auth API directory — a broader free/open API list that may help with adjacent job-related endpoints, though it is not job-specific.
-- bttf/internio — a scraper that aggregates new-grad and internship listings by scraping GitHub repos, including SimplifyJobs sources.
-- SpeedyApply pinned repos — 2026-SWE-College-Jobs and 2026-AI-College-Jobs are surfaced on the SpeedyApply org page and are distinct from the org homepage you already listed. 
+1. Fix lever/workday/workable concurrent timeout — run heavy
+   scrapers in a prioritized early sequential batch before the
+   other 34 scrapers start competing for resources. Lever needs
+   200s+, Workday needs 300s+, currently getting starved.
+2. Remove dead scrapers: speedyapply-swe.ts, speedyapply-ai.ts
+   (always 0 jobs, confirmed stubs)
+3. Fix careerjet (0 jobs every run — check if API key expired
+   or endpoint changed)
+4. Remove rippling (2 jobs, fragile Next.js build ID approach,
+   not worth maintaining)
+5. Set up local caffeinate cron for CF-blocked scrapers
+   (simplyhired, workable) that fail in GitHub Actions:
+   `caffeinate -i pnpm scrape` at 7AM daily via crontab
 
-## TODO:
-## Phase 1: Max out job count (goal: 50k+)
+---
 
-PROMPT A: Workable
-- Add Workable as new source (1,700+ companies, auto-discoverable)
-- Use Codex to find the Workable company discovery endpoint
+### PRIORITY 2: NEW SOURCES & SOURCE EXPANSION
 
-PROMPT B: Fix broken scrapers 
-- Wellfound aggressive debug
-- Rippling aggressive debug
+6. Fix Workable — currently 10 jobs. 429 rate limiting on
+   entry-level search terms. Add exponential backoff + retry,
+   run failed terms again after delay.
+7. Expand Ashby slug list (currently 255 valid slugs, target
+   400+ via Common Crawl + additional GitHub repos)
+8. Expand Lever company list (currently ~115 slugs)
+9. Expand Workday company list — currently 26/365 companies
+   returning jobs. Verify wdVersions for remaining 339.
+10. Add Recruitee source:
+    GET https://{company}.recruitee.com/api/offers/
+    No auth required. Large list of companies available.
+11. Add TeamTailor source:
+    GET https://api.teamtailor.com/v1/jobs
+    No auth, large ATS used by European + US startups.
+12. Add Personio source (XML feed, European ATS with US roles)
+13. Add iCIMS source (large enterprise ATS, no public API —
+    research correct endpoint via Codex)
+14. Add rabiuk/job-scraper GitHub repo as source
+15. Add bttf/internio GitHub repo as source
+16. Add SpeedyApply 2026-SWE-College-Jobs and
+    2026-AI-College-Jobs repos (distinct from current ones)
+17. Expand HackerNews — add more monthly "Who is Hiring"
+    thread IDs (currently only 2-3 threads)
+18. Expand SmartRecruiters company list (currently 157 jobs,
+    target 500+ — most new entries return totalFound: 0,
+    need better slug discovery)
+19. Research additional sources via Perplexity:
+    - Cavuno's 2026 ATS roundup (Greenhouse, Lever, Ashby,
+      Workable, Recruitee, Personio endpoints)
+    - Fantastic Jobs ATS article (endpoint validation)
+    - No-auth API directory (adjacent endpoints)
+    - Any new GitHub curated new grad lists (target 5-6 more)
+20. Try Monster with Playwright + stealth plugins to bypass
+    Cloudflare (research feasibility first)
+21. LinkedIn Jobs (low priority — API approval required,
+    significant engineering lift, may not be worth it.
+    Re-evaluate after other sources are maxed out.)
 
-PROMPT B (Part 2):
-- iCIMS as new source
-- SmartRecruiters as new source
+---
 
-PROMPT C: Expand Ashby similarly
-- Find verified Ashby company list from GitHub repos
+### PRIORITY 3: FILTERING LOGIC
 
-PROMPT D: Add SimplyHired scraper
-- Free, large volume, consistent HTML structure
+22. Per-source keyword tuning — audit each source's role
+    classification accuracy. Ensure SWE/DS/ML/AI chips
+    return correct results per source.
+23. Role classification improvements — expand inferRoles()
+    keyword lists, add more title patterns for each role.
+24. Add more role filters beyond current 7 chips:
+    - DevOps / Infrastructure
+    - Security
+    - Mobile (iOS/Android)
+    - QA / Testing
+    - Embedded / Hardware
+25. Add more experience level filter options:
+    - Co-op (separate from internship)
+    - Recent Grad (0-2 YOE, distinct from new_grad)
+26. International/non-tech filter tightening — reduce false
+    positives slipping through (non-tech roles, non-Latin
+    character titles, etc.)
+27. Location filter expansion — add more granular options
+    beyond USA/Other (e.g., by state, by city cluster like
+    SF Bay Area, NYC, Seattle, Austin)
 
-PROMPT E: Fix Handshake scraper (currently 0)
-- New grad focused — perfect audience match
+---
 
-PROMPT F: Add more GitHub repo sources
-- Find 5-6 more curated new grad lists
-- Parse their JSON/markdown and ingest
+### PRIORITY 4: UI & DESIGN
 
-## Phase 2: Filtering logic optimization
-- Per-source keyword tuning
-- Role classification improvements
-- International/non-tech filter tightening
+28. Home page full rewrite:
+    - New headline + subheadline (largest new grad/entry-level
+      tech job aggregator, all company types including startups)
+    - Advertise job count (55k+), source count (25+), daily
+      updates
+    - Feature highlights: search, filters, tracker, pro scoring
+    - Add social proof when available (users, applications
+      tracked, etc.)
+29. Pricing page text rewrite — clarify free vs pro tiers,
+    update feature list, mark coming-soon features clearly
+30. Full site color scheme overhaul — dark mode improvements,
+    more vibrant and modern palette, consistent across all pages
+31. Filter sidebar UI redesign — better visual hierarchy,
+    cleaner styling, mobile-friendly
+32. Job tracker UI redesign — better colors, table/kanban
+    toggle, status column styling
+33. Job card design improvements — salary display, company
+    logo quality, role chip styling
+34. Mobile responsiveness full audit — test /jobs, /tracker,
+    /pricing, /profile on iPhone and Android screen sizes.
+    Fix all broken layouts.
+35. Navbar: add Profile link (done), verify all links work
+    on mobile (hamburger menu if needed)
 
-## Phase 3: Features
-- Job search
-- Profile + resume upload
-- Job tracker limits
-- RAG pipeline
+---
 
-## Phase 4: UI overhaul
-- Dark mode
-- Modern color scheme
-- Mobile responsiveness
+### PRIORITY 5: FEATURE COMPLETENESS
 
-## Phase 5: Marketing
-- Reddit, Discord
-- ProductHunt
+36. Job view limit for free users — free users see page 1
+    only (20 jobs per page, already implemented). Confirm
+    this works correctly end-to-end including upgrade modal.
+37. Job tracker limit — cap at 100 tracked jobs for free
+    users, unlimited for pro. Show "Upgrade to track more"
+    when limit hit.
+38. Similar jobs on job detail page — show 5 similar jobs
+    by title/role using existing FTS + pgvector when ready.
+    For now use textSearch similarity.
+39. Job alerts via email (Resend):
+    - User sets filter preferences (role, experience level,
+      remote, location) — store in profiles table
+    - Daily or weekly digest email: "X new jobs matching
+      your preferences"
+    - Unsubscribe link in every email
+    - Resend free tier: 3,000 emails/month
+40. Contact / feedback page — simple /contact form, submits
+    via Resend to your email. Helps with user trust.
+41. Rate limiting on API routes:
+    - /api/stripe/webhook (already uses raw body verification)
+    - /api/jobs (add per-user rate limit: 100 req/min)
+    - /api/profile/display-name (add per-user rate limit)
+    Use Upstash Redis + @upstash/ratelimit (free tier).
+
+---
+
+### PRIORITY 6: RAG PIPELINE (Build in order)
+
+42. Embeddings setup:
+    - Enable pgvector extension in Supabase
+    - Add embedding column to jobs table: vector(1536)
+    - Generate embeddings via OpenAI text-embedding-3-small
+      for job title + description concatenated
+    - Batch embedding generation after each scrape run
+    - Add embedding generation to scrape pipeline
+43. Resume text extraction:
+    - Parse uploaded PDF from Supabase Storage on upload
+    - Use pdf-parse (Node.js) to extract clean text
+    - Store extracted text in profiles.resume_text column
+    - Re-extract automatically when resume is replaced
+    - Generate and store resume embedding in
+      profiles.resume_embedding column
+44. Match scoring:
+    - Compute cosine similarity: resume_embedding vs job
+      embedding via pgvector <=> operator
+    - Convert to A-F grade:
+      A: similarity > 0.85
+      B: similarity > 0.75
+      C: similarity > 0.65
+      D: similarity > 0.55
+      F: similarity <= 0.55
+      (tune thresholds after testing with real resumes)
+    - Cache scores: job_scores(user_id, job_id, score,
+      grade, computed_at)
+    - Invalidate cache when user uploads new resume
+45. Match scoring UI:
+    - Grade badge on job card (A/B/C/D/F, color coded:
+      A=green, B=teal, C=yellow, D=orange, F=red)
+    - Pro users only — show lock icon for free users
+    - "Upload resume to see match" prompt for Pro users
+      without resume uploaded
+    - "Best Match" sort option in job feed (sort by grade)
+    - Grade shown on job detail page with brief explanation
+46. Agent/Chat (Claude-powered, build last):
+    - /chat page or sidebar on /jobs
+    - System prompt: user's resume text + job preferences
+    - RAG retrieval: pgvector similarity search for top 10
+      matching jobs given user query
+    - Claude answers: "find ML jobs in NYC", "why am I
+      not getting interviews", "tailor my resume for this"
+    - Pro only, uses Claude claude-sonnet-4-20250514 via API
+
+---
+
+### PRIORITY 7: TESTING
+
+47. End-to-end Stripe purchase test — buy a Pro subscription
+    with a real card, verify webhook fires, tier updates,
+    Pro features unlock correctly
+48. Full UI flow test — every page, every button, every
+    filter combination, all edge cases
+49. Mobile device testing — iPhone Safari, Android Chrome,
+    tablet landscape/portrait
+50. Search accuracy testing — test 20+ queries, verify
+    ranked results are correct and relevant
+51. Role filter accuracy testing — click each chip, verify
+    job counts and results are correct per source
+
+---
+
+### PRIORITY 8: ANALYTICS & MONITORING
+
+52. Verify Vercel Analytics is capturing data (already added)
+    — check dashboard for drop-off points
+53. Add Posthog for deeper funnel analysis — track: job
+    card clicks, apply button clicks, upgrade modal views,
+    search usage, filter usage
+54. Add Sentry for error monitoring — add once real users
+    are on the site. Capture frontend + API route errors.
+
+---
+
+### PRIORITY 9: MARKETING
+
+55. SEO — verify Google Search Console is indexing job pages,
+    check coverage report, fix any crawl errors. Already have
+    sitemap submitted.
+56. Reddit — r/cscareerquestions, r/csMajors,
+    r/learnprogramming. Share as a resource post, not an ad.
+    Time for peak engagement (weekday mornings US time).
+57. CS Discord servers — target new grad focused servers
+    (CS Career Hub, Blind, Levels.fyi Discord etc)
+58. ProductHunt launch — after UI polish + RAG scoring live.
+    Prepare assets: logo, tagline, screenshots, demo GIF.
