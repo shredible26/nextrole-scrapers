@@ -485,17 +485,22 @@ This section is included as operational reference. In this checkout, scraper cod
 
 ### PRIORITY 1: SCRAPER STABILITY
 
-1. Fix lever/workday/workable concurrent timeout — run heavy
+1a. Fix lever/workday/workable concurrent timeout — run heavy
    scrapers in a prioritized early sequential batch before the
    other 34 scrapers start competing for resources. Lever needs
    200s+, Workday needs 300s+, currently getting starved.
+1b.Contact workable support (support@workable.com) or fix scraper to
+   bypass rate limit / ip detection.    
 2. Remove dead scrapers: speedyapply-swe.ts, speedyapply-ai.ts
-   (always 0 jobs, confirmed stubs)
+   (always 0 jobs, confirmed stubs), make sure to remove correct scrapers
 3. Fix careerjet (0 jobs every run — check if API key expired
    or endpoint changed)
-4. Remove rippling (2 jobs, fragile Next.js build ID approach,
-   not worth maintaining)
-5. Set up local caffeinate cron for CF-blocked scrapers
+4. Fix rippling if possible (do research) (2 jobs, fragile Next.js 
+   build ID). If absolutely not possible, then deactivate/remove
+5a.Potentially remove source filtering, or redesign it so that users
+   cannot easily just go to the sources and search there instead. Add AI
+   to design this / figure it out
+5b.Set up local caffeinate cron for CF-blocked scrapers
    (simplyhired, workable) that fail in GitHub Actions:
    `caffeinate -i pnpm scrape` at 7AM daily via crontab
 
@@ -725,5 +730,3 @@ This section is included as operational reference. In this checkout, scraper cod
     (CS Career Hub, Blind, Levels.fyi Discord etc)
 59. ProductHunt launch — after UI polish + RAG scoring live.
     Prepare assets: logo, tagline, screenshots, demo GIF.
-60. Add cron to run scrapers (nextrole-scrapers) daily automatically on  
-    my mac. 
