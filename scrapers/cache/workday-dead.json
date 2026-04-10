@@ -406,5 +406,45 @@
         "slug": "shellcareers"
       }
     }
+  },
+  "keybank": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-10",
+    "knownTargets": {
+      "key": {
+        "wdVersion": "wd5",
+        "slug": "External_Career_Site"
+      }
+    }
+  },
+  "medtronic": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-10",
+    "knownTargets": {
+      "medtronic": {
+        "wdVersion": "wd1",
+        "slug": "medtroniccareers"
+      }
+    }
+  },
+  "unisys": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-10",
+    "knownTargets": {
+      "unisys": {
+        "wdVersion": "wd5",
+        "slug": "external"
+      }
+    }
+  },
+  "qualys": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-10",
+    "knownTargets": {
+      "qualys": {
+        "wdVersion": "wd5",
+        "slug": "Careers"
+      }
+    }
   }
 }
