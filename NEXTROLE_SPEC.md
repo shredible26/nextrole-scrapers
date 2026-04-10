@@ -725,3 +725,5 @@ This section is included as operational reference. In this checkout, scraper cod
     (CS Career Hub, Blind, Levels.fyi Discord etc)
 59. ProductHunt launch — after UI polish + RAG scoring live.
     Prepare assets: logo, tagline, screenshots, demo GIF.
+60. Add cron to run scrapers (nextrole-scrapers) daily automatically on  
+    my mac. 
