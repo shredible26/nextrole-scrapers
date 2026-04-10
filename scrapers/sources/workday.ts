@@ -320,7 +320,7 @@ const SEARCH_TERMS = [
 // Workday subdomain versions to try in order
 const WD_VERSIONS = ['wd1', 'wd2', 'wd3', 'wd4', 'wd5', 'wd6', 'wd7', 'wd8', 'wd10', 'wd12', 'wd100'];
 
-const WORKDAY_COMPANIES: [string, string][] = [
+export const WORKDAY_COMPANIES: [string, string][] = [
   // Already verified working from previous runs
   ['nvidia', 'NVIDIAExternalCareerSite'],
   ['visa', 'visa'],
@@ -340,7 +340,6 @@ const WORKDAY_COMPANIES: [string, string][] = [
   ['baxter', 'baxter'],
   ['mars', 'External'],
   ['target', 'Target'],
-  ['disney', 'Disney'],
   ['pwc', 'US_Entry_Level_Careers'],
   ['pwc', 'pwc'],
 
@@ -354,106 +353,39 @@ const WORKDAY_COMPANIES: [string, string][] = [
   ['argonne', 'Argonne_Careers'],
   ['mksinst', 'MKSCareersUniversity'],
   ['jll', 'jllcareers'],
-  ['workiva', 'careers'],
   ['mastercard', 'CorporateCareers'],
 
   // Big Tech
-  ['amazon', 'Amazon_Jobs'],
-  ['amazon', 'AmazonJobs'],
-  ['microsoft', 'microsoftcareers'],
-  ['apple', 'apple'],
-  ['meta', 'Meta'],
-  ['google', 'Google'],
-  ['ibm', 'ibm'],
-  ['oracle', 'oracle'],
-  ['sap', 'SAP'],
-  ['adobe', 'adobe'],
   ['qualcomm', 'qualcomm'],
-  ['amd', 'AMD'],
-  ['broadcom', 'External_Career_Site'],
-  ['ti', 'TICareers'],
-  ['analog', 'analogdevices'],
-  ['xilinx', 'xilinx'],
-  ['vmware', 'VMware'],
 
   // Enterprise Software
-  ['workday', 'workdaycareers'],
   ['workday', 'Workday_Early_Career'],
-  ['servicenow', 'servicenow'],
-  ['splunk', 'splunk'],
-  ['paloaltonetworks', 'External_Career_Site'],
-  ['fortinet', 'fortinet'],
-  ['netapp', 'netapp'],
-  ['purestorage', 'purestorage'],
-  ['nutanix', 'nutanix'],
-  ['elastic', 'elastic'],
-  ['mongodb', 'mongodb'],
-  ['cloudera', 'cloudera'],
-  ['dynatrace', 'dynatrace'],
-  ['informatica', 'informatica'],
-  ['teradata', 'teradata'],
-  ['f5', 'f5'],
-  ['juniper', 'juniper'],
-  ['arista', 'arista'],
   ['commvault', 'commvault'],
-  ['verint', 'verint'],
-  ['opentext', 'opentext'],
-  ['tibco', 'tibco'],
-  ['solarwinds', 'solarwinds'],
 
   // Finance / Banking
-  ['jpmorganchase', 'jpmorganchase'],
   ['goldmansachs', 'goldmansachs'],
   ['morganstanley', 'morganstanley'],
-  ['bankofamerica', 'bankofamerica'],
   ['wellsfargo', 'wellsfargo'],
-  ['citi', 'citi'],
   ['blackrock', 'blackrock'],
-  ['fidelity', 'fidelitycareers'],
   ['schwab', 'schwab'],
-  ['paypal', 'paypal'],
   ['mastercard', 'mastercard'],
   ['americanexpress', 'americanexpress'],
-  ['discover', 'discover'],
-  ['synchrony', 'synchrony'],
-  ['ally', 'ally'],
   ['usbank', 'usbank'],
   ['pnc', 'pnc'],
-  ['regions', 'regions'],
-  ['truist', 'truist'],
   ['vanguard', 'vanguard'],
-  ['tiaa', 'tiaa'],
-  ['nuveen', 'nuveen'],
-  ['invesco', 'invesco'],
-  ['pimco', 'pimco'],
   ['principal', 'principal'],
   ['nationwide', 'nationwide'],
   ['progressive', 'progressive'],
   ['travelers', 'travelers'],
   ['keybank', 'key'],
-  ['citizens', 'citizensbank'],
-  ['huntington', 'huntington'],
-  ['comerica', 'comerica'],
-  ['stifel', 'stifel'],
-  ['tdbank', 'tdbank'],
-  ['franklintempletonin', 'fti'],
-  ['tdameritrade', 'careers'],
-  ['etrade', 'careers'],
   ['mckinsey', 'mckinsey'],
   ['bcg', 'bcg'],
   ['bain', 'bain'],
 
   // Insurance
   ['lincolnfinancial', 'lincolnfinancial'],
-  ['lincoln', 'lincolnfinancial'],
   ['metlife', 'metlife'],
-  ['unum', 'unum'],
-  ['sunlife', 'sunlife'],
-  ['manulife', 'manulife'],
-  ['aetna', 'aetna'],
   ['anthem', 'anthem'],
-  ['cna', 'cna'],
-  ['markel', 'markel'],
 
   // Healthcare / Pharma
   ['jnj', 'jnj'],
@@ -462,127 +394,51 @@ const WORKDAY_COMPANIES: [string, string][] = [
   ['lilly', 'lilly'],
   ['bms', 'bms'],
   ['gsk', 'gsk'],
-  ['novartis', 'novartis'],
-  ['roche', 'roche'],
-  ['takeda', 'takeda'],
-  ['boehringeringelheim', 'careers'],
-  ['boehringer', 'careers'],
   ['medtronic', 'medtronic'],
-  ['stryker', 'stryker'],
-  ['becton', 'bd'],
-  ['edwards', 'edwards'],
-  ['danaher', 'danaher'],
-  ['thermofisher', 'thermofisher'],
   ['illumina', 'illumina'],
   ['unitedhealth', 'uhg'],
   ['elevancehealth', 'elevancehealth'],
   ['humana', 'humana'],
   ['cvs', 'cvs'],
-  ['mckesson', 'mckesson'],
-  ['cardinal', 'cardinalhealth'],
-  ['cerner', 'cerner'],
   ['athenahealth', 'athenahealth'],
   ['zimmer', 'zimmerbiomet'],
   ['hologic', 'hologic'],
-  ['amerisource', 'amerisourcebergen'],
-  ['allscripts', 'allscripts'],
-  ['optum', 'uhg'],
   ['regeneron', 'careers'],
   ['biogen', 'careers'],
   ['gilead', 'careers'],
   ['amgen', 'careers'],
-  ['vertex', 'careers'],
-  ['alexion', 'careers'],
-  ['ucb', 'careers'],
-  ['astellas', 'careers'],
 
   // Consulting / Professional Services
-  ['deloitte', 'dttcareers'],
   ['kpmg', 'kpmg'],
   ['ey', 'ey'],
-  ['accenture', 'accenturecareers'],
-  ['booz', 'bah'],
   ['saic', 'saic'],
   ['caci', 'caci'],
   ['cognizant', 'cognizant'],
   ['infosys', 'infosys'],
-  ['capgemini', 'capgemini'],
-  ['dxc', 'dxc'],
-  ['gartner', 'gartner'],
   ['iqvia', 'iqvia'],
   ['wipro', 'wipro'],
-  ['hcltech', 'hcltech'],
   ['unisys', 'unisys'],
 
   // Aerospace / Defense
   ['boeing', 'boeing'],
-  ['lockheedmartin', 'lockheedmartin'],
   ['northropgrumman', 'northropgrumman'],
-  ['rtx', 'rtx'],
-  ['ge', 'gecareers'],
-  ['ge', 'geaerospace'],
-  ['ge', 'gehealthcare'],
-  ['gehealthcare', 'gehealthcare'],
-  ['geaerospace', 'geaerospace'],
   ['l3harris', 'l3harris'],
   ['baesystems', 'baesystems'],
-  ['textron', 'textron'],
-  ['collins', 'collinsaerospace'],
   ['honeywell', 'honeywell'],
-  ['parker', 'parker'],
   ['emerson', 'emerson'],
   ['eaton', 'eaton'],
-  ['curtisswright', 'curtisswright'],
 
   // Auto / EV / Manufacturing
-  ['gm', 'General_Motors'],
-  ['ford', 'ford'],
-  ['stellantis', 'stellantis'],
-  ['toyota', 'toyota'],
-  ['honda', 'honda'],
-  ['bmw', 'bmw'],
-  ['volvo', 'volvo'],
-  ['caterpillar', 'caterpillar'],
-  ['deere', 'deere'],
-  ['cummins', 'cummins'],
-  ['aptiv', 'aptiv'],
-  ['borgwarner', 'borgwarner'],
-  ['rockwellautomation', 'rockwellautomation'],
-  ['3m', '3M'],
   ['siemens', 'siemens'],
-  ['abb', 'abb'],
-  ['schneider', 'schneiderelectric'],
-  ['ppg', 'ppg'],
-  ['sherwinwilliams', 'sherwinwilliams'],
-  ['roper', 'roper'],
-  ['ametek', 'ametek'],
-  ['xylem', 'xylem'],
-  ['idex', 'idex'],
-  ['graco', 'graco'],
-  ['nordson', 'nordson'],
-  ['dover', 'dover'],
-  ['illinois', 'itw'],
-  ['pentair', 'pentair'],
-  ['flowserve', 'flowserve'],
 
   // Retail / Consumer
   ['walmart', 'walmart'],
   ['homedepot', 'homedepot'],
-  ['lowes', 'lowes'],
   ['costco', 'costco'],
   ['kroger', 'kroger'],
-  ['albertsons', 'albertsons'],
-  ['nike', 'nike'],
-  ['gap', 'gap'],
   ['nordstrom', 'nordstrom'],
   ['kohls', 'kohls'],
-  ['tjx', 'tjx'],
   ['bestbuy', 'bestbuy'],
-  ['autozone', 'autozone'],
-  ['carmax', 'carmax'],
-  ['pvh', 'pvh'],
-  ['hanesbrands', 'hanesbrands'],
-  ['hyvee', 'hyvee'],
 
   // Media / Telecom
   ['comcast', 'comcast'],
@@ -590,23 +446,12 @@ const WORKDAY_COMPANIES: [string, string][] = [
   ['att', 'att'],
   ['tmobile', 'tmobile'],
   ['charter', 'charter'],
-  ['lumen', 'lumen'],
-  ['nbcuniversal', 'nbcuniversal'],
   ['paramount', 'paramount'],
-  ['fox', 'fox'],
-  ['discovery', 'discovery'],
-  ['amcnetworks', 'amcnetworks'],
-  ['iheartmedia', 'iheartmedia'],
 
   // Tech / Software
-  ['uber', 'uber'],
   ['lyft', 'lyft'],
   ['airbnb', 'airbnb'],
-  ['doordash', 'doordash'],
-  ['instacart', 'instacart'],
   ['atlassian', 'atlassian'],
-  ['dropbox', 'dropbox'],
-  ['box', 'box'],
   ['zendesk', 'zendesk'],
   ['hubspot', 'hubspot'],
   ['twilio', 'twilio'],
@@ -615,55 +460,21 @@ const WORKDAY_COMPANIES: [string, string][] = [
   ['snowflake', 'snowflake'],
   ['palantir', 'palantir'],
   ['veeva', 'veeva'],
-  ['guidewire', 'guidewire'],
-  ['paylocity', 'paylocity'],
-  ['adp', 'adp'],
-  ['paychex', 'paychex'],
-  ['ceridian', 'ceridian'],
   ['medallia', 'medallia'],
   ['qualtrics', 'qualtrics'],
   ['sprinklr', 'sprinklr'],
-  ['meltwater', 'meltwater'],
   ['okta', 'okta'],
   ['zscaler', 'zscaler'],
-  ['pagerduty', 'pagerduty'],
-  ['sumo-logic', 'careers'],
-  ['tableau', 'careers'],
-  ['microstrategy', 'careers'],
-  ['nuance', 'nuance'],
-  ['talend', 'careers'],
-  ['qlik', 'careers'],
-  ['philips', 'philips'],
-  ['symantec', 'careers'],
 
   // Energy / Utilities
-  ['exxonmobil', 'exxonmobil'],
   ['chevron', 'chevron'],
   ['conocophillips', 'conocophillips'],
   ['shell', 'shell'],
-  ['bp', 'bp'],
   ['halliburton', 'halliburton'],
   ['schlumberger', 'slb'],
   ['bakerhughes', 'bakerhughes'],
-  ['baker', 'bakerhughes'],
   ['nexteraenergy', 'nexteraenergy'],
   ['duke-energy', 'duke'],
-  ['dominion', 'dominionenergy'],
-  ['southern', 'southerncompany'],
-  ['exelon', 'exelon'],
-  ['eversource', 'eversource'],
-  ['firstenergy', 'firstenergy'],
-  ['ameren', 'ameren'],
-  ['entergy', 'entergy'],
-  ['sempra', 'sempra'],
-  ['dte', 'dte'],
-  ['cms', 'cmsenergy'],
-  ['alliant', 'alliantenergy'],
-  ['avangrid', 'avangrid'],
-  ['centerpoint', 'centerpointenergy'],
-  ['atmos', 'atmosenergy'],
-
-  // Additional verified targets
 
   // Finance & Banking
   ['jpmorgan', 'jpmc'],
@@ -770,7 +581,9 @@ async function loadWorkdayDeadCache(): Promise<WorkdayDeadCache> {
           company,
           {
             zeroCount: Math.max(0, Math.trunc(value.zeroCount ?? 0)),
-            lastAttempt: typeof value.lastAttempt === 'string' ? value.lastAttempt : '',
+            lastAttempt: typeof value.lastAttempt === 'string' ? value.lastAttempt : undefined,
+            wdVersion: typeof value.wdVersion === 'string' ? value.wdVersion : undefined,
+            slug: typeof value.slug === 'string' ? value.slug : undefined,
             knownTargets: Object.fromEntries(
               Object.entries(value.knownTargets ?? {})
                 .filter(
@@ -798,7 +611,10 @@ async function loadWorkdayDeadCache(): Promise<WorkdayDeadCache> {
 function compactWorkdayDeadCache(cache: WorkdayDeadCache): WorkdayDeadCache {
   return Object.fromEntries(
     Object.entries(cache).filter(
-      ([, entry]) => entry.zeroCount > 0 || Object.keys(entry.knownTargets).length > 0,
+      ([, entry]) =>
+        entry.zeroCount > 0 ||
+        Object.keys(entry.knownTargets).length > 0 ||
+        (typeof entry.wdVersion === 'string' && typeof entry.slug === 'string'),
     ),
   );
 }
@@ -873,7 +689,7 @@ type WorkdayResolvedAttempt = {
   slug: string;
 };
 
-type WorkdayKnownTarget = {
+export type WorkdayKnownTarget = {
   wdVersion: string;
   slug: string;
 };
@@ -890,9 +706,11 @@ type WorkdayScrapeStats = {
   filteredNonTech: number;
 };
 
-type WorkdayDeadCacheEntry = {
+export type WorkdayDeadCacheEntry = {
   zeroCount: number;
-  lastAttempt: string;
+  lastAttempt?: string;
+  wdVersion?: string;
+  slug?: string;
   knownTargets: Record<string, WorkdayKnownTarget>;
 };
 
@@ -936,37 +754,7 @@ function isUsefulWorkdaySampleLocation(location?: string): boolean {
   );
 }
 
-const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
-  'argonne|Argonne_Careers': { wdVersion: 'wd1', slug: 'Argonne_Careers' },
-  'astrazeneca|careers': { wdVersion: 'wd3', slug: 'careers' },
-  'baxter|baxter': { wdVersion: 'wd1', slug: 'baxter' },
-  'bmo|external': { wdVersion: 'wd3', slug: 'external' },
-  'capitalone|Capital_One': { wdVersion: 'wd12', slug: 'Capital_One' },
-  'cigna|cignacareers': { wdVersion: 'wd5', slug: 'cignacareers' },
-  'crowdstrike|crowdstrikecareers': { wdVersion: 'wd5', slug: 'crowdstrikecareers' },
-  'draftkings|DraftKings': { wdVersion: 'wd1', slug: 'DraftKings' },
-  'intel|external': { wdVersion: 'wd1', slug: 'external' },
-  'jll|jllcareers': { wdVersion: 'wd1', slug: 'jllcareers' },
-  'leidos|external': { wdVersion: 'wd5', slug: 'external' },
-  'marvell|marvellcareers': { wdVersion: 'wd1', slug: 'marvellcareers' },
-  'mars|External': { wdVersion: 'wd3', slug: 'External' },
-  'mastercard|CorporateCareers': { wdVersion: 'wd1', slug: 'CorporateCareers' },
-  'medtronic|medtronic': { wdVersion: 'wd1', slug: 'medtroniccareers' },
-  'micron|external': { wdVersion: 'wd1', slug: 'external' },
-  'mksinst|MKSCareersUniversity': { wdVersion: 'wd1', slug: 'MKSCareersUniversity' },
-  'motorolasolutions|careers': { wdVersion: 'wd5', slug: 'careers' },
-  'nvidia|NVIDIAExternalCareerSite': { wdVersion: 'wd5', slug: 'NVIDIAExternalCareerSite' },
-  'pfizer|pfizercareers': { wdVersion: 'wd1', slug: 'pfizercareers' },
-  'prudential|prudential': { wdVersion: 'wd3', slug: 'prudential' },
-  'pwc|US_Entry_Level_Careers': { wdVersion: 'wd3', slug: 'US_Entry_Level_Careers' },
-  'quickenloans|rocket_careers': { wdVersion: 'wd5', slug: 'rocket_careers' },
-  'relx|ElsevierJobs': { wdVersion: 'wd3', slug: 'ElsevierJobs' },
-  'relx|relx': { wdVersion: 'wd3', slug: 'relx' },
-  'salesforce|External_Career_Site': { wdVersion: 'wd12', slug: 'External_Career_Site' },
-  'sanofi|sanoficareers': { wdVersion: 'wd3', slug: 'sanoficareers' },
-  'target|Target': { wdVersion: 'wd5', slug: 'targetcareers' },
-  'transunion|TransUnion': { wdVersion: 'wd5', slug: 'TransUnion' },
-  'visa|visa': { wdVersion: 'wd5', slug: 'visa' },
+export const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'abbvie|abbvie': { wdVersion: 'wd5', slug: 'abbvie' },
   'accenture|accenturefederal': { wdVersion: 'wd5', slug: 'accenturefederal' },
   'airbnb|airbnb': { wdVersion: 'wd5', slug: 'airbnb' },
@@ -977,43 +765,53 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'anduril|anduril': { wdVersion: 'wd1', slug: 'anduril' },
   'anthem|anthem': { wdVersion: 'wd5', slug: 'anthem' },
   'anyscale|anyscale': { wdVersion: 'wd1', slug: 'anyscale' },
+  'argonne|Argonne_Careers': { wdVersion: 'wd1', slug: 'Argonne_Careers' },
+  'astrazeneca|careers': { wdVersion: 'wd3', slug: 'careers' },
   'atlassian|atlassian': { wdVersion: 'wd5', slug: 'atlassian' },
   'att|att': { wdVersion: 'wd5', slug: 'att' },
   'baesystems|baesystems': { wdVersion: 'wd5', slug: 'baesystems' },
   'bain|bain': { wdVersion: 'wd5', slug: 'bain' },
+  'bakerhughes|bakerhughes': { wdVersion: 'wd5', slug: 'bakerhughes' },
+  'baxter|baxter': { wdVersion: 'wd1', slug: 'baxter' },
   'bcg|bcg': { wdVersion: 'wd5', slug: 'bcg' },
   'bectondickinson|bd': { wdVersion: 'wd5', slug: 'bd' },
   'bestbuy|bestbuy': { wdVersion: 'wd5', slug: 'bestbuy' },
-  'biogen|careers': { wdVersion: 'wd5', slug: 'biogen' },
   'biogen|biogen': { wdVersion: 'wd5', slug: 'biogen' },
+  'biogen|careers': { wdVersion: 'wd5', slug: 'biogen' },
   'blackrock|blackrock': { wdVersion: 'wd5', slug: 'blackrock' },
+  'bmo|external': { wdVersion: 'wd3', slug: 'external' },
   'bms|bms': { wdVersion: 'wd5', slug: 'bristolmyerssquibb' },
   'bms|bristolmyerssquibb': { wdVersion: 'wd5', slug: 'bristolmyerssquibb' },
   'boeing|boeing': { wdVersion: 'wd5', slug: 'boeing' },
   'bofa|bankofamerica': { wdVersion: 'wd1', slug: 'bankofamerica' },
   'boozallen|boozallen': { wdVersion: 'wd5', slug: 'boozallen' },
   'braze|braze': { wdVersion: 'wd5', slug: 'braze' },
+  'capitalone|Capital_One': { wdVersion: 'wd12', slug: 'Capital_One' },
   'carbonblack|carbonblack': { wdVersion: 'wd1', slug: 'carbonblack' },
   'centene|centene': { wdVersion: 'wd5', slug: 'centene' },
   'cerebras|cerebras': { wdVersion: 'wd1', slug: 'cerebras' },
   'charter|charter': { wdVersion: 'wd5', slug: 'charter' },
   'chevron|chevron': { wdVersion: 'wd5', slug: 'chevron' },
+  'cigna|cignacareers': { wdVersion: 'wd5', slug: 'cignacareers' },
   'citigroup|citi': { wdVersion: 'wd5', slug: 'citi' },
   'cloudflare|cloudflare': { wdVersion: 'wd5', slug: 'cloudflare' },
   'cognizant|cognizant': { wdVersion: 'wd5', slug: 'cognizant' },
   'comcast|comcast': { wdVersion: 'wd5', slug: 'comcast' },
+  'commvault|commvault': { wdVersion: 'wd1', slug: 'commvault' },
   'confluent|confluent': { wdVersion: 'wd5', slug: 'confluent' },
   'conocophillips|conocophillips': { wdVersion: 'wd5', slug: 'conocophillips' },
   'coreweave|coreweave': { wdVersion: 'wd1', slug: 'coreweave' },
   'costco|costco': { wdVersion: 'wd1', slug: 'costco' },
   'coupa|coupa': { wdVersion: 'wd5', slug: 'coupa' },
+  'crowdstrike|crowdstrikecareers': { wdVersion: 'wd5', slug: 'crowdstrikecareers' },
   'cvs|cvs': { wdVersion: 'wd5', slug: 'cvs' },
-  'datadog|datadog': { wdVersion: 'wd5', slug: 'datadog' },
   'databricks|databricks': { wdVersion: 'wd5', slug: 'databricks' },
+  'datadog|datadog': { wdVersion: 'wd5', slug: 'datadog' },
   'davita|davita': { wdVersion: 'wd1', slug: 'davita' },
   'deloitte|deloitte': { wdVersion: 'wd5', slug: 'deloitte' },
   'dish|dish': { wdVersion: 'wd1', slug: 'dish' },
   'docusign|docusign': { wdVersion: 'wd5', slug: 'docusign' },
+  'draftkings|DraftKings': { wdVersion: 'wd1', slug: 'DraftKings' },
   'duke-energy|duke': { wdVersion: 'wd1', slug: 'duke' },
   'eaton|eaton': { wdVersion: 'wd5', slug: 'eaton' },
   'edgewell|edgewell': { wdVersion: 'wd1', slug: 'edgewell' },
@@ -1044,7 +842,10 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'illumina|illumina': { wdVersion: 'wd5', slug: 'illumina' },
   'illumio|illumio': { wdVersion: 'wd1', slug: 'illumio' },
   'infosys|infosys': { wdVersion: 'wd5', slug: 'infosys' },
+  'intel|external': { wdVersion: 'wd1', slug: 'external' },
+  'iqvia|iqvia': { wdVersion: 'wd1', slug: 'iqvia' },
   'iterable|iterable': { wdVersion: 'wd1', slug: 'iterable' },
+  'jll|jllcareers': { wdVersion: 'wd1', slug: 'jllcareers' },
   'jnj|jnj': { wdVersion: 'wd5', slug: 'jnjcareers' },
   'jnj|jnjcareers': { wdVersion: 'wd5', slug: 'jnjcareers' },
   'jpmorgan|jpmc': { wdVersion: 'wd5', slug: 'jpmc' },
@@ -1054,53 +855,72 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'kroger|kroger': { wdVersion: 'wd5', slug: 'kroger' },
   'l3harris|l3harris': { wdVersion: 'wd5', slug: 'l3harris' },
   'lacework|lacework': { wdVersion: 'wd1', slug: 'lacework' },
+  'leidos|external': { wdVersion: 'wd5', slug: 'external' },
   'lilly|lilly': { wdVersion: 'wd1', slug: 'lilly' },
   'lincolnfinancial|lincolnfinancial': { wdVersion: 'wd5', slug: 'lincolnfinancial' },
   'lowes|Lowes': { wdVersion: 'wd5', slug: 'Lowes' },
   'lyft|lyft': { wdVersion: 'wd5', slug: 'lyft' },
+  'mars|External': { wdVersion: 'wd3', slug: 'External' },
+  'marvell|marvellcareers': { wdVersion: 'wd1', slug: 'marvellcareers' },
+  'mastercard|CorporateCareers': { wdVersion: 'wd1', slug: 'CorporateCareers' },
   'mckinsey|mckinsey': { wdVersion: 'wd5', slug: 'mckinsey' },
   'medallia|medallia': { wdVersion: 'wd5', slug: 'medallia' },
+  'medtronic|medtronic': { wdVersion: 'wd1', slug: 'medtroniccareers' },
   'merck|merck': { wdVersion: 'wd5', slug: 'merck' },
+  'micron|external': { wdVersion: 'wd1', slug: 'external' },
   'mitre|mitre': { wdVersion: 'wd5', slug: 'mitre' },
   'mixpanel|mixpanel': { wdVersion: 'wd1', slug: 'mixpanel' },
+  'mksinst|MKSCareersUniversity': { wdVersion: 'wd1', slug: 'MKSCareersUniversity' },
   'molina|molina': { wdVersion: 'wd1', slug: 'molina' },
   'momentive|momentive': { wdVersion: 'wd1', slug: 'momentive' },
   'morganstanley|morganstanley': { wdVersion: 'wd5', slug: 'morganstanley' },
+  'motorolasolutions|careers': { wdVersion: 'wd5', slug: 'careers' },
   'nationwide|nationwide': { wdVersion: 'wd5', slug: 'nationwide' },
   'nbc|nbcuniversal': { wdVersion: 'wd5', slug: 'nbcuniversal' },
   'nexteraenergy|nexteraenergy': { wdVersion: 'wd5', slug: 'nexteraenergy' },
   'nordstrom|nordstrom': { wdVersion: 'wd5', slug: 'nordstrom' },
   'northropgrumman|northropgrumman': { wdVersion: 'wd5', slug: 'northropgrumman' },
   'nttdata|nttdata': { wdVersion: 'wd5', slug: 'nttdata' },
+  'nvidia|NVIDIAExternalCareerSite': { wdVersion: 'wd5', slug: 'NVIDIAExternalCareerSite' },
   'okta|okta': { wdVersion: 'wd5', slug: 'okta' },
   'oliver-wyman|oliverwyman': { wdVersion: 'wd1', slug: 'oliverwyman' },
   'palantir|palantir': { wdVersion: 'wd5', slug: 'palantir' },
   'paramount|paramount': { wdVersion: 'wd5', slug: 'paramount' },
+  'pfizer|pfizercareers': { wdVersion: 'wd1', slug: 'pfizercareers' },
   'pnc|pnc': { wdVersion: 'wd5', slug: 'pnc' },
   'principal|principal': { wdVersion: 'wd5', slug: 'principal' },
   'progressive|progressive': { wdVersion: 'wd1', slug: 'progressive' },
+  'prudential|prudential': { wdVersion: 'wd3', slug: 'prudential' },
+  'pwc|US_Entry_Level_Careers': { wdVersion: 'wd3', slug: 'US_Entry_Level_Careers' },
   'qualtrics|qualtrics': { wdVersion: 'wd5', slug: 'qualtrics' },
   'qualys|qualys': { wdVersion: 'wd1', slug: 'qualys' },
+  'quickenloans|rocket_careers': { wdVersion: 'wd5', slug: 'rocket_careers' },
   'rapid7|rapid7': { wdVersion: 'wd1', slug: 'rapid7' },
   'raytheon|rtx': { wdVersion: 'wd5', slug: 'rtx' },
   'regeneron|careers': { wdVersion: 'wd1', slug: 'careers' },
   'regeneron|regeneron': { wdVersion: 'wd1', slug: 'careers' },
+  'relx|ElsevierJobs': { wdVersion: 'wd3', slug: 'ElsevierJobs' },
+  'relx|relx': { wdVersion: 'wd3', slug: 'relx' },
   'saic|saic': { wdVersion: 'wd5', slug: 'saic' },
+  'salesforce|External_Career_Site': { wdVersion: 'wd12', slug: 'External_Career_Site' },
   'samsara|samsara': { wdVersion: 'wd5', slug: 'samsara' },
+  'sanofi|sanoficareers': { wdVersion: 'wd3', slug: 'sanoficareers' },
   'schlumberger|slb': { wdVersion: 'wd5', slug: 'slb' },
   'schwab|schwab': { wdVersion: 'wd5', slug: 'schwab' },
   'sendgrid|sendgrid': { wdVersion: 'wd1', slug: 'sendgrid' },
   'siemens|siemens': { wdVersion: 'wd5', slug: 'siemens' },
   'slalom|slalom': { wdVersion: 'wd5', slug: 'slalom' },
+  'snowflake|snowflake': { wdVersion: 'wd5', slug: 'snowflake' },
   'sony|sonycareers': { wdVersion: 'wd5', slug: 'sonycareers' },
   'spacex|spacex': { wdVersion: 'wd1', slug: 'spacex' },
-  'snowflake|snowflake': { wdVersion: 'wd5', slug: 'snowflake' },
   'sprinklr|sprinklr': { wdVersion: 'wd5', slug: 'sprinklr' },
   'tanium|tanium': { wdVersion: 'wd1', slug: 'tanium' },
+  'target|Target': { wdVersion: 'wd5', slug: 'targetcareers' },
   'teladoc|teladoc': { wdVersion: 'wd1', slug: 'teladoc' },
   'tenable|tenable': { wdVersion: 'wd5', slug: 'tenable' },
   'tmobile|tmobile': { wdVersion: 'wd5', slug: 'tmobile' },
   'together|together': { wdVersion: 'wd1', slug: 'together' },
+  'transunion|TransUnion': { wdVersion: 'wd5', slug: 'TransUnion' },
   'travelers|travelers': { wdVersion: 'wd5', slug: 'travelers' },
   'twilio|twilio': { wdVersion: 'wd5', slug: 'twilio' },
   'unitedhealth|uhg': { wdVersion: 'wd5', slug: 'uhg' },
@@ -1109,12 +929,14 @@ const WORKDAY_KNOWN_TARGETS: Record<string, WorkdayKnownTarget> = {
   'veracyte|veracyte': { wdVersion: 'wd1', slug: 'veracyte' },
   'verizon|verizon': { wdVersion: 'wd5', slug: 'verizon' },
   'verkada|verkada': { wdVersion: 'wd1', slug: 'verkada' },
+  'visa|visa': { wdVersion: 'wd5', slug: 'visa' },
   'voya|voya': { wdVersion: 'wd1', slug: 'voya' },
   'walmart|walmart': { wdVersion: 'wd5', slug: 'walmart' },
   'warnerbros|warnerbros': { wdVersion: 'wd5', slug: 'warnerbros' },
   'wellsfargo|wellsfargo': { wdVersion: 'wd5', slug: 'wellsfargojobs' },
   'wellsfargo|wellsfargojobs': { wdVersion: 'wd5', slug: 'wellsfargojobs' },
   'wipro|wipro': { wdVersion: 'wd5', slug: 'wipro' },
+  'workday|Workday_Early_Career': { wdVersion: 'wd5', slug: 'Workday_Early_Career' },
   'zendesk|zendesk': { wdVersion: 'wd5', slug: 'zendesk' },
   'zimmer|zimmerbiomet': { wdVersion: 'wd5', slug: 'zimmerbiomet' },
   'zscaler|zscaler': { wdVersion: 'wd5', slug: 'zscaler' },
@@ -1136,7 +958,7 @@ function getOrCreateWorkdayDeadCacheEntry(
   if (!cache[company]) {
     cache[company] = {
       zeroCount: 0,
-      lastAttempt: '',
+      lastAttempt: undefined,
       knownTargets: {},
     };
   }
@@ -1145,7 +967,25 @@ function getOrCreateWorkdayDeadCacheEntry(
 }
 
 function applyCachedWorkdayTargets(cache: WorkdayDeadCache): void {
+  const careerSitesByCompany = new Map(
+    groupWorkdayCompanies().map(group => [group.company, group.careerSites] as const),
+  );
+
   for (const [company, entry] of Object.entries(cache)) {
+    if (entry.wdVersion && entry.slug) {
+      const careerSites = careerSitesByCompany.get(company) ?? [];
+      const inferredCareerSite =
+        careerSites.find(careerSite => careerSite === entry.slug) ??
+        (careerSites.length === 1 ? careerSites[0] : undefined);
+
+      if (inferredCareerSite) {
+        setKnownWorkdayTarget(company, inferredCareerSite, {
+          wdVersion: entry.wdVersion,
+          slug: entry.slug,
+        });
+      }
+    }
+
     for (const [careerSite, target] of Object.entries(entry.knownTargets)) {
       setKnownWorkdayTarget(company, careerSite, target);
     }
@@ -1161,15 +1001,21 @@ function rememberWorkdayTarget(
   const current = getKnownWorkdayTarget(company, careerSite);
   const entry = getOrCreateWorkdayDeadCacheEntry(cache, company);
   const cachedTarget = entry.knownTargets[careerSite];
+  const cachedEntryWdVersion = entry.wdVersion;
+  const cachedEntrySlug = entry.slug;
 
   setKnownWorkdayTarget(company, careerSite, target);
   entry.knownTargets[careerSite] = target;
+  entry.wdVersion = target.wdVersion;
+  entry.slug = target.slug;
 
   return (
     current?.wdVersion !== target.wdVersion ||
     current?.slug !== target.slug ||
     cachedTarget?.wdVersion !== target.wdVersion ||
-    cachedTarget?.slug !== target.slug
+    cachedTarget?.slug !== target.slug ||
+    cachedEntryWdVersion !== target.wdVersion ||
+    cachedEntrySlug !== target.slug
   );
 }
 

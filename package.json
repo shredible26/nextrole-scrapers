@@ -5,7 +5,8 @@
   "scripts": {
     "scrape": "dotenv -e .env.local -- tsx scrapers/index.ts",
     "cleanup": "dotenv -e .env.local -- tsx scrapers/cleanup-senior-roles.ts",
-    "normalize:roles": "dotenv -e .env.local -- tsx scrapers/normalize-role-values.ts"
+    "normalize:roles": "dotenv -e .env.local -- tsx scrapers/normalize-role-values.ts",
+    "verify:workday": "dotenv -e .env.local -- tsx scrapers/scripts/verify-workday-companies.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.101.1"

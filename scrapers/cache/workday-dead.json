@@ -7,7 +7,9 @@
         "wdVersion": "wd1",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "external"
   },
   "visa": {
     "zeroCount": 0,
@@ -17,7 +19,9 @@
         "wdVersion": "wd5",
         "slug": "visa"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "visa"
   },
   "salesforce": {
     "zeroCount": 0,
@@ -27,7 +31,9 @@
         "wdVersion": "wd12",
         "slug": "External_Career_Site"
       }
-    }
+    },
+    "wdVersion": "wd12",
+    "slug": "External_Career_Site"
   },
   "nvidia": {
     "zeroCount": 0,
@@ -37,7 +43,9 @@
         "wdVersion": "wd5",
         "slug": "NVIDIAExternalCareerSite"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "NVIDIAExternalCareerSite"
   },
   "draftkings": {
     "zeroCount": 0,
@@ -47,7 +55,9 @@
         "wdVersion": "wd1",
         "slug": "DraftKings"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "DraftKings"
   },
   "capitalone": {
     "zeroCount": 0,
@@ -57,7 +67,9 @@
         "wdVersion": "wd12",
         "slug": "Capital_One"
       }
-    }
+    },
+    "wdVersion": "wd12",
+    "slug": "Capital_One"
   },
   "mars": {
     "zeroCount": 0,
@@ -67,7 +79,9 @@
         "wdVersion": "wd3",
         "slug": "External"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "External"
   },
   "micron": {
     "zeroCount": 0,
@@ -77,7 +91,9 @@
         "wdVersion": "wd1",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "external"
   },
   "astrazeneca": {
     "zeroCount": 0,
@@ -87,7 +103,9 @@
         "wdVersion": "wd3",
         "slug": "careers"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "careers"
   },
   "argonne": {
     "zeroCount": 0,
@@ -97,7 +115,9 @@
         "wdVersion": "wd1",
         "slug": "Argonne_Careers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "Argonne_Careers"
   },
   "baxter": {
     "zeroCount": 0,
@@ -107,7 +127,9 @@
         "wdVersion": "wd1",
         "slug": "baxter"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "baxter"
   },
   "marvell": {
     "zeroCount": 0,
@@ -117,7 +139,9 @@
         "wdVersion": "wd1",
         "slug": "marvellcareers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "marvellcareers"
   },
   "transunion": {
     "zeroCount": 0,
@@ -127,7 +151,9 @@
         "wdVersion": "wd5",
         "slug": "TransUnion"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "TransUnion"
   },
   "quickenloans": {
     "zeroCount": 0,
@@ -137,7 +163,9 @@
         "wdVersion": "wd5",
         "slug": "rocket_careers"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "rocket_careers"
   },
   "crowdstrike": {
     "zeroCount": 0,
@@ -147,7 +175,9 @@
         "wdVersion": "wd5",
         "slug": "crowdstrikecareers"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "crowdstrikecareers"
   },
   "bmo": {
     "zeroCount": 0,
@@ -157,7 +187,9 @@
         "wdVersion": "wd3",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "external"
   },
   "pfizer": {
     "zeroCount": 0,
@@ -167,7 +199,9 @@
         "wdVersion": "wd1",
         "slug": "pfizercareers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "pfizercareers"
   },
   "sanofi": {
     "zeroCount": 0,
@@ -177,7 +211,9 @@
         "wdVersion": "wd3",
         "slug": "sanoficareers"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "sanoficareers"
   },
   "motorolasolutions": {
     "zeroCount": 0,
@@ -187,7 +223,9 @@
         "wdVersion": "wd5",
         "slug": "careers"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "careers"
   },
   "target": {
     "zeroCount": 0,
@@ -197,7 +235,9 @@
         "wdVersion": "wd5",
         "slug": "targetcareers"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "targetcareers"
   },
   "cigna": {
     "zeroCount": 0,
@@ -207,7 +247,9 @@
         "wdVersion": "wd5",
         "slug": "cignacareers"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "cignacareers"
   },
   "prudential": {
     "zeroCount": 0,
@@ -217,7 +259,9 @@
         "wdVersion": "wd3",
         "slug": "prudential"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "prudential"
   },
   "relx": {
     "zeroCount": 0,
@@ -231,7 +275,9 @@
         "wdVersion": "wd3",
         "slug": "relx"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "ElsevierJobs"
   },
   "leidos": {
     "zeroCount": 0,
@@ -241,7 +287,9 @@
         "wdVersion": "wd5",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "external"
   },
   "mksinst": {
     "zeroCount": 0,
@@ -251,7 +299,9 @@
         "wdVersion": "wd1",
         "slug": "MKSCareersUniversity"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "MKSCareersUniversity"
   },
   "jll": {
     "zeroCount": 0,
@@ -261,7 +311,9 @@
         "wdVersion": "wd1",
         "slug": "jllcareers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "jllcareers"
   },
   "mastercard": {
     "zeroCount": 0,
@@ -271,7 +323,9 @@
         "wdVersion": "wd1",
         "slug": "CorporateCareers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "CorporateCareers"
   },
   "vanguard": {
     "zeroCount": 0,
@@ -281,7 +335,9 @@
         "wdVersion": "wd5",
         "slug": "vanguard_External"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "vanguard_External"
   },
   "travelers": {
     "zeroCount": 0,
@@ -291,7 +347,9 @@
         "wdVersion": "wd5",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "external"
   },
   "pnc": {
     "zeroCount": 0,
@@ -301,7 +359,9 @@
         "wdVersion": "wd5",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "external"
   },
   "gsk": {
     "zeroCount": 0,
@@ -311,7 +371,9 @@
         "wdVersion": "wd5",
         "slug": "gskcareers"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "gskcareers"
   },
   "regeneron": {
     "zeroCount": 0,
@@ -325,7 +387,9 @@
         "wdVersion": "wd1",
         "slug": "careers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "Careers"
   },
   "caci": {
     "zeroCount": 0,
@@ -335,7 +399,9 @@
         "wdVersion": "wd1",
         "slug": "External"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "External"
   },
   "tmobile": {
     "zeroCount": 0,
@@ -345,7 +411,9 @@
         "wdVersion": "wd1",
         "slug": "External"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "External"
   },
   "athenahealth": {
     "zeroCount": 0,
@@ -355,7 +423,9 @@
         "wdVersion": "wd1",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "external"
   },
   "pwc": {
     "zeroCount": 0,
@@ -365,7 +435,9 @@
         "wdVersion": "wd3",
         "slug": "US_Entry_Level_Careers"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "US_Entry_Level_Careers"
   },
   "qualcomm": {
     "zeroCount": 2,
@@ -375,7 +447,9 @@
         "wdVersion": "wd12",
         "slug": "External"
       }
-    }
+    },
+    "wdVersion": "wd12",
+    "slug": "External"
   },
   "iqvia": {
     "zeroCount": 0,
@@ -385,7 +459,9 @@
         "wdVersion": "wd1",
         "slug": "iqvia"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "iqvia"
   },
   "amgen": {
     "zeroCount": 0,
@@ -395,7 +471,9 @@
         "wdVersion": "wd1",
         "slug": "careers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "careers"
   },
   "shell": {
     "zeroCount": 0,
@@ -405,7 +483,9 @@
         "wdVersion": "wd3",
         "slug": "shellcareers"
       }
-    }
+    },
+    "wdVersion": "wd3",
+    "slug": "shellcareers"
   },
   "keybank": {
     "zeroCount": 0,
@@ -415,7 +495,9 @@
         "wdVersion": "wd5",
         "slug": "External_Career_Site"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "External_Career_Site"
   },
   "medtronic": {
     "zeroCount": 0,
@@ -425,7 +507,9 @@
         "wdVersion": "wd1",
         "slug": "medtroniccareers"
       }
-    }
+    },
+    "wdVersion": "wd1",
+    "slug": "medtroniccareers"
   },
   "unisys": {
     "zeroCount": 0,
@@ -435,7 +519,9 @@
         "wdVersion": "wd5",
         "slug": "external"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "external"
   },
   "qualys": {
     "zeroCount": 0,
@@ -445,6 +531,44 @@
         "wdVersion": "wd5",
         "slug": "Careers"
       }
-    }
+    },
+    "wdVersion": "wd5",
+    "slug": "Careers"
+  },
+  "workday": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-10",
+    "knownTargets": {
+      "Workday_Early_Career": {
+        "wdVersion": "wd5",
+        "slug": "Workday_Early_Career"
+      }
+    },
+    "wdVersion": "wd5",
+    "slug": "Workday_Early_Career"
+  },
+  "commvault": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-10",
+    "knownTargets": {
+      "commvault": {
+        "wdVersion": "wd1",
+        "slug": "commvault"
+      }
+    },
+    "wdVersion": "wd1",
+    "slug": "commvault"
+  },
+  "bakerhughes": {
+    "zeroCount": 0,
+    "lastAttempt": "2026-04-10",
+    "knownTargets": {
+      "bakerhughes": {
+        "wdVersion": "wd5",
+        "slug": "bakerhughes"
+      }
+    },
+    "wdVersion": "wd5",
+    "slug": "bakerhughes"
   }
 }
