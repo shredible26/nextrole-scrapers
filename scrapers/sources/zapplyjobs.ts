@@ -15,14 +15,15 @@ function parseZapplyMarkdown(markdown: string): CuratedRepoRow[] {
     if (!line.startsWith('|') || isMarkdownTableSeparator(line)) continue;
 
     const cells = splitMarkdownRow(line);
-    if (cells.length !== 5 || cells[0] === 'Company') continue;
+    if (cells.length < 3 || cells[0]?.trim() === 'Company' || cells[0]?.trim() === '') continue;
 
     const [companyCell, titleCell, locationCell, postedCell, applyCell] = cells;
+    const urlCell = applyCell ?? locationCell ?? '';
     rows.push({
       company: extractCellText(companyCell),
       title: extractCellText(titleCell),
       location: extractCellText(locationCell),
-      url: extractFirstUrl(applyCell),
+      url: extractFirstUrl(urlCell),
       posted: postedCell.trim(),
     });
   }
@@ -31,11 +32,35 @@ function parseZapplyMarkdown(markdown: string): CuratedRepoRow[] {
 }
 
 export async function scrapeZapplyjobs(): Promise<NormalizedJob[]> {
-  return fetchCuratedGitHubJobs({
-    source: 'zapplyjobs',
-    repo: 'zapplyjobs/New-Grad-Jobs-2026',
-    branches: ['main'],
-    markdownPath: 'README.md',
-    parseMarkdown: parseZapplyMarkdown,
-  });
+  const repos = [
+    'zapplyjobs/New-Grad-Jobs-2026',
+    'zapplyjobs/New-Grad-Software-Engineering-Jobs-2026',
+    'zapplyjobs/New-Grad-Data-Science-Jobs-2026',
+    'zapplyjobs/Internships-2026',
+    'zapplyjobs/New-Grad-Hardware-Engineering-Jobs-2026',
+    'zapplyjobs/Remote-Jobs-2026',
+    'zapplyjobs/New-Grad-Positions',
+  ];
+
+  const results = await Promise.allSettled(
+    repos.map(repo =>
+      fetchCuratedGitHubJobs({
+        source: 'zapplyjobs',
+        repo,
+        branches: ['main'],
+        markdownPath: 'README.md',
+        parseMarkdown: parseZapplyMarkdown,
+      }),
+    ),
+  );
+
+  const all: NormalizedJob[] = [];
+  for (const result of results) {
+    if (result.status === 'fulfilled') {
+      all.push(...result.value);
+    }
+  }
+
+  console.log(`  [zapplyjobs] Total jobs from all repos: ${all.length}`);
+  return all;
 }
