@@ -126,6 +126,9 @@ const WORKDAY_TECH_COMPANIES = new Set([
   'medallia', 'qualtrics', 'sprinklr', 'meltwater', 'okta', 'zscaler',
   'pagerduty', 'sumo-logic', 'tableau', 'microstrategy', 'nuance',
   'talend', 'qlik', 'motorolasolutions',
+  'cisco', 'accenture', 'deloitte', 'ge', 'boeing', 'lockheedmartin',
+  'raytheon', 'northropgrumman', 'abbott', 'medtronic', 'jnj', 'merck',
+  'lilly', 'honeywell', 'siemens', 'fiserv', 'broadridge',
 ]);
 
 const PROTECTED_TECH_TITLE_PATTERNS = [
@@ -356,7 +359,20 @@ export const WORKDAY_COMPANIES: [string, string][] = [
   ['mastercard', 'CorporateCareers'],
 
   // Big Tech
+  ['amazon', 'amazon'],
+  ['microsoft', 'microsoftcareers'],
+  ['apple', 'apple'],
+  ['meta', 'meta'],
+  ['cisco', 'cisco'],
   ['qualcomm', 'qualcomm'],
+  ['netapp', 'netapp'],
+  ['purestorage', 'purestorage'],
+  ['nutanix', 'nutanix'],
+  ['fortinet', 'fortinet'],
+  ['paloaltonetworks', 'paloaltonetworks'],
+  ['splunk', 'splunk'],
+  ['teradata', 'teradata'],
+  ['informatica', 'informatica'],
 
   // Enterprise Software
   ['workday', 'Workday_Early_Career'],
@@ -378,6 +394,11 @@ export const WORKDAY_COMPANIES: [string, string][] = [
   ['progressive', 'progressive'],
   ['travelers', 'travelers'],
   ['keybank', 'key'],
+  ['jpmc', 'jpmc'],
+  ['citi', 'citi'],
+  ['adp', 'adp'],
+  ['fiserv', 'fiserv'],
+  ['broadridge', 'broadridge'],
   ['mckinsey', 'mckinsey'],
   ['bcg', 'bcg'],
   ['bain', 'bain'],
@@ -394,6 +415,7 @@ export const WORKDAY_COMPANIES: [string, string][] = [
   ['lilly', 'lilly'],
   ['bms', 'bms'],
   ['gsk', 'gsk'],
+  ['abbott', 'abbott'],
   ['medtronic', 'medtronic'],
   ['illumina', 'illumina'],
   ['unitedhealth', 'uhg'],
@@ -418,9 +440,12 @@ export const WORKDAY_COMPANIES: [string, string][] = [
   ['iqvia', 'iqvia'],
   ['wipro', 'wipro'],
   ['unisys', 'unisys'],
+  ['accenture', 'accenture'],
 
   // Aerospace / Defense
   ['boeing', 'boeing'],
+  ['lockheedmartin', 'lmcareers'],
+  ['raytheon', 'rtncareer'],
   ['northropgrumman', 'northropgrumman'],
   ['l3harris', 'l3harris'],
   ['baesystems', 'baesystems'],
@@ -560,6 +585,7 @@ export const WORKDAY_COMPANIES: [string, string][] = [
   // Energy & Utilities
   ['exxon', 'exxonmobil'],
   ['ge', 'ge'],
+  ['ge', 'External'],
 ];
 
 const WORKDAY_BATCH_SIZE = 25;
@@ -681,6 +707,7 @@ interface WorkdayResponse {
 type WorkdayFetchResult = {
   data: WorkdayResponse | null;
   timedOut: boolean;
+  hadNon200Status: boolean;
 };
 
 type WorkdayResolvedAttempt = {
@@ -698,6 +725,7 @@ type WorkdayAttemptState = {
   result: WorkdayResolvedAttempt | null;
   hadSuccessfulResponse: boolean;
   hadTimeout: boolean;
+  hadNon200Status: boolean;
 };
 
 type WorkdayScrapeStats = {
@@ -724,16 +752,20 @@ type PersistKnownWorkdayTarget = (
 type CompanyScrapeResult = {
   jobs: NormalizedJob[];
   stats: WorkdayScrapeStats;
+  rawJobsCount: number;
   hadSuccessfulResponse: boolean;
   hadTimeout: boolean;
+  hadNon200Status: boolean;
 };
 
 type CompanyGroupScrapeResult = {
   company: string;
   jobs: NormalizedJob[];
   stats: WorkdayScrapeStats;
+  rawJobsCount: number;
   hadSuccessfulResponse: boolean;
   hadTimeout: boolean;
+  hadNon200Status: boolean;
 };
 
 function createEmptyWorkdayStats(): WorkdayScrapeStats {
@@ -1089,27 +1121,27 @@ async function fetchWorkdayResponse(
     });
 
     if (!res.ok) {
-      return { data: null, timedOut: false };
+      return { data: null, timedOut: false, hadNon200Status: true };
     }
 
     const contentType = res.headers.get('content-type') ?? '';
     if (!contentType.includes('application/json')) {
-      return { data: null, timedOut: false };
+      return { data: null, timedOut: false, hadNon200Status: false };
     }
 
     const data = (await res.json()) as WorkdayResponse;
     if (!Array.isArray(data.jobPostings)) {
-      return { data: null, timedOut: false };
+      return { data: null, timedOut: false, hadNon200Status: false };
     }
 
-    return { data, timedOut: false };
+    return { data, timedOut: false, hadNon200Status: false };
   } catch (err) {
     if (err instanceof Error && err.name === 'AbortError') {
       console.warn(`  [workday] timeout: ${company}`);
-      return { data: null, timedOut: true };
+      return { data: null, timedOut: true, hadNon200Status: false };
     }
 
-    return { data: null, timedOut: false };
+    return { data: null, timedOut: false, hadNon200Status: false };
   } finally {
     clearTimeout(timeout);
   }
@@ -1128,6 +1160,7 @@ async function tryWorkdayCompany(
   const slugs = slugVariations(company, careerSite);
   let hadSuccessfulResponse = false;
   let hadTimeout = false;
+  let hadNon200Status = false;
 
   for (const slug of slugs) {
     const attempts = await Promise.all(
@@ -1140,6 +1173,7 @@ async function tryWorkdayCompany(
 
     for (const { wdVersion, response } of attempts) {
       hadTimeout ||= response.timedOut;
+      hadNon200Status ||= response.hadNon200Status;
 
       if (!response.data) {
         continue;
@@ -1150,11 +1184,12 @@ async function tryWorkdayCompany(
         result: { jobs: response.data.jobPostings ?? [], wdVersion, slug },
         hadSuccessfulResponse,
         hadTimeout,
+        hadNon200Status,
       };
     }
   }
 
-  return { result: null, hadSuccessfulResponse, hadTimeout };
+  return { result: null, hadSuccessfulResponse, hadTimeout, hadNon200Status };
 }
 
 async function scrapeCompany(
@@ -1166,8 +1201,10 @@ async function scrapeCompany(
   const seenFetched = new Set<string>();
   const jobs: NormalizedJob[] = [];
   const stats = createEmptyWorkdayStats();
+  let rawJobsCount = 0;
   let hadSuccessfulResponse = false;
   let hadTimeout = false;
+  let hadNon200Status = false;
   let persistedKnownTarget = false;
 
   // Discover which (wdVersion, slug) pair works using the first search term
@@ -1183,6 +1220,7 @@ async function scrapeCompany(
       const url = `https://${company}.${foundVersion}.myworkdayjobs.com/wday/cxs/${company}/${foundSlug}/jobs`;
       const response = await fetchWorkdayResponse(company, url, term);
       hadTimeout ||= response.timedOut;
+      hadNon200Status ||= response.hadNon200Status;
 
       if (response.data) {
         hadSuccessfulResponse = true;
@@ -1196,6 +1234,7 @@ async function scrapeCompany(
       const url = `https://${company}.${knownTarget.wdVersion}.myworkdayjobs.com/wday/cxs/${company}/${knownTarget.slug}/jobs`;
       const response = await fetchWorkdayResponse(company, url, term);
       hadTimeout ||= response.timedOut;
+      hadNon200Status ||= response.hadNon200Status;
 
       if (response.data) {
         hadSuccessfulResponse = true;
@@ -1213,6 +1252,7 @@ async function scrapeCompany(
       const attempt = await tryWorkdayCompany(company, careerSite, term);
       hadSuccessfulResponse ||= attempt.hadSuccessfulResponse;
       hadTimeout ||= attempt.hadTimeout;
+      hadNon200Status ||= attempt.hadNon200Status;
       result = attempt.result;
 
       if (result) {
@@ -1224,6 +1264,7 @@ async function scrapeCompany(
     if (!result) continue;
 
     const { jobs: postings, wdVersion, slug } = result;
+    rawJobsCount += postings.length;
 
     if (!persistedKnownTarget) {
       await persistKnownTarget(company, careerSite, { wdVersion, slug });
@@ -1295,7 +1336,7 @@ async function scrapeCompany(
     console.log(`  [workday] ${company} (${foundVersion}/${foundSlug}): ${jobs.length} jobs`);
   }
 
-  return { jobs, stats, hadSuccessfulResponse, hadTimeout };
+  return { jobs, stats, rawJobsCount, hadSuccessfulResponse, hadTimeout, hadNon200Status };
 }
 
 async function scrapeCompanyGroup(
@@ -1305,13 +1346,17 @@ async function scrapeCompanyGroup(
 ): Promise<CompanyGroupScrapeResult> {
   const dedupedJobs = new Map<string, NormalizedJob>();
   const stats = createEmptyWorkdayStats();
+  let rawJobsCount = 0;
   let hadSuccessfulResponse = false;
   let hadTimeout = false;
+  let hadNon200Status = false;
 
   for (const careerSite of careerSites) {
     const result = await scrapeCompany(company, careerSite, persistKnownTarget);
+    rawJobsCount += result.rawJobsCount;
     hadSuccessfulResponse ||= result.hadSuccessfulResponse;
     hadTimeout ||= result.hadTimeout;
+    hadNon200Status ||= result.hadNon200Status;
     stats.uniqueFetched += result.stats.uniqueFetched;
     stats.filteredNonUs += result.stats.filteredNonUs;
     stats.filteredNonTech += result.stats.filteredNonTech;
@@ -1325,8 +1370,10 @@ async function scrapeCompanyGroup(
     company,
     jobs: Array.from(dedupedJobs.values()),
     stats,
+    rawJobsCount,
     hadSuccessfulResponse,
     hadTimeout,
+    hadNon200Status,
   };
 }
 
@@ -1391,8 +1438,10 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
         cacheEntry.zeroCount = 0;
       } else if (result.value.hadTimeout) {
         cacheEntry.zeroCount = 0;
+      } else if (result.value.rawJobsCount > 0) {
+        cacheEntry.zeroCount = 0;
       } else if (
-        result.value.stats.uniqueFetched === 0 &&
+        result.value.hadNon200Status ||
         result.value.hadSuccessfulResponse
       ) {
         cacheEntry.zeroCount = WORKDAY_SKIP_RUNS;
