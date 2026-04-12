@@ -292,8 +292,9 @@ async function fetchCompany(slug: string): Promise<NormalizedJob[]> {
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 export async function scrapeLever(): Promise<NormalizedJob[]> {
-  const BATCH_SIZE = 10;
-  const DELAY_MS = 200;
+  const BATCH_SIZE = 20;
+  const DELAY_MS = 100;
+  const startTime = Date.now();
   const all: NormalizedJob[] = [];
   leverCompanyFetchCount = 0;
   const discoveredSlugs = await discoverLeverSlugs();
@@ -306,6 +307,7 @@ export async function scrapeLever(): Promise<NormalizedJob[]> {
 
   console.log(`  [lever] Discovered ${discoveredSlugs.length} slugs from GitHub repos`);
   console.log(`  [lever] Total unique slugs: ${allSlugs.length}`);
+  console.log(`  [lever] Estimated time with batch size 20: ~${Math.ceil(allSlugs.length / 20) * 0.6}s`);
 
   for (let i = 0; i < allSlugs.length; i += BATCH_SIZE) {
     if (i % 50 === 0) console.log(`  [lever] Processing slugs ${i}/${allSlugs.length}...`);
@@ -324,7 +326,9 @@ export async function scrapeLever(): Promise<NormalizedJob[]> {
     }
   }
 
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`  [lever] Company fetches attempted: ${leverCompanyFetchCount}`);
   console.log(`  [lever] Total jobs collected: ${all.length}`);
+  console.log(`  [lever] Completed in ${elapsed}s, collected ${all.length} jobs`);
   return all;
 }
