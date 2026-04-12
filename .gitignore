@@ -1,5 +1,6 @@
 .env.local
 node_modules/
 scrape-*.log
+scrapers/cache/workday-dead.json
 tsconfig.tsbuildinfo
 tsconfig.tsbuildinfo

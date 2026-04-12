@@ -2,8 +2,13 @@
 // Fully public API — no auth, no key. Returns JSON postings for each company.
 // Strategy: fetch curated slugs in small batches and silently skip dead slugs/errors.
 
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
+
 import { generateHash } from '../utils/dedup';
 import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+
+const SLUG_CACHE_PATH = join(process.cwd(), 'scrapers/cache/lever-discovered-slugs.json');
 
 // Live upstream-verified slugs from Simplify + ambicuity.
 const UPSTREAM_VERIFIED_LEVER_COMPANIES = [
@@ -89,6 +94,17 @@ type LeverDiscoveryListing = {
   apply_url?: unknown;
 };
 
+async function loadCachedSlugs(): Promise<{ slugs: string[]; ageMs: number } | null> {
+  try {
+    const stat = await import('node:fs/promises').then(m => m.stat(SLUG_CACHE_PATH));
+    const ageMs = Date.now() - stat.mtimeMs;
+    const raw = await readFile(SLUG_CACHE_PATH, 'utf-8');
+    return { slugs: JSON.parse(raw) as string[], ageMs };
+  } catch {
+    return null;
+  }
+}
+
 function extractLeverSlug(value: unknown): string | null {
   if (!value) return null;
 
@@ -97,54 +113,81 @@ function extractLeverSlug(value: unknown): string | null {
 }
 
 async function discoverLeverSlugs(): Promise<string[]> {
-  const sources = [
-    'https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json',
-    'https://raw.githubusercontent.com/SimplifyJobs/Summer2026-Internships/dev/.github/scripts/listings.json',
-    'https://raw.githubusercontent.com/vanshb03/Summer2026-Internships/dev/.github/scripts/listings.json',
-  ] as const;
+  const cached = await loadCachedSlugs();
+  const CACHE_TTL_MS = 23 * 60 * 60 * 1000;
 
-  const slugSet = new Set<string>();
-
-  for (const url of sources) {
-    try {
-      const res = await fetch(url, {
-        signal: AbortSignal.timeout(15_000),
-      });
-      if (!res.ok) continue;
-
-      const data: unknown = await res.json();
-      if (!Array.isArray(data)) continue;
-
-      for (const item of data) {
-        if (!item || typeof item !== 'object') continue;
-
-        const listing = item as LeverDiscoveryListing;
-        const urls = [listing.url, listing.link, listing.apply_url].filter(Boolean);
-        for (const value of urls) {
-          const slug = extractLeverSlug(value);
-          if (slug) slugSet.add(slug);
-        }
-      }
-    } catch {
-      // Skip failed sources silently
-    }
+  if (cached && cached.ageMs < CACHE_TTL_MS) {
+    console.log(`  [lever] Using cached slugs (${cached.slugs.length} slugs, ${Math.round(cached.ageMs / 3600000)}h old)`);
+    return cached.slugs;
   }
 
   try {
-    const res = await fetch(
-      'https://raw.githubusercontent.com/ReaVNaiL/New-Grad-2024/main/README.md',
-      { signal: AbortSignal.timeout(10_000) }
-    );
-    if (res.ok) {
-      const text = await res.text();
-      const matches = text.matchAll(/jobs\.lever\.co\/([^\/\?\s\)"'#]+)/gi);
-      for (const match of matches) {
-        slugSet.add(match[1]);
+    const sources = [
+      'https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json',
+      'https://raw.githubusercontent.com/SimplifyJobs/Summer2026-Internships/dev/.github/scripts/listings.json',
+      'https://raw.githubusercontent.com/vanshb03/Summer2026-Internships/dev/.github/scripts/listings.json',
+    ] as const;
+
+    const slugSet = new Set<string>();
+
+    for (const url of sources) {
+      try {
+        const res = await fetch(url, {
+          signal: AbortSignal.timeout(30_000),
+        });
+        if (!res.ok) continue;
+
+        const data: unknown = await res.json();
+        if (!Array.isArray(data)) continue;
+
+        for (const item of data) {
+          if (!item || typeof item !== 'object') continue;
+
+          const listing = item as LeverDiscoveryListing;
+          const urls = [listing.url, listing.link, listing.apply_url].filter(Boolean);
+          for (const value of urls) {
+            const slug = extractLeverSlug(value);
+            if (slug) slugSet.add(slug);
+          }
+        }
+      } catch {
+        // Skip failed sources silently
       }
     }
-  } catch {}
 
-  return Array.from(slugSet);
+    try {
+      const res = await fetch(
+        'https://raw.githubusercontent.com/ReaVNaiL/New-Grad-2024/main/README.md',
+        { signal: AbortSignal.timeout(15_000) }
+      );
+      if (res.ok) {
+        const text = await res.text();
+        const matches = text.matchAll(/jobs\.lever\.co\/([^\/\?\s\)"'#]+)/gi);
+        for (const match of matches) {
+          slugSet.add(match[1]);
+        }
+      }
+    } catch {}
+
+    if (slugSet.size > 0) {
+      try {
+        await mkdir(join(process.cwd(), 'scrapers/cache'), { recursive: true });
+        await writeFile(SLUG_CACHE_PATH, JSON.stringify(Array.from(slugSet), null, 2));
+        console.log(`  [lever] Cached ${slugSet.size} discovered slugs`);
+      } catch {}
+    } else if (cached) {
+      console.log(`  [lever] Discovery returned 0 slugs, falling back to cache`);
+      return cached.slugs;
+    }
+
+    return Array.from(slugSet);
+  } catch {
+    if (cached) {
+      console.log(`  [lever] Discovery failed, falling back to cache`);
+      return cached.slugs;
+    }
+    return [];
+  }
 }
 
 // Lever's postings endpoint is slug-only and does not return company metadata.
@@ -200,11 +243,15 @@ function isTechRole(title: string): boolean {
   return TECH_KEYWORDS.some(k => lower.includes(k));
 }
 
+let leverCompanyFetchCount = 0;
+
 async function fetchCompany(slug: string): Promise<NormalizedJob[]> {
+  leverCompanyFetchCount += 1;
+
   try {
     const res = await fetch(
       `https://api.lever.co/v0/postings/${slug}?mode=json&limit=50`,
-      { signal: AbortSignal.timeout(10_000) }
+      { signal: AbortSignal.timeout(20_000) }
     );
     if (!res.ok) return []; // company not on Lever — skip silently
 
@@ -248,6 +295,7 @@ export async function scrapeLever(): Promise<NormalizedJob[]> {
   const BATCH_SIZE = 10;
   const DELAY_MS = 200;
   const all: NormalizedJob[] = [];
+  leverCompanyFetchCount = 0;
   const discoveredSlugs = await discoverLeverSlugs();
   const allSlugs = [...new Set([
     ...UPSTREAM_VERIFIED_LEVER_COMPANIES,
@@ -260,6 +308,8 @@ export async function scrapeLever(): Promise<NormalizedJob[]> {
   console.log(`  [lever] Total unique slugs: ${allSlugs.length}`);
 
   for (let i = 0; i < allSlugs.length; i += BATCH_SIZE) {
+    if (i % 50 === 0) console.log(`  [lever] Processing slugs ${i}/${allSlugs.length}...`);
+
     const batch = allSlugs.slice(i, i + BATCH_SIZE);
     const results = await Promise.allSettled(batch.map(fetchCompany));
 
@@ -274,5 +324,7 @@ export async function scrapeLever(): Promise<NormalizedJob[]> {
     }
   }
 
+  console.log(`  [lever] Company fetches attempted: ${leverCompanyFetchCount}`);
+  console.log(`  [lever] Total jobs collected: ${all.length}`);
   return all;
 }
