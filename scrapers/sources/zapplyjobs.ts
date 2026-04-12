@@ -1,6 +1,5 @@
 import {
   extractCellText,
-  extractFirstUrl,
   fetchCuratedGitHubJobs,
   isMarkdownTableSeparator,
   splitMarkdownRow,
@@ -15,16 +14,34 @@ function parseZapplyMarkdown(markdown: string): CuratedRepoRow[] {
     if (!line.startsWith('|') || isMarkdownTableSeparator(line)) continue;
 
     const cells = splitMarkdownRow(line);
-    if (cells.length < 3 || cells[0]?.trim() === 'Company' || cells[0]?.trim() === '') continue;
+    if (cells.length < 4) continue;
 
-    const [companyCell, titleCell, locationCell, postedCell, applyCell] = cells;
-    const urlCell = applyCell ?? locationCell ?? '';
+    const companyCell = cells[0] ?? '';
+    const titleCell = cells[1] ?? '';
+    const locationCell = cells.length === 6 ? (cells[3] ?? '') : (cells[2] ?? '');
+    const applyCell = cells[cells.length - 1] ?? '';
+
+    const companyText = extractCellText(companyCell);
+    if (companyText === 'Company' || companyText === '') continue;
+
+    const cleanCompany = companyText
+      .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
+      .replace(/[\u{2600}-\u{26FF}]/gu, '')
+      .replace(/[\u{2700}-\u{27BF}]/gu, '')
+      .replace(/\*\*/g, '')
+      .trim();
+
+    const urlMatch = applyCell.match(/\]\(([^)]+)\)/);
+    const url = urlMatch ? urlMatch[1].trim() : '';
+
+    if (!cleanCompany || !url) continue;
+
     rows.push({
-      company: extractCellText(companyCell),
+      company: cleanCompany,
       title: extractCellText(titleCell),
       location: extractCellText(locationCell),
-      url: extractFirstUrl(urlCell),
-      posted: postedCell.trim(),
+      url,
+      posted: '',
     });
   }
 
