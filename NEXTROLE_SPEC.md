@@ -503,8 +503,8 @@ This section is included as operational reference. In this checkout, scraper cod
 5b.Set up local caffeinate cron for CF-blocked scrapers
    (simplyhired, workable) that fail in GitHub Actions:
    `caffeinate -i pnpm scrape` at 7AM daily via crontab
-5c.When a user is not signed in and tries to access the site, it says
-   'unauthorized' or something like that, and shows 0 jobs. However, the description in the pricing tab says that users can view jobs even without an account. Can we fix this? Should users actually be able to view jobs without having an account? Figure this out, plan it, and then implement it.
+5c.Viewers should not be able to view jobs without an account - remove 
+   from the pricing page. 'View jobs' button while not signed in should redirect to google login. 
 5d.When a user signs in and it automatically goes to the job page, it
    always shows 0 jobs until the user refreshes the page. Then the jobs load. Fix this- the jobs should load immediately after signing in/signing up. 
 
@@ -515,8 +515,10 @@ This section is included as operational reference. In this checkout, scraper cod
 6. Fix Workable — currently 10 jobs. 429 rate limiting on
    entry-level search terms. Add exponential backoff + retry,
    run failed terms again after delay. (workable scraper kept - email sent to support)
-7. Expand Ashby slug list (currently 255 valid slugs, target
+7a.Expand Ashby slug list (currently 255 valid slugs, target
    400+ via Common Crawl + additional GitHub repos)
+7b.Takes too long to load 'all' jobs. Prioritize loading first 30-50, 
+   figure out how to speed up.    
 8. [COMPLETED ✅]: Expand Lever company list (currently ~115 slugs)
 9. [COMPLETED ✅]: Expand Workday company list — currently 26/365
    companies returning jobs. Verify wdVersions for remaining 339.
@@ -587,21 +589,27 @@ This section is included as operational reference. In this checkout, scraper cod
     - Feature highlights: search, filters, tracker, pro scoring
     - Add social proof when available (users, applications
       tracked, etc.)
-29. [COMPLETED ✅]: Pricing page text rewrite — clarify free vs pro tiers,
+29a.[COMPLETED ✅]: Pricing page text rewrite — clarify free vs pro tiers,
     update feature list, mark coming-soon features clearly
-30. Full site color scheme overhaul — dark mode improvements,
+29b.Add button to Tracker page that allows users to add custom job (with
+    optional url/details/etc) to their tracker
+29c.[COMPLETED ✅]:In the mini pricing window (and main pricing page if
+    applicable, for the two rows that say 'Unlimited' for Pro users, remove the check mark next to Unlimited. 
+29d.[COMPLETED ✅]:Remove "No account required to browse" from pricing. 
+30. [COMPLETED ✅]:Full site color scheme overhaul — dark mode,
     more vibrant and modern palette, consistent across all pages
-31. Filter sidebar UI redesign — better visual hierarchy,
+31. [COMPLETED ✅]:Filter sidebar UI redesign — better visual hierarchy,
     cleaner styling, mobile-friendly
-32. Job tracker UI redesign — better colors, table/kanban
+32. [COMPLETED ✅]:Job tracker UI redesign — better colors, table/kanban
     toggle, status column styling
-33. Job card design improvements — salary display, company
+33. [COMPLETED ✅]:Job card design improvements — salary display, company
     logo quality, role chip styling
 34. Mobile responsiveness full audit — test /jobs, /tracker,
     /pricing, /profile on iPhone and Android screen sizes.
     Fix all broken layouts.
-35. Navbar: add Profile link (done), verify all links work
-    on mobile (hamburger menu if needed)
+35a.[COMPLETED ✅]:Navbar: add Profile link (done), verify all links work
+35b.Make sure everything works on mobile (all pages, all links, 
+    hamburger menu, etc)
 
 ---
 
@@ -616,7 +624,8 @@ This section is included as operational reference. In this checkout, scraper cod
 38a.Similar jobs on job detail page — show 5 similar jobs
     by title/role using existing FTS + pgvector when ready.
     For now use textSearch similarity. 
-38b.Upgrade modal copy still says "20 jobs", needs update to "30 jobs"
+38b.[COMPLETED ✅]:Upgrade modal copy still says "20 jobs", needs update 
+    to '30 jobs'
 39. Job alerts via email (Resend):
     - User sets filter preferences (role, experience level,
       remote, location) — store in profiles table
@@ -626,7 +635,7 @@ This section is included as operational reference. In this checkout, scraper cod
     - Resend free tier: 3,000 emails/month
 40. Contact / feedback page — simple /contact form, submits
     via Resend to your email. Helps with user trust.
-41a. Server-enforce Pro-only search — currently search is
+41a. [COMPLETED ✅]: Server-enforce Pro-only search — currently search is
      blocked in the UI for free users but /api/jobs?search=
      can be called directly to bypass it. Add a server-side
      check in app/api/jobs/route.ts: if search param is
