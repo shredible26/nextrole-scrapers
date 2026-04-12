@@ -1,5 +1,6 @@
 import {
   extractCellText,
+  extractFirstUrl,
   fetchCuratedGitHubJobs,
   isMarkdownTableSeparator,
   splitMarkdownRow,
@@ -7,41 +8,89 @@ import {
 } from '../utils/github-curated';
 import { NormalizedJob } from '../utils/normalize';
 
-function parseZapplyMarkdown(markdown: string): CuratedRepoRow[] {
+type ZapplyColumnIndices = {
+  title: number;
+  location: number;
+  posted?: number;
+};
+
+function normalizeHeaderCell(value: string): string {
+  return extractCellText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function isSeparatorRow(cells: string[]): boolean {
+  return (
+    cells.length > 0 &&
+    cells.every(cell => /^:?-{3,}:?$/.test(cell.trim()))
+  );
+}
+
+function detectColumns(cells: string[]): ZapplyColumnIndices {
+  const headers = cells.map(normalizeHeaderCell);
+  const titleIndex = headers.findIndex(
+    header => header === 'role' || header === 'title' || header === 'job title',
+  );
+  const locationIndex = headers.findIndex(header => header.includes('location'));
+  const postedIndex = headers.findIndex(
+    header => header === 'posted' || header === 'date posted',
+  );
+
+  return {
+    title: titleIndex >= 0 ? titleIndex : 1,
+    location: locationIndex >= 0 ? locationIndex : Math.min(Math.max(cells.length - 3, 2), cells.length - 2),
+    posted: postedIndex >= 0 ? postedIndex : undefined,
+  };
+}
+
+function cleanCompanyName(value: string): string {
+  return extractCellText(value)
+    .replace(/^[^\p{L}\p{N}]+/gu, '')
+    .trim();
+}
+
+export function parseZapplyMarkdown(markdown: string): CuratedRepoRow[] {
   const rows: CuratedRepoRow[] = [];
+  let columns: ZapplyColumnIndices | null = null;
 
   for (const line of markdown.split('\n')) {
-    if (!line.startsWith('|') || isMarkdownTableSeparator(line)) continue;
+    const trimmedLine = line.trim();
+    if (!trimmedLine.startsWith('|') || isMarkdownTableSeparator(trimmedLine)) {
+      continue;
+    }
 
-    const cells = splitMarkdownRow(line);
+    const cells = splitMarkdownRow(trimmedLine);
     if (cells.length < 4) continue;
+    if (isSeparatorRow(cells)) continue;
 
     const companyCell = cells[0] ?? '';
-    const titleCell = cells[1] ?? '';
-    const locationCell = cells.length === 6 ? (cells[3] ?? '') : (cells[2] ?? '');
+    const companyText = cleanCompanyName(companyCell);
+    if (!companyText) continue;
+    if (companyText.toLowerCase() === 'company') {
+      columns = detectColumns(cells);
+      continue;
+    }
+
+    const detectedColumns = columns ?? detectColumns(cells);
+    const titleCell = cells[detectedColumns.title] ?? '';
+    const locationCell = cells[detectedColumns.location] ?? '';
     const applyCell = cells[cells.length - 1] ?? '';
+    const url = extractFirstUrl(applyCell) ?? '';
+    const title = extractCellText(titleCell);
 
-    const companyText = extractCellText(companyCell);
-    if (companyText === 'Company' || companyText === '') continue;
-
-    const cleanCompany = companyText
-      .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
-      .replace(/[\u{2600}-\u{26FF}]/gu, '')
-      .replace(/[\u{2700}-\u{27BF}]/gu, '')
-      .replace(/\*\*/g, '')
-      .trim();
-
-    const urlMatch = applyCell.match(/\]\(([^)]+)\)/);
-    const url = urlMatch ? urlMatch[1].trim() : '';
-
-    if (!cleanCompany || !url) continue;
+    if (!title || !url) continue;
 
     rows.push({
-      company: cleanCompany,
-      title: extractCellText(titleCell),
+      company: companyText,
+      title,
       location: extractCellText(locationCell),
       url,
-      posted: '',
+      posted:
+        detectedColumns.posted !== undefined
+          ? extractCellText(cells[detectedColumns.posted] ?? '')
+          : '',
     });
   }
 
@@ -66,6 +115,7 @@ export async function scrapeZapplyjobs(): Promise<NormalizedJob[]> {
         repo,
         branches: ['main'],
         markdownPath: 'README.md',
+        allowJson: false,
         parseMarkdown: parseZapplyMarkdown,
       }),
     ),
