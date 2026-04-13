@@ -1,5 +1,16 @@
 export type ExperienceLevel = 'new_grad' | 'entry_level' | 'internship';
-export const ROLE_VALUES = ['swe', 'ds', 'ml', 'ai', 'analyst', 'pm'] as const;
+export const ROLE_VALUES = [
+  'swe',
+  'ds',
+  'ml',
+  'ai',
+  'analyst',
+  'pm',
+  'security',
+  'devops',
+  'consulting',
+  'finance',
+] as const;
 export type Role = (typeof ROLE_VALUES)[number];
 
 export type NormalizedJob = {
@@ -25,90 +36,363 @@ export type NormalizedJob = {
 
 const ROLE_KEYWORDS: Record<Role, string[]> = {
   swe: [
-    'software engineer', 'software developer', 'swe', 'sde',
+    // Core titles
+    'software engineer', 'software developer', 'software programmer',
+    'swe', 'sde', 'sde i', 'swe i',
+    // Full stack
     'full stack', 'fullstack', 'full-stack',
-    'backend', 'back end', 'back-end',
+    // Frontend
     'frontend', 'front end', 'front-end',
-    'web developer', 'web engineer',
-    'systems engineer', 'systems developer',
-    'platform engineer', 'infrastructure engineer',
-    'site reliability', 'sre', 'devops', 'dev ops',
-    'cloud engineer', 'cloud developer',
-    'solutions engineer', 'implementation engineer',
-    'integration engineer', 'applications engineer',
-    'application developer', 'application engineer',
-    'mobile engineer', 'mobile developer',
-    'ios engineer', 'ios developer',
-    'android engineer', 'android developer',
-    'embedded engineer', 'embedded software', 'embedded systems',
-    'firmware engineer', 'firmware developer',
+    'ui engineer', 'ui developer', 'ux engineer',
+    'web developer', 'web engineer', 'web programmer',
+    'javascript developer', 'react developer', 'angular developer',
+    'vue developer', 'node developer', 'typescript developer',
+    // Backend
+    'backend', 'back end', 'back-end',
+    'api developer', 'api engineer',
+    'java developer', 'python developer', 'golang developer',
+    'go developer', 'ruby developer', 'c++ developer', 'c# developer',
+    'php developer', '.net developer', 'scala developer', 'rust developer',
+    // Systems / Platform / Infra (non-DevOps)
+    'systems engineer', 'systems developer', 'systems programmer',
+    'systems software', 'operating systems',
+    'software/platform', 'platform software',
+    'application developer', 'application engineer', 'applications engineer',
+    'application software', 'software application',
+    // Mobile
+    'mobile engineer', 'mobile developer', 'mobile software',
+    'ios engineer', 'ios developer', 'ios software',
+    'android engineer', 'android developer', 'android software',
+    'react native', 'flutter developer', 'swift developer', 'kotlin developer',
+    // Embedded / Hardware
+    'embedded engineer', 'embedded software', 'embedded systems', 'embedded developer',
+    'firmware engineer', 'firmware developer', 'firmware software',
     'hardware engineer', 'hardware developer',
-    'simulation engineer', 'robotics engineer', 'robotics developer',
-    'computer vision engineer',
-    'graphics engineer', 'game engineer', 'game developer',
-    'security engineer', 'cybersecurity engineer', 'cyber engineer',
-    'network engineer', 'network developer', 'wireless engineer',
-    'software quality', 'qa engineer', 'quality engineer',
-    'test engineer', 'sdet', 'automation engineer',
-    'release engineer', 'build engineer',
-    'tools engineer', 'developer tools',
-    'technical program manager', 'tpm',
+    'fpga engineer', 'fpga developer',
+    'rtos engineer', 'bare metal',
+    // Specialized engineering
+    'simulation engineer', 'robotics engineer', 'robotics software',
+    'graphics engineer', 'rendering engineer', 'shader engineer',
+    'game engineer', 'game developer', 'gameplay engineer', 'engine developer',
+    'compiler engineer', 'programming language',
+    'distributed systems', 'storage engineer', 'database engineer',
+    'tools engineer', 'developer tools', 'developer experience', 'dx engineer',
+    'build engineer', 'release engineer',
+    // QA / Testing
+    'qa engineer', 'quality engineer', 'quality assurance',
+    'test engineer', 'sdet', 'software test', 'software quality',
+    'automation engineer', 'test automation',
+    // Solutions / Implementation
+    'solutions engineer', 'solutions developer',
+    'implementation engineer', 'implementation developer',
+    'integration engineer', 'integration developer',
+    'technical support engineer', 'support engineer',
+    // Catch-all architect (non-senior)
     'software architect',
-    'software intern', 'engineering intern',
+    // TPM (technical, not consulting)
+    'technical program manager', 'tpm',
   ],
   ds: [
+    // Core data science
     'data scientist', 'data science',
-    'research scientist', 'applied scientist',
+    'staff data scientist',
+    // Research science
+    'research scientist', 'applied scientist', 'applied research scientist',
+    'research engineer', 'applied researcher',
+    'computational scientist', 'computational researcher',
+    // Data engineering
+    'data engineer', 'data engineering',
+    'analytics engineer', 'analytics engineering',
+    'data platform engineer', 'data infrastructure',
+    'etl developer', 'etl engineer', 'pipeline engineer',
+    'data pipeline', 'data warehouse', 'data lake',
+    // Statistics
+    'statistician', 'statistical analyst', 'statistical researcher',
+    'biostatistician', 'econometrician',
+    // Quant research (overlap with finance but data-heavy)
     'quantitative researcher', 'quant researcher',
-    'data engineer', 'data platform engineer',
-    'analytics engineer', 'data infrastructure',
-    'statistician', 'statistical analyst',
-    'data intern', 'data science intern',
+    'quantitative scientist', 'computational researcher',
+    // Other data
+    'data modeler', 'data architect', 'data solutions',
+    'reporting engineer', 'bi engineer', 'bi developer',
+    'business intelligence engineer', 'business intelligence developer',
   ],
   ml: [
-    'machine learning', 'ml engineer', 'mlops', 'ml ops',
-    'ml platform', 'ml infrastructure',
-    'model engineer', 'training engineer',
-    'recommendation engineer', 'ranking engineer',
-    'search engineer', 'search scientist',
-    'computer vision', 'nlp engineer',
-    'natural language processing',
-    'speech engineer', 'speech scientist',
-    'perception engineer', 'autonomous', 'autonomy engineer',
+    // Core ML
+    'machine learning', 'ml engineer', 'ml developer',
+    'mlops', 'ml ops', 'ml platform', 'ml infrastructure',
+    'ml systems', 'ml research', 'ml scientist',
+    // Model / training
+    'model engineer', 'model developer', 'training engineer',
+    'inference engineer', 'model deployment',
+    // Recommendation / ranking / search
+    'recommendation engineer', 'recommendation scientist',
+    'ranking engineer', 'ranking scientist',
+    'search engineer', 'search scientist', 'search relevance',
+    // CV / NLP / Speech
+    'computer vision', 'cv engineer', 'cv scientist',
+    'vision engineer', 'vision scientist',
+    'nlp engineer', 'nlp scientist', 'nlp developer',
+    'natural language processing', 'natural language understanding',
+    'speech engineer', 'speech scientist', 'speech recognition',
+    'audio engineer', 'audio ml',
+    // Autonomous / Robotics ML
+    'perception engineer', 'perception scientist',
+    'autonomous', 'autonomy engineer', 'autonomy scientist',
+    'self-driving', 'slam engineer',
+    // Other ML specializations
+    'anomaly detection', 'forecasting engineer',
+    'feature engineer', 'feature platform',
   ],
   ai: [
-    'ai engineer', 'artificial intelligence',
-    'deep learning', 'llm', 'generative ai',
-    'gen ai', 'foundation model',
-    'ai researcher', 'ai scientist',
-    'reinforcement learning', 'rl engineer',
+    // Core AI
+    'ai engineer', 'ai developer', 'ai scientist',
+    'artificial intelligence',
+    'ai researcher', 'ai research',
+    'ai infrastructure', 'ai platform',
+    'ai systems', 'ai solutions',
+    // Deep learning
+    'deep learning', 'neural network',
+    // LLM / GenAI
+    'llm', 'large language model',
+    'generative ai', 'gen ai', 'genai',
+    'foundation model', 'transformer',
+    'diffusion model', 'multimodal',
+    // Agents / Prompting
+    'ai agent', 'agentic', 'agent engineer',
+    'prompt engineer', 'prompt engineering',
+    // Reinforcement learning
+    'reinforcement learning', 'rl engineer', 'rl researcher',
+    // Combined labels
     'ai/ml', 'ml/ai',
-    'large language model',
+    // AI architect
+    'ai architect', 'ai technical',
   ],
   analyst: [
-    'data analyst', 'business analyst',
-    'business intelligence', 'bi analyst', 'bi developer',
-    'analytics analyst', 'product analyst',
-    'financial analyst', 'strategy analyst',
-    'operations analyst', 'systems analyst',
-    'quantitative analyst', 'quant analyst',
-    'market analyst', 'marketing analyst',
-    'risk analyst', 'compliance analyst',
-    'pricing analyst', 'supply chain analyst',
-    'it analyst', 'technology analyst',
-    'program analyst', 'policy analyst',
-    'research analyst', 'intelligence analyst',
+    // Data / BI
+    'data analyst', 'data analytics',
+    'business analyst', 'business analysis',
+    'business intelligence analyst', 'bi analyst',
+    'analytics analyst', 'analytics associate',
     'insights analyst', 'reporting analyst',
-    // catch-all — space-padded to prevent false matches like "psychoanalyst"
+    // Product analytics
+    'product analyst', 'growth analyst', 'marketing analyst',
+    'consumer insights', 'market research analyst',
+    // Operations
+    'operations analyst', 'ops analyst',
+    'supply chain analyst', 'logistics analyst',
+    'pricing analyst', 'revenue analyst',
+    // Systems / IT
+    'systems analyst', 'it analyst',
+    'technology analyst', 'technical analyst',
+    // Strategy
+    'strategy analyst', 'strategic analyst',
+    'corporate strategy', 'business strategy analyst',
+    // Finance adjacent (non-quant)
+    'financial analyst', 'fp&a analyst', 'fpa analyst',
+    'corporate finance analyst', 'investment analyst',
+    'research analyst', 'equity research analyst',
+    'credit analyst', 'loan analyst',
+    // Policy / program
+    'policy analyst', 'program analyst',
+    'intelligence analyst', 'research associate',
+    // Catch-all with word boundary guard
     ' analyst',
   ],
   pm: [
+    // Core PM
     'product manager', 'product management',
-    ' pm ', 'associate pm', 'apm ',
+    'associate product manager', 'associate pm', 'apm',
+    // Technical PM
     'technical product manager', 'technical pm',
+    'platform product manager',
+    // Program management (non-TPM)
     'program manager',
+    // Product owner
     'product owner',
-    'product intern', 'pm intern',
+    'product lead',
+    // Intern variants
+    'product intern', 'pm intern', 'apm intern',
+    // Catch-all
+    ' pm ',
+  ],
+  security: [
+    // Core security titles
+    'security engineer', 'security developer', 'security analyst',
+    'security researcher', 'security scientist',
+    'security specialist', 'security associate',
+    'security administrator', 'security operations',
+    // Cyber prefix (space and hyphen variants)
+    'cybersecurity', 'cyber security', 'cyber-security',
+    'cybersecurity engineer', 'cybersecurity analyst',
+    'cybersecurity specialist', 'cybersecurity researcher',
+    // Information security
+    'information security', 'infosec',
+    'information security analyst', 'information security engineer',
+    'information security specialist',
+    // Network security
+    'network security', 'network security engineer',
+    'network security analyst',
+    // Application / Product security
+    'application security', 'appsec', 'app security',
+    'product security', 'software security',
+    'web application security',
+    // Cloud security
+    'cloud security', 'cloud security engineer',
+    // DevSecOps
+    'devsecops', 'dev sec ops',
+    // SOC / Operations
+    'soc analyst', 'soc engineer',
+    'security operations center', 'threat analyst',
+    'incident response', 'incident responder',
+    'security incident',
+    // Penetration testing
+    'penetration tester', 'penetration testing', 'pen tester', 'pen test',
+    'ethical hacker', 'red team', 'blue team', 'purple team',
+    // Vulnerability / Risk
+    'vulnerability', 'vulnerability analyst', 'vulnerability engineer',
+    'vulnerability researcher',
+    'risk analyst', 'risk engineer', 'risk management engineer',
+    'security risk',
+    // Identity / Access
+    'identity engineer', 'iam engineer', 'identity and access',
+    'access management',
+    // Cryptography / Privacy
+    'cryptography', 'cryptographic engineer',
+    'privacy engineer', 'trust and safety engineer',
+    // Compliance / GRC
+    'compliance engineer', 'compliance analyst',
+    'grc analyst', 'governance risk',
+    // Digital forensics
+    'digital forensics', 'forensic analyst', 'forensics engineer',
+    'malware analyst', 'threat intelligence',
+    // Catch-all
+    'cyber analyst', 'cyber engineer',
+  ],
+  devops: [
+    // Core DevOps
+    'devops', 'dev ops', 'devops engineer', 'devops developer',
+    'devops associate', 'junior devops',
+    // SRE
+    'site reliability', 'sre', 'reliability engineer',
+    'site reliability engineer',
+    // Platform / Infra
+    'platform engineer', 'platform developer',
+    'infrastructure engineer', 'infrastructure developer',
+    'infrastructure as code', 'iac engineer',
+    // Cloud operations
+    'cloud engineer', 'cloud developer', 'cloud operations',
+    'cloud infrastructure', 'cloud devops',
+    'aws engineer', 'azure engineer', 'gcp engineer',
+    'cloud support engineer', 'cloud support associate',
+    'cloud systems administrator', 'cloud administrator',
+    // Systems administration
+    'systems administrator', 'sysadmin', 'sys admin',
+    'systems reliability',
+    // Network / IT ops
+    'network engineer', 'network administrator', 'network developer',
+    'network operations', 'it operations', 'it infrastructure',
+    // Database administration
+    'database administrator', 'dba', 'database engineer',
+    // Automation / CI/CD
+    'automation engineer', 'build and release', 'release manager',
+    'ci/cd engineer', 'cicd engineer', 'pipeline engineer',
+    // Containers / Kubernetes
+    'kubernetes engineer', 'k8s engineer',
+    'container engineer', 'docker engineer',
+    // Monitoring / observability
+    'observability engineer', 'monitoring engineer',
+    // DevSecOps (also in security — intentional overlap)
+    'devsecops',
+    // Cloud-native / GitOps
+    'cloud native', 'gitops', 'platform operations',
+    // Storage / compute
+    'storage engineer', 'compute engineer',
+    // MLOps (overlap with ml — intentional)
+    'mlops', 'dataops',
+  ],
+  consulting: [
+    // Generic consulting
+    'consultant', 'consulting',
+    'technology consultant', 'tech consultant',
+    'it consultant', 'it consulting',
+    // Management / Strategy consulting
+    'management consultant', 'strategy consultant',
+    'business consultant', 'business consulting',
+    'strategy consulting',
+    // Digital / transformation
+    'digital transformation', 'digital consultant',
+    'change management', 'organizational consultant',
+    // Firm-specific entry-level titles
+    'business analyst consultant',
+    'analyst consultant',
+    'associate consultant',
+    'consulting analyst',
+    'technology analyst',
+    'consulting associate',
+    // Implementation / solutions consulting
+    'implementation consultant', 'implementation specialist',
+    'solutions consultant', 'solutions specialist',
+    'erp consultant', 'sap consultant', 'oracle consultant',
+    'salesforce consultant', 'salesforce developer',
+    'servicenow consultant', 'workday consultant',
+    // Advisory
+    'advisory analyst', 'advisory associate', 'advisory consultant',
+    'risk advisory', 'risk consultant',
+    'financial advisory', 'deals analyst',
+    // Specific firm program names
+    'systems integration', 'si consultant',
+    'enterprise solutions', 'enterprise consultant',
+    'client services analyst',
+    // Big 4 specific
+    'deloitte analyst', 'pwc analyst', 'kpmg analyst', 'ey analyst',
+    // Human capital / people
+    'human capital', 'workforce consultant',
+    'organizational design',
+  ],
+  finance: [
+    // Quantitative roles
+    'quantitative analyst', 'quant analyst',
+    'quantitative researcher', 'quant researcher',
+    'quantitative developer', 'quant developer',
+    'quantitative trader', 'quant trader',
+    'quantitative engineer', 'quant engineer',
+    'quantitative strategist', 'quant strategist',
+    'quantitative associate',
+    // Trading
+    'algorithmic trading', 'algo trading', 'algo trader',
+    'electronic trading', 'systematic trading',
+    'trading analyst', 'trading associate', 'trading developer',
+    'execution trader', 'derivatives analyst',
+    // Financial engineering / strats
+    'financial engineer', 'financial engineering',
+    'strats', 'digital strats', 'multi asset',
+    'structured products', 'fixed income analyst',
+    'rates analyst', 'credit analyst', 'fx analyst',
+    // Investment / research
+    'investment analyst', 'equity research', 'credit research',
+    'portfolio analyst', 'portfolio associate',
+    'asset management analyst', 'wealth management analyst',
+    'hedge fund analyst', 'private equity analyst',
+    // Risk
+    'risk analyst', 'risk associate', 'risk engineer',
+    'market risk', 'credit risk', 'operational risk',
+    'model risk', 'risk modeling',
+    // Fintech / finance tech
+    'fintech', 'financial technology',
+    'payments engineer', 'payments analyst',
+    'banking technology', 'capital markets technology',
+    // Treasury / Corporate Finance
+    'treasury analyst', 'corporate finance analyst',
+    'fp&a', 'fpa analyst', 'financial planning',
+    // Actuarial
+    'actuarial analyst', 'actuary', 'actuarial associate',
+    'actuarial science',
+    // Accounting (from jobright_accounting)
+    'staff accountant', 'accounting analyst',
+    'audit associate', 'audit analyst', 'external audit',
+    'internal audit', 'tax analyst', 'tax associate',
+    'controller', 'accounting associate',
   ],
 };
 
@@ -172,6 +456,10 @@ const ROLE_ALIASES: Record<string, Role> = {
   ai: 'ai',
   analyst: 'analyst',
   pm: 'pm',
+  security: 'security',
+  devops: 'devops',
+  consulting: 'consulting',
+  finance: 'finance',
 };
 
 export function normalizeRoleValue(role: string): Role | null {
@@ -209,6 +497,7 @@ const EXCLUSION_KEYWORDS = [
   // Lead titles
   'lead engineer', 'lead developer', 'lead scientist',
   'lead analyst', 'lead software', 'lead data', 'lead ml',
+  'lead security', 'lead devops', 'lead platform',
   'tech lead', 'technical lead', 'senior technical',
   // Mid-level numbered patterns (II / 2 / III / 3 / IV / 4+)
   'software engineer ii', 'software engineer 2',
@@ -241,6 +530,10 @@ const EXCLUSION_KEYWORDS = [
   'senior ios', 'senior android', 'senior embedded',
   'senior research', 'senior applied',
   'senior analytics', 'senior business analyst',
+  'senior consultant', 'managing consultant', 'manager consultant',
+  'principal consultant', 'engagement manager',
+  'senior quant', 'managing director', 'vice president', 'vp ',
+  ' md ', 'director of',
   'senior technical program',
 ];
 
