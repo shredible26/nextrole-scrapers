@@ -7,6 +7,11 @@ import { scrapeSpeedyapplyAiNewgrad } from './sources/speedyapply-ai-newgrad';
 import { scrapeSpeedyApplySWENewGrad } from './sources/speedyapply-swe-newgrad';
 import { scrapeJobrightSwe }         from './sources/jobright-swe';
 import { scrapeJobrightData }        from './sources/jobright-data';
+import { scrapeJobrightBusiness }    from './sources/jobright-business';
+import { scrapeJobrightDesign }      from './sources/jobright-design';
+import { scrapeJobrightMarketing }   from './sources/jobright-marketing';
+import { scrapeJobrightAccounting }  from './sources/jobright-accounting';
+import { scrapeJobrightPm }          from './sources/jobright-pm';
 import { scrapeZapplyjobs }          from './sources/zapplyjobs';
 import { scrapeHackerNews }          from './sources/hackernews';
 import { scrapeAdzuna }              from './sources/adzuna';
@@ -18,6 +23,7 @@ import { scrapeGreenhouse }          from './sources/greenhouse';
 import { scrapeLever }               from './sources/lever';
 import { scrapeWorkday }             from './sources/workday';
 import { scrapeWorkable }            from './sources/workable';
+import { scrapeRecruitee }           from './sources/recruitee';
 import { scrapeSmartRecruiters }     from './sources/smartrecruiters';
 import { scrapeZipRecruiter }        from './sources/ziprecruiter';
 import { scrapeGlassdoor }           from './sources/glassdoor';
@@ -51,6 +57,11 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   { name: 'speedyapply_swe_newgrad', fn: scrapeSpeedyApplySWENewGrad },
   { name: 'jobright_swe',          fn: scrapeJobrightSwe },
   { name: 'jobright_data',         fn: scrapeJobrightData },
+  { name: 'jobright_business',     fn: scrapeJobrightBusiness },
+  { name: 'jobright_design',       fn: scrapeJobrightDesign },
+  { name: 'jobright_marketing',    fn: scrapeJobrightMarketing },
+  { name: 'jobright_accounting',   fn: scrapeJobrightAccounting },
+  { name: 'jobright_pm',           fn: scrapeJobrightPm },
   { name: 'zapplyjobs',            fn: scrapeZapplyjobs },
   { name: 'hackernews',            fn: scrapeHackerNews },
   { name: 'adzuna',                fn: scrapeAdzuna },
@@ -62,6 +73,7 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   { name: 'lever',                fn: scrapeLever },
   { name: 'workday',              fn: scrapeWorkday },
   { name: 'workable',             fn: scrapeWorkable },
+  { name: 'recruitee',            fn: scrapeRecruitee },
   { name: 'smartrecruiters',      fn: scrapeSmartRecruiters },
   { name: 'ziprecruiter',         fn: scrapeZipRecruiter },
   { name: 'glassdoor',            fn: scrapeGlassdoor },
@@ -125,6 +137,8 @@ function getScraperTimeoutMs(name: string): number {
       return 480_000;
     case 'workable':
       return 180_000;
+    case 'recruitee':
+      return 300_000;
     default:
       return DEFAULT_SCRAPER_TIMEOUT_MS;
   }

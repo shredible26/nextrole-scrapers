@@ -4,3 +4,6 @@ scrape-*.log
 scrapers/cache/workday-dead.json
 tsconfig.tsbuildinfo
 tsconfig.tsbuildinfo
+.DS_Store
+scrapers/.DS_Store
+tsconfig.tsbuildinfo

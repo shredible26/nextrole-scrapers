@@ -10,6 +10,11 @@ export const GITHUB_REPO_SOURCES = [
   'speedyapply_swe_newgrad',
   'jobright_swe',
   'jobright_data',
+  'jobright_business',
+  'jobright_design',
+  'jobright_marketing',
+  'jobright_accounting',
+  'jobright_pm',
   'zapplyjobs',
 ] as const;
 
