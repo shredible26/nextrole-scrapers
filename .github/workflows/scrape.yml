@@ -9,11 +9,12 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   SKIP_SLOW_SOURCES: 'true'
+  NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
 
     steps:
       - name: Checkout
@@ -29,8 +30,17 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Restore node_modules cache
+        id: node-modules-cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node20-pnpm9-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: pnpm install
 
       - name: Install Playwright browsers
