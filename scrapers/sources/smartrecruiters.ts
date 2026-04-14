@@ -11,6 +11,7 @@ import {
   inferRoles,
   type NormalizedJob,
 } from '../utils/normalize';
+import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const SOURCE = 'smartrecruiters';
 const REQUEST_TIMEOUT_MS = 5_000;
@@ -430,7 +431,9 @@ export async function scrapeSmartRecruiters(): Promise<NormalizedJob[]> {
 async function runStandalone(): Promise<void> {
   const startedAt = Date.now();
 
-  await scrapeSmartRecruiters();
+  const jobs = await scrapeSmartRecruiters();
+  await uploadJobs(jobs);
+  await deactivateStaleJobs(SOURCE, jobs.map((job) => job.dedup_hash));
 
   const elapsedSeconds = ((Date.now() - startedAt) / 1_000).toFixed(1);
   console.log(`  [${SOURCE}] Standalone run completed in ${elapsedSeconds}s`);
