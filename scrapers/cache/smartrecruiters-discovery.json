@@ -1,0 +1,6260 @@
+{
+  "generatedAt": "2026-04-14T05:46:30.881Z",
+  "counts": {
+    "currentFile": 343,
+    "githubRaw": 174,
+    "lookup": 198,
+    "search": 421,
+    "candidates": 1011,
+    "valid": 692,
+    "invalid": 319
+  },
+  "valid": [
+    {
+      "identifier": "Dominos",
+      "valid": true,
+      "totalFound": 24621,
+      "sampleCompanyName": "Domino's",
+      "sampleTitle": "Pizza Maker/Line Cook (4076) 511 N Pittsburgh St"
+    },
+    {
+      "identifier": "SonsoftInc",
+      "valid": true,
+      "totalFound": 6519,
+      "sampleCompanyName": "Sonsoft Inc",
+      "sampleTitle": "JAVA DEVELOPER WITH Gaming  EXP"
+    },
+    {
+      "identifier": "AccorHotel",
+      "valid": true,
+      "totalFound": 5154,
+      "sampleCompanyName": "AccorHotel",
+      "sampleTitle": "Sous Chef"
+    },
+    {
+      "identifier": "Dev2",
+      "valid": true,
+      "totalFound": 4728,
+      "sampleCompanyName": "Dev",
+      "sampleTitle": "Distinguished Engineer - Data Architecture"
+    },
+    {
+      "identifier": "AECOM2",
+      "valid": true,
+      "totalFound": 4680,
+      "sampleCompanyName": "AECOM",
+      "sampleTitle": "Executive Quantity Surveyor, M&E"
+    },
+    {
+      "identifier": "SGS",
+      "valid": true,
+      "totalFound": 4582,
+      "sampleCompanyName": "SGS",
+      "sampleTitle": "Lifting Inspector (LEEA Certified)"
+    },
+    {
+      "identifier": "BoschGroup",
+      "valid": true,
+      "totalFound": 4484,
+      "sampleCompanyName": "Bosch Group",
+      "sampleTitle": "Senior Project Purchasing Manager_DCCC"
+    },
+    {
+      "identifier": "prosidianconsulting",
+      "valid": true,
+      "totalFound": 3900,
+      "sampleCompanyName": "ProSidian Consulting, LLC",
+      "sampleTitle": "BI Developer / Data Analyst"
+    },
+    {
+      "identifier": "AbercrombieAndFitchCo",
+      "valid": true,
+      "totalFound": 3610,
+      "sampleCompanyName": "Abercrombie and Fitch Co.",
+      "sampleTitle": "Abercrombie & Fitch - Assistant Manager, CF Chinook "
+    },
+    {
+      "identifier": "GreeneKing",
+      "valid": true,
+      "totalFound": 3572,
+      "sampleCompanyName": "Greene King",
+      "sampleTitle": "Cleaner"
+    },
+    {
+      "identifier": "JobsForHumanity",
+      "valid": true,
+      "totalFound": 3413,
+      "sampleCompanyName": "Jobs for Humanity",
+      "sampleTitle": "Remote Executive Assistant "
+    },
+    {
+      "identifier": "VeoliaEnvironnementSA",
+      "valid": true,
+      "totalFound": 3292,
+      "sampleCompanyName": "Veolia Environnement SA",
+      "sampleTitle": "Water O&M Technician I"
+    },
+    {
+      "identifier": "JYSK",
+      "valid": true,
+      "totalFound": 3045,
+      "sampleCompanyName": "JYSK",
+      "sampleTitle": "SÄLJARE MED LOGISTIKANSVAR TILL JYSK SKELLEFTEÅ"
+    },
+    {
+      "identifier": "TurnerTownsend",
+      "valid": true,
+      "totalFound": 2673,
+      "sampleCompanyName": "Turner & Townsend",
+      "sampleTitle": "Project Controls Manager | Infrastructure "
+    },
+    {
+      "identifier": "Eurofins",
+      "valid": true,
+      "totalFound": 2472,
+      "sampleCompanyName": "Eurofins",
+      "sampleTitle": "Senior Business Controller - Eurofins Environment US"
+    },
+    {
+      "identifier": "IntegratedResourcesINC",
+      "valid": true,
+      "totalFound": 2471,
+      "sampleCompanyName": "Integrated Resources INC",
+      "sampleTitle": "Care Manager"
+    },
+    {
+      "identifier": "SopraSteria1",
+      "valid": true,
+      "totalFound": 2145,
+      "sampleCompanyName": "Sopra Steria",
+      "sampleTitle": "SAP CO Senior Functional Analyst"
+    },
+    {
+      "identifier": "SQUIRCLEITCONSULTINGSERVICESPVTLTD",
+      "valid": true,
+      "totalFound": 1784,
+      "sampleCompanyName": "SQUIRCLE IT CONSULTING SERVICES PVT. LTD",
+      "sampleTitle": "O2A Drive"
+    },
+    {
+      "identifier": "PilotCompany",
+      "valid": true,
+      "totalFound": 1745,
+      "sampleCompanyName": "Pilot Company",
+      "sampleTitle": "Janitorial Maintenance"
+    },
+    {
+      "identifier": "Collabera2",
+      "valid": true,
+      "totalFound": 1683,
+      "sampleCompanyName": "Collabera",
+      "sampleTitle": "Production Scheduler"
+    },
+    {
+      "identifier": "AbbVie",
+      "valid": true,
+      "totalFound": 1671,
+      "sampleCompanyName": "AbbVie",
+      "sampleTitle": "Business Consultant, Business Excellence, Allergan Aesthetics "
+    },
+    {
+      "identifier": "METROMAKRO",
+      "valid": true,
+      "totalFound": 1632,
+      "sampleCompanyName": "METRO/MAKRO",
+      "sampleTitle": "Equipier Commercial LS Frais/Extra-Frais - CDD F/H"
+    },
+    {
+      "identifier": "Jobsbridge1",
+      "valid": true,
+      "totalFound": 1631,
+      "sampleCompanyName": "Jobsbridge",
+      "sampleTitle": "Clearcase Administrator"
+    },
+    {
+      "identifier": "360ITProfessionals1",
+      "valid": true,
+      "totalFound": 1596,
+      "sampleCompanyName": "360 IT Professionals",
+      "sampleTitle": "Application System Engineer"
+    },
+    {
+      "identifier": "Inetum2",
+      "valid": true,
+      "totalFound": 1545,
+      "sampleCompanyName": "Inetum",
+      "sampleTitle": "Consultor/a Senior SAP EWM"
+    },
+    {
+      "identifier": "dstaff",
+      "valid": true,
+      "totalFound": 1529,
+      "sampleCompanyName": "Direct Staffing Inc",
+      "sampleTitle": "Project Manager/Sales - Fire Protection"
+    },
+    {
+      "identifier": "EgisGroup",
+      "valid": true,
+      "totalFound": 1511,
+      "sampleCompanyName": "Egis Group",
+      "sampleTitle": "Tunneling and Underground Structures Engineer"
+    },
+    {
+      "identifier": "HMGroup",
+      "valid": true,
+      "totalFound": 1508,
+      "sampleCompanyName": "H&M Group",
+      "sampleTitle": "セールスアドバイザーアルバイト（H&M神戸）"
+    },
+    {
+      "identifier": "USM2",
+      "valid": true,
+      "totalFound": 1488,
+      "sampleCompanyName": "USM",
+      "sampleTitle": "Oracle Database Developer"
+    },
+    {
+      "identifier": "Mindlance2",
+      "valid": true,
+      "totalFound": 1395,
+      "sampleCompanyName": "Mindlance",
+      "sampleTitle": "Firewall Analyst"
+    },
+    {
+      "identifier": "SegulaTechnologies",
+      "valid": true,
+      "totalFound": 1360,
+      "sampleCompanyName": "Segula Technologies",
+      "sampleTitle": "Project Cost Engineer- Suspensions & Chassis"
+    },
+    {
+      "identifier": "KrgTechnologyInc",
+      "valid": true,
+      "totalFound": 1358,
+      "sampleCompanyName": "krg technology inc",
+      "sampleTitle": "We are Looking for  Angular JS / UI Developer @ San Jose, CA"
+    },
+    {
+      "identifier": "ArtechInformationSystemLLC",
+      "valid": true,
+      "totalFound": 1342,
+      "sampleCompanyName": "Artech Information System LLC",
+      "sampleTitle": "SQL Developer"
+    },
+    {
+      "identifier": "AlphabeInsightInc",
+      "valid": true,
+      "totalFound": 1303,
+      "sampleCompanyName": "Alphabe Insight Inc",
+      "sampleTitle": "Communications Coordinator"
+    },
+    {
+      "identifier": "RedBull",
+      "valid": true,
+      "totalFound": 1286,
+      "sampleCompanyName": "Red Bull",
+      "sampleTitle": "Office Administrator (Part Time)"
+    },
+    {
+      "identifier": "Continental",
+      "valid": true,
+      "totalFound": 1231,
+      "sampleCompanyName": "Continental",
+      "sampleTitle": "IP Paralegal / Patent‑ und Markenfachangestellte ContiTech (m/w/d) - REF95885R"
+    },
+    {
+      "identifier": "Securitas",
+      "valid": true,
+      "totalFound": 1212,
+      "sampleCompanyName": "Securitas",
+      "sampleTitle": "Kundtjänstmedarbetare till Securitas Linköping"
+    },
+    {
+      "identifier": "Ramboll3",
+      "valid": true,
+      "totalFound": 1175,
+      "sampleCompanyName": "Ramboll",
+      "sampleTitle": "Consultant, Occupational Health & Safety "
+    },
+    {
+      "identifier": "StemXpert1",
+      "valid": true,
+      "totalFound": 1122,
+      "sampleCompanyName": "Stem Xpert ",
+      "sampleTitle": "Conditioning/Seed/Agriculture/Fertilizers/Pesticides/Farmer"
+    },
+    {
+      "identifier": "Nagarro1",
+      "valid": true,
+      "totalFound": 1082,
+      "sampleCompanyName": "Nagarro",
+      "sampleTitle": "Senior Staff Engineer - Senior Data Scientist"
+    },
+    {
+      "identifier": "ALTEN",
+      "valid": true,
+      "totalFound": 1061,
+      "sampleCompanyName": "ALTEN",
+      "sampleTitle": "Modelling System Engineer"
+    },
+    {
+      "identifier": "AvanceConsultingServices2",
+      "valid": true,
+      "totalFound": 1050,
+      "sampleCompanyName": "Avance Consulting Services",
+      "sampleTitle": "Oracle conultant with  iStore experience"
+    },
+    {
+      "identifier": "Devoteam",
+      "valid": true,
+      "totalFound": 1044,
+      "sampleCompanyName": "Devoteam",
+      "sampleTitle": "Directeur de projet H/F"
+    },
+    {
+      "identifier": "DeliveryHero",
+      "valid": true,
+      "totalFound": 1012,
+      "sampleCompanyName": "Delivery Hero",
+      "sampleTitle": "Sales Executive"
+    },
+    {
+      "identifier": "ASSYSTEM",
+      "valid": true,
+      "totalFound": 990,
+      "sampleCompanyName": "ASSYSTEM",
+      "sampleTitle": "Planificateur Nucléaire H/F Mobile France Entière"
+    },
+    {
+      "identifier": "TecTammina",
+      "valid": true,
+      "totalFound": 973,
+      "sampleCompanyName": "TecTammina",
+      "sampleTitle": "Peoplesoft Financial Developer"
+    },
+    {
+      "identifier": "AtriaGroupLLC",
+      "valid": true,
+      "totalFound": 966,
+      "sampleCompanyName": "Atria Group LLC",
+      "sampleTitle": "ECM Infrastructure Engineer"
+    },
+    {
+      "identifier": "NationalVision1",
+      "valid": true,
+      "totalFound": 871,
+      "sampleCompanyName": "National Vision",
+      "sampleTitle": "General Manager - Optical"
+    },
+    {
+      "identifier": "BoydGaming",
+      "valid": true,
+      "totalFound": 863,
+      "sampleCompanyName": "Boyd Gaming",
+      "sampleTitle": "Slot Shift Supervisor"
+    },
+    {
+      "identifier": "Visa",
+      "valid": true,
+      "totalFound": 853,
+      "sampleCompanyName": "Visa",
+      "sampleTitle": "Sr. Manager, Social Impact & Sustainability - Asia Pacific"
+    },
+    {
+      "identifier": "AFRY",
+      "valid": true,
+      "totalFound": 847,
+      "sampleCompanyName": "AFRY",
+      "sampleTitle": "Rakennesuunnittelun harjoittelija"
+    },
+    {
+      "identifier": "Socotec",
+      "valid": true,
+      "totalFound": 800,
+      "sampleCompanyName": "SOCOTEC",
+      "sampleTitle": "Database Administrator - DBA"
+    },
+    {
+      "identifier": "RA2",
+      "valid": true,
+      "totalFound": 793,
+      "sampleCompanyName": "RA",
+      "sampleTitle": "HR Recruiter"
+    },
+    {
+      "identifier": "Wabtec",
+      "valid": true,
+      "totalFound": 783,
+      "sampleCompanyName": "Wabtec",
+      "sampleTitle": "Optics Design Engineer"
+    },
+    {
+      "identifier": "GuzmanYGomez",
+      "valid": true,
+      "totalFound": 782,
+      "sampleCompanyName": "Guzman y Gomez",
+      "sampleTitle": "Cook PT - Northpoint"
+    },
+    {
+      "identifier": "McDonaldsOesterreich",
+      "valid": true,
+      "totalFound": 781,
+      "sampleCompanyName": "McDonald's Österreich",
+      "sampleTitle": "Reinigungskraft (m/w/d)"
+    },
+    {
+      "identifier": "InfojiniInc1",
+      "valid": true,
+      "totalFound": 775,
+      "sampleCompanyName": "Infojini Inc",
+      "sampleTitle": "Transport Software Application Administrator"
+    },
+    {
+      "identifier": "WSHGroup",
+      "valid": true,
+      "totalFound": 743,
+      "sampleCompanyName": "WSH Group",
+      "sampleTitle": "General Manager"
+    },
+    {
+      "identifier": "Experian",
+      "valid": true,
+      "totalFound": 712,
+      "sampleCompanyName": "Experian",
+      "sampleTitle": "Intern - Account Receivables (Cash Application)"
+    },
+    {
+      "identifier": "KIPP",
+      "valid": true,
+      "totalFound": 699,
+      "sampleCompanyName": "KIPP",
+      "sampleTitle": "2026 Summer School Teacher"
+    },
+    {
+      "identifier": "systemCanadaTechnologies",
+      "valid": true,
+      "totalFound": 695,
+      "sampleCompanyName": "system canada technologies",
+      "sampleTitle": "Native English Accent Agents Required For Call Center (Voice + Chat Support)"
+    },
+    {
+      "identifier": "Rituals1",
+      "valid": true,
+      "totalFound": 682,
+      "sampleCompanyName": "Rituals",
+      "sampleTitle": "Sales Advisor - Aberdeen (8 hours)"
+    },
+    {
+      "identifier": "REXEL1",
+      "valid": true,
+      "totalFound": 670,
+      "sampleCompanyName": "REXEL",
+      "sampleTitle": "Commercial Agence - Valence (26) H/F"
+    },
+    {
+      "identifier": "Primark",
+      "valid": true,
+      "totalFound": 664,
+      "sampleCompanyName": "Primark",
+      "sampleTitle": "RETAIL ASSISTANT"
+    },
+    {
+      "identifier": "IDEALFORCELLC",
+      "valid": true,
+      "totalFound": 662,
+      "sampleCompanyName": "IDEALFORCE LLC",
+      "sampleTitle": ".NET Developer (Programmer 3/PR3) (41959)"
+    },
+    {
+      "identifier": "MinorInternational",
+      "valid": true,
+      "totalFound": 660,
+      "sampleCompanyName": "Minor International",
+      "sampleTitle": "Night Guest Service Agent"
+    },
+    {
+      "identifier": "RenesasElectronics",
+      "valid": true,
+      "totalFound": 642,
+      "sampleCompanyName": "Renesas Electronics",
+      "sampleTitle": "シニア スタッフ デバイスエンジニア（パワーMOSFET）"
+    },
+    {
+      "identifier": "GlobalChannelManagementInc",
+      "valid": true,
+      "totalFound": 637,
+      "sampleCompanyName": "Global Channel Management, Inc.",
+      "sampleTitle": "Data Processor"
+    },
+    {
+      "identifier": "Equinox",
+      "valid": true,
+      "totalFound": 630,
+      "sampleCompanyName": "Equinox",
+      "sampleTitle": "Maintenance Associates, Seattle"
+    },
+    {
+      "identifier": "VTechSolution1",
+      "valid": true,
+      "totalFound": 628,
+      "sampleCompanyName": "vTech Solution",
+      "sampleTitle": "Business Analyst - IIBA Certification"
+    },
+    {
+      "identifier": "SikaAG",
+      "valid": true,
+      "totalFound": 620,
+      "sampleCompanyName": "Sika AG",
+      "sampleTitle": "SƏTƏM və Keyfiyyət Təminatı Mühəndisi"
+    },
+    {
+      "identifier": "ServiceNow",
+      "valid": true,
+      "totalFound": 614,
+      "sampleCompanyName": "ServiceNow",
+      "sampleTitle": "Advisory Solution Consultant - German speaking (Munich or Frankfurt)"
+    },
+    {
+      "identifier": "SIXT",
+      "valid": true,
+      "totalFound": 601,
+      "sampleCompanyName": "SIXT",
+      "sampleTitle": "Junior Repair Manager (Norfolk Airport) "
+    },
+    {
+      "identifier": "Cermaticom",
+      "valid": true,
+      "totalFound": 563,
+      "sampleCompanyName": "Cermati.com",
+      "sampleTitle": "Field Collection Team Leader - Palangkaraya"
+    },
+    {
+      "identifier": "QIMA",
+      "valid": true,
+      "totalFound": 559,
+      "sampleCompanyName": "QIMA",
+      "sampleTitle": "Technical Training Performance - Intern"
+    },
+    {
+      "identifier": "Aumovio",
+      "valid": true,
+      "totalFound": 556,
+      "sampleCompanyName": "Aumovio",
+      "sampleTitle": "Innovation Project Management Intern [IDA: 00024] "
+    },
+    {
+      "identifier": "NielsenIQ",
+      "valid": true,
+      "totalFound": 550,
+      "sampleCompanyName": "NielsenIQ",
+      "sampleTitle": "BO Project Management Associate"
+    },
+    {
+      "identifier": "Scalian",
+      "valid": true,
+      "totalFound": 550,
+      "sampleCompanyName": "Scalian",
+      "sampleTitle": "Assistant(e) des Ventes et de Gestion"
+    },
+    {
+      "identifier": "Auto1",
+      "valid": true,
+      "totalFound": 544,
+      "sampleCompanyName": "AUTO1 Group",
+      "sampleTitle": "(Junior) Kreditsachbearbeiter (d/m/w)"
+    },
+    {
+      "identifier": "ChristianBrothersAutomotive",
+      "valid": true,
+      "totalFound": 537,
+      "sampleCompanyName": "Christian Brothers Automotive",
+      "sampleTitle": "Automotive Technician | $40+/Hr. for ASE Master Techs & Weekends Off | Bowling Green"
+    },
+    {
+      "identifier": "RRDonnelley",
+      "valid": true,
+      "totalFound": 534,
+      "sampleCompanyName": "RR Donnelley",
+      "sampleTitle": "IT Support Engineer "
+    },
+    {
+      "identifier": "Intuitive",
+      "valid": true,
+      "totalFound": 528,
+      "sampleCompanyName": "Intuitive",
+      "sampleTitle": "Field Service Engineer"
+    },
+    {
+      "identifier": "Sia",
+      "valid": true,
+      "totalFound": 524,
+      "sampleCompanyName": "Sia",
+      "sampleTitle": "Consultant - AI Engineer"
+    },
+    {
+      "identifier": "DellforTechnologies",
+      "valid": true,
+      "totalFound": 518,
+      "sampleCompanyName": "Dellfor Technologies",
+      "sampleTitle": "AWS Cloud Consultant"
+    },
+    {
+      "identifier": "EndeavourGroupCareers",
+      "valid": true,
+      "totalFound": 515,
+      "sampleCompanyName": "endeavour group careers",
+      "sampleTitle": "Assistant Manager - Wilsonton Hotel"
+    },
+    {
+      "identifier": "Artelia",
+      "valid": true,
+      "totalFound": 505,
+      "sampleCompanyName": "Artelia",
+      "sampleTitle": "Animateur / Animatrice qualité terrain"
+    },
+    {
+      "identifier": "SeniorLifestyle1",
+      "valid": true,
+      "totalFound": 487,
+      "sampleCompanyName": "Senior Lifestyle",
+      "sampleTitle": "AL Care Associate Full Time Days"
+    },
+    {
+      "identifier": "EProInc",
+      "valid": true,
+      "totalFound": 483,
+      "sampleCompanyName": "E*Pro Inc",
+      "sampleTitle": "SQL Server DBA - Des Moines, IA, Charlotte, NC, Phoenix, AZ, St. Louis, MO, Chandler AZ, Minneapolis, MN."
+    },
+    {
+      "identifier": "AskITConsulting",
+      "valid": true,
+      "totalFound": 469,
+      "sampleCompanyName": "Ask IT consulting",
+      "sampleTitle": "In Person Interview for Help Desk Analyst in Little Rock, AR"
+    },
+    {
+      "identifier": "MSXInternational",
+      "valid": true,
+      "totalFound": 461,
+      "sampleCompanyName": "MSX International",
+      "sampleTitle": "Analista de Produtos Pl - Químicos"
+    },
+    {
+      "identifier": "AubergeCollection",
+      "valid": true,
+      "totalFound": 460,
+      "sampleCompanyName": "Auberge Collection",
+      "sampleTitle": "Director of Residences"
+    },
+    {
+      "identifier": "MedHealth3",
+      "valid": true,
+      "totalFound": 435,
+      "sampleCompanyName": "MedHealth",
+      "sampleTitle": "Marketing Communications Lead"
+    },
+    {
+      "identifier": "LouisDreyfusCompany",
+      "valid": true,
+      "totalFound": 434,
+      "sampleCompanyName": "Louis Dreyfus Company",
+      "sampleTitle": "Senior Logistics Coordinator"
+    },
+    {
+      "identifier": "AveryDennison",
+      "valid": true,
+      "totalFound": 428,
+      "sampleCompanyName": "Avery Dennison",
+      "sampleTitle": "Account Specialist (Chinese speaking)"
+    },
+    {
+      "identifier": "SyngentaGroup",
+      "valid": true,
+      "totalFound": 426,
+      "sampleCompanyName": "Syngenta Group",
+      "sampleTitle": "Sales Territory Manager, Turf"
+    },
+    {
+      "identifier": "SmithsGroup2",
+      "valid": true,
+      "totalFound": 422,
+      "sampleCompanyName": "Smiths Group",
+      "sampleTitle": "Engineer II DGSS Eng"
+    },
+    {
+      "identifier": "NBCUniversal3",
+      "valid": true,
+      "totalFound": 419,
+      "sampleCompanyName": "NBCUniversal",
+      "sampleTitle": "Senior Trade Marketing Executive, ANZ"
+    },
+    {
+      "identifier": "DeegitInc3",
+      "valid": true,
+      "totalFound": 412,
+      "sampleCompanyName": "Deegit Inc",
+      "sampleTitle": "Java developer"
+    },
+    {
+      "identifier": "GroupementMousquetaires3",
+      "valid": true,
+      "totalFound": 406,
+      "sampleCompanyName": "Groupement Mousquetaires",
+      "sampleTitle": "CONSULTANT INTERNE (H/F)"
+    },
+    {
+      "identifier": "BCforward3",
+      "valid": true,
+      "totalFound": 405,
+      "sampleCompanyName": "BCforward",
+      "sampleTitle": "QA Lab Technician"
+    },
+    {
+      "identifier": "ProcomConsultantsGroup",
+      "valid": true,
+      "totalFound": 389,
+      "sampleCompanyName": "Procom Consultants Group",
+      "sampleTitle": "Salesforce Technical Lead"
+    },
+    {
+      "identifier": "Wise",
+      "valid": true,
+      "totalFound": 388,
+      "sampleCompanyName": "Wise",
+      "sampleTitle": "Senior Product Compliance Manager - APAC Assets"
+    },
+    {
+      "identifier": "Talan",
+      "valid": true,
+      "totalFound": 386,
+      "sampleCompanyName": "Talan",
+      "sampleTitle": "Consultant RPA Junior F/H"
+    },
+    {
+      "identifier": "Konecranes",
+      "valid": true,
+      "totalFound": 383,
+      "sampleCompanyName": "Konecranes",
+      "sampleTitle": "Territory Technical Support Manager - WEST, USA"
+    },
+    {
+      "identifier": "WNSGlobalServices144",
+      "valid": true,
+      "totalFound": 374,
+      "sampleCompanyName": "WNS Global Services",
+      "sampleTitle": "Python , web scrapping  data conversion VBA"
+    },
+    {
+      "identifier": "WesternDigital",
+      "valid": true,
+      "totalFound": 373,
+      "sampleCompanyName": "Western Digital",
+      "sampleTitle": "QA(品質保証)エンジニア (環境規制適合に向けた評価業務担当)　(Quality Assurance Engineer)"
+    },
+    {
+      "identifier": "CornerstoneBuildingBrandsCareers",
+      "valid": true,
+      "totalFound": 367,
+      "sampleCompanyName": "Cornerstone Building Brands",
+      "sampleTitle": "Glass Specialist "
+    },
+    {
+      "identifier": "Grab",
+      "valid": true,
+      "totalFound": 366,
+      "sampleCompanyName": "Grab",
+      "sampleTitle": "Software Engineer, Fullstack - Insurance"
+    },
+    {
+      "identifier": "Endava",
+      "valid": true,
+      "totalFound": 362,
+      "sampleCompanyName": "Endava",
+      "sampleTitle": "Senior DevOps Engineer - Berlin"
+    },
+    {
+      "identifier": "Sutherland",
+      "valid": true,
+      "totalFound": 359,
+      "sampleCompanyName": "Sutherland",
+      "sampleTitle": "Customer Support Representative"
+    },
+    {
+      "identifier": "SATechnologiesInc4",
+      "valid": true,
+      "totalFound": 356,
+      "sampleCompanyName": "SA Technologies Inc.",
+      "sampleTitle": ".Net Developer"
+    },
+    {
+      "identifier": "USITSolutionsInc",
+      "valid": true,
+      "totalFound": 352,
+      "sampleCompanyName": "US IT Solutions Inc",
+      "sampleTitle": "Network Admin(Cisco Nexus, ASA , Data Center exp)"
+    },
+    {
+      "identifier": "EVERIENCE",
+      "valid": true,
+      "totalFound": 350,
+      "sampleCompanyName": "EVERIENCE",
+      "sampleTitle": "Technicien de support N2-N3 TMS H/F"
+    },
+    {
+      "identifier": "Deloitte6",
+      "valid": true,
+      "totalFound": 349,
+      "sampleCompanyName": "Deloitte",
+      "sampleTitle": "PROFESSIONNEL PRINCIPAL CHARGÉ DE LA RECHERCHE ET DES SUBVENTIONS, INSTITUTION\tORGANISATION OUEST AFRICAINE DE LA SANTÉ"
+    },
+    {
+      "identifier": "Expeditors",
+      "valid": true,
+      "totalFound": 345,
+      "sampleCompanyName": "Expeditors",
+      "sampleTitle": "Customer Service / Operations - Ground Network Solutions *Tuesday-Saturday Schedule*"
+    },
+    {
+      "identifier": "BrakesPlus",
+      "valid": true,
+      "totalFound": 341,
+      "sampleCompanyName": "Brakes Plus",
+      "sampleTitle": "Master Level Automotive Technician"
+    },
+    {
+      "identifier": "SQLI1",
+      "valid": true,
+      "totalFound": 338,
+      "sampleCompanyName": "SQLI",
+      "sampleTitle": "Stage Chargé(e) de formation F/H"
+    },
+    {
+      "identifier": "BESIX",
+      "valid": true,
+      "totalFound": 333,
+      "sampleCompanyName": "BESIX",
+      "sampleTitle": "Spontane Sollicitatie"
+    },
+    {
+      "identifier": "Sandisk",
+      "valid": true,
+      "totalFound": 325,
+      "sampleCompanyName": "Sandisk",
+      "sampleTitle": "Manager 4, Program Management Engineering"
+    },
+    {
+      "identifier": "SMAC1",
+      "valid": true,
+      "totalFound": 323,
+      "sampleCompanyName": "SMAC",
+      "sampleTitle": "Conducteur de travaux confirmé expert façade H/F"
+    },
+    {
+      "identifier": "WestgateResorts",
+      "valid": true,
+      "totalFound": 321,
+      "sampleCompanyName": "Westgate Resorts",
+      "sampleTitle": "Maintenance Technician III"
+    },
+    {
+      "identifier": "Miratech1",
+      "valid": true,
+      "totalFound": 318,
+      "sampleCompanyName": "Miratech",
+      "sampleTitle": "ITSM/ITIL Architect"
+    },
+    {
+      "identifier": "Ubisoft2",
+      "valid": true,
+      "totalFound": 314,
+      "sampleCompanyName": "Ubisoft",
+      "sampleTitle": "Tool Programmer"
+    },
+    {
+      "identifier": "NorthStarStaffingSolutions1",
+      "valid": true,
+      "totalFound": 302,
+      "sampleCompanyName": "North Star Staffing Solutions",
+      "sampleTitle": "Account Executive- Industrial (outside sales role)"
+    },
+    {
+      "identifier": "Loxam",
+      "valid": true,
+      "totalFound": 296,
+      "sampleCompanyName": "Loxam Rental",
+      "sampleTitle": "ATTACHE TECHNICO-COMMERCIAL H/F "
+    },
+    {
+      "identifier": "Vattenfall",
+      "valid": true,
+      "totalFound": 292,
+      "sampleCompanyName": "Vattenfall",
+      "sampleTitle": "Senior Prozess- & Qualitätsmanager:in"
+    },
+    {
+      "identifier": "Wavestone1",
+      "valid": true,
+      "totalFound": 288,
+      "sampleCompanyName": "Wavestone",
+      "sampleTitle": "Cybersecurity - Consultant "
+    },
+    {
+      "identifier": "Iliad-Free",
+      "valid": true,
+      "totalFound": 286,
+      "sampleCompanyName": "Iliad - Free",
+      "sampleTitle": "Conseiller en boutique - Nice - H/F"
+    },
+    {
+      "identifier": "Dungarvin",
+      "valid": true,
+      "totalFound": 285,
+      "sampleCompanyName": "Dungarvin",
+      "sampleTitle": "Program Coordinator (PC) - Residential Caregiving"
+    },
+    {
+      "identifier": "Eataly",
+      "valid": true,
+      "totalFound": 283,
+      "sampleCompanyName": "Eataly North America",
+      "sampleTitle": "Grocery/Market Associate (Full-Time) - Eataly Eaton Centre"
+    },
+    {
+      "identifier": "EROSTechnologiesInc",
+      "valid": true,
+      "totalFound": 283,
+      "sampleCompanyName": "EROS Technologies Inc.",
+      "sampleTitle": "Java Developer"
+    },
+    {
+      "identifier": "Info-Ways",
+      "valid": true,
+      "totalFound": 275,
+      "sampleCompanyName": "Info-Ways",
+      "sampleTitle": "Need Project Manager at Wilmington, DE"
+    },
+    {
+      "identifier": "AlterSolutions",
+      "valid": true,
+      "totalFound": 271,
+      "sampleCompanyName": "act digital",
+      "sampleTitle": "Senior System Design Engineer (Network & Security) - Mechelen - Freelance / CDI "
+    },
+    {
+      "identifier": "AristaNetworks",
+      "valid": true,
+      "totalFound": 264,
+      "sampleCompanyName": "Arista Networks",
+      "sampleTitle": "Hardware Lab Rework Technician"
+    },
+    {
+      "identifier": "CHECK24",
+      "valid": true,
+      "totalFound": 259,
+      "sampleCompanyName": "CHECK24",
+      "sampleTitle": "Produktmanager (m/w/d) AI, Automation & User Experience"
+    },
+    {
+      "identifier": "ALDIStores",
+      "valid": true,
+      "totalFound": 258,
+      "sampleCompanyName": "ALDI Stores",
+      "sampleTitle": "Retail Assistant - Maroubra "
+    },
+    {
+      "identifier": "Randstad4",
+      "valid": true,
+      "totalFound": 257,
+      "sampleCompanyName": "Randstad",
+      "sampleTitle": "PHP Developer"
+    },
+    {
+      "identifier": "MattelInc",
+      "valid": true,
+      "totalFound": 255,
+      "sampleCompanyName": "Mattel",
+      "sampleTitle": "Manager, Brand Strategy & Activation "
+    },
+    {
+      "identifier": "TheWonderfulCompany",
+      "valid": true,
+      "totalFound": 254,
+      "sampleCompanyName": "The Wonderful Company",
+      "sampleTitle": "Group Financial Controller"
+    },
+    {
+      "identifier": "EnviriCorporation",
+      "valid": true,
+      "totalFound": 249,
+      "sampleCompanyName": "Enviri Corporation",
+      "sampleTitle": "IT Intern - Summer 2026"
+    },
+    {
+      "identifier": "KIABI",
+      "valid": true,
+      "totalFound": 249,
+      "sampleCompanyName": "Kiabi",
+      "sampleTitle": "STAGE EXTRACURRICULARE KIABI SESTO SAN GIOVANNI"
+    },
+    {
+      "identifier": "BEUMERGroup1",
+      "valid": true,
+      "totalFound": 247,
+      "sampleCompanyName": "BEUMER Group",
+      "sampleTitle": "Senior SAP Consultant "
+    },
+    {
+      "identifier": "MagellanPartners",
+      "valid": true,
+      "totalFound": 246,
+      "sampleCompanyName": "Magellan Partners",
+      "sampleTitle": "Alternance RH - Chargé.e de Formation [Digital - Luxe]"
+    },
+    {
+      "identifier": "JACOBSDOUWEEGBERTS",
+      "valid": true,
+      "totalFound": 244,
+      "sampleCompanyName": "JACOBS DOUWE EGBERTS",
+      "sampleTitle": "Técnico Mecânico - 1º turno"
+    },
+    {
+      "identifier": "MAZARS",
+      "valid": true,
+      "totalFound": 241,
+      "sampleCompanyName": "MAZARS",
+      "sampleTitle": "Intern Consolidation - Group Finance "
+    },
+    {
+      "identifier": "Entain",
+      "valid": true,
+      "totalFound": 234,
+      "sampleCompanyName": "Entain",
+      "sampleTitle": "Transformation Manager"
+    },
+    {
+      "identifier": "LendiGroup1",
+      "valid": true,
+      "totalFound": 231,
+      "sampleCompanyName": "Lendi Group",
+      "sampleTitle": "In-store Mortgage Broker - Ashburton"
+    },
+    {
+      "identifier": "Xplor",
+      "valid": true,
+      "totalFound": 231,
+      "sampleCompanyName": "Xplor",
+      "sampleTitle": "Sales Development Representative"
+    },
+    {
+      "identifier": "Equus",
+      "valid": true,
+      "totalFound": 227,
+      "sampleCompanyName": "Equus",
+      "sampleTitle": "Career Advisor (800017)"
+    },
+    {
+      "identifier": "ComtechLLC2",
+      "valid": true,
+      "totalFound": 225,
+      "sampleCompanyName": "Comtech LLC",
+      "sampleTitle": "PeopleSoft Consultant"
+    },
+    {
+      "identifier": "ThaliaBcherGmbH1",
+      "valid": true,
+      "totalFound": 225,
+      "sampleCompanyName": "Thalia Bücher GmbH",
+      "sampleTitle": "Werkstudent Recruiting (m/w/d), (20 Std. / Woche)"
+    },
+    {
+      "identifier": "ProcomServices",
+      "valid": true,
+      "totalFound": 223,
+      "sampleCompanyName": "Procom Services",
+      "sampleTitle": "Java Application Developer"
+    },
+    {
+      "identifier": "DeutscheTelekomITSolutions",
+      "valid": true,
+      "totalFound": 220,
+      "sampleCompanyName": "Deutsche Telekom IT Solutions",
+      "sampleTitle": "German Speaking IT Security Manager (Corporate Security) (REF822R)"
+    },
+    {
+      "identifier": "CRB",
+      "valid": true,
+      "totalFound": 219,
+      "sampleCompanyName": "CRB",
+      "sampleTitle": "Plumbing Engineer Internship "
+    },
+    {
+      "identifier": "Lesaffre",
+      "valid": true,
+      "totalFound": 218,
+      "sampleCompanyName": "Lesaffre",
+      "sampleTitle": "Analista de Impuestos Sr."
+    },
+    {
+      "identifier": "Cyberark1",
+      "valid": true,
+      "totalFound": 211,
+      "sampleCompanyName": "CyberArk",
+      "sampleTitle": "Copy of Commercial Account Executive - Plains"
+    },
+    {
+      "identifier": "IFS1",
+      "valid": true,
+      "totalFound": 210,
+      "sampleCompanyName": "IFS",
+      "sampleTitle": "IFS Support Engineer"
+    },
+    {
+      "identifier": "AccorCorpo",
+      "valid": true,
+      "totalFound": 207,
+      "sampleCompanyName": "AccorCorpo",
+      "sampleTitle": "Senior Lawyer – Development Operations (fixed term 6-9 months) (F/M/X)"
+    },
+    {
+      "identifier": "Version1",
+      "valid": true,
+      "totalFound": 207,
+      "sampleCompanyName": "Version 1",
+      "sampleTitle": "UI Developer"
+    },
+    {
+      "identifier": "IQEQ",
+      "valid": true,
+      "totalFound": 202,
+      "sampleCompanyName": "IQ-EQ",
+      "sampleTitle": "IT Support Engineer"
+    },
+    {
+      "identifier": "Tipico",
+      "valid": true,
+      "totalFound": 201,
+      "sampleCompanyName": "Tipico",
+      "sampleTitle": "Shopmitarbeiter in Teilzeit - gerne Quereinsteiger (m/w/d)"
+    },
+    {
+      "identifier": "GalileoLearning",
+      "valid": true,
+      "totalFound": 196,
+      "sampleCompanyName": "Galileo Learning",
+      "sampleTitle": "Summer Camp Counselor, Thousand Oaks/Westlake Village"
+    },
+    {
+      "identifier": "UnitedInfrastructure",
+      "valid": true,
+      "totalFound": 196,
+      "sampleCompanyName": "United Infrastructure",
+      "sampleTitle": "Site Manager"
+    },
+    {
+      "identifier": "SaxonGlobal",
+      "valid": true,
+      "totalFound": 193,
+      "sampleCompanyName": "Saxon Global",
+      "sampleTitle": "Technical Business Analyst"
+    },
+    {
+      "identifier": "GreencrossPetWellnessCompany",
+      "valid": true,
+      "totalFound": 188,
+      "sampleCompanyName": "Greencross Pet Wellness Company",
+      "sampleTitle": "Veterinary Nurse - Greencross Tweed Heads"
+    },
+    {
+      "identifier": "COVEA1",
+      "valid": true,
+      "totalFound": 186,
+      "sampleCompanyName": "COVEA",
+      "sampleTitle": "Gestionnaire administratif formation F/H - Alternance"
+    },
+    {
+      "identifier": "PAConsulting",
+      "valid": true,
+      "totalFound": 184,
+      "sampleCompanyName": "PA Consulting",
+      "sampleTitle": "Senior AI Engineer"
+    },
+    {
+      "identifier": "RadiusLimited",
+      "valid": true,
+      "totalFound": 181,
+      "sampleCompanyName": "Radius Limited",
+      "sampleTitle": "Installation Scheduling Coordinator"
+    },
+    {
+      "identifier": "UnitekLearning",
+      "valid": true,
+      "totalFound": 181,
+      "sampleCompanyName": "Unitek Learning",
+      "sampleTitle": "Medical Assistant Instructor"
+    },
+    {
+      "identifier": "Versant3",
+      "valid": true,
+      "totalFound": 181,
+      "sampleCompanyName": "Versant",
+      "sampleTitle": "NOC Engineer"
+    },
+    {
+      "identifier": "PSICRO",
+      "valid": true,
+      "totalFound": 179,
+      "sampleCompanyName": "PSI CRO",
+      "sampleTitle": "Medical Monitor (Board-certified, Internal Medicine)"
+    },
+    {
+      "identifier": "TestingXperts",
+      "valid": true,
+      "totalFound": 179,
+      "sampleCompanyName": "TestingXperts",
+      "sampleTitle": "Middleware Server Admin"
+    },
+    {
+      "identifier": "LinkedIn3",
+      "valid": true,
+      "totalFound": 177,
+      "sampleCompanyName": "LinkedIn",
+      "sampleTitle": "Senior Associate - Sales Strategy & Operations"
+    },
+    {
+      "identifier": "TheWarehouseGroup1",
+      "valid": true,
+      "totalFound": 175,
+      "sampleCompanyName": "The Warehouse Group",
+      "sampleTitle": "Furniture Specialist - Warehouse Stationery, Wairau Park"
+    },
+    {
+      "identifier": "FortuneBrands",
+      "valid": true,
+      "totalFound": 169,
+      "sampleCompanyName": "Fortune Brands",
+      "sampleTitle": "Gerente de Especificaciones _ Tijuana"
+    },
+    {
+      "identifier": "SYNTEGON",
+      "valid": true,
+      "totalFound": 168,
+      "sampleCompanyName": "SYNTEGON",
+      "sampleTitle": "Technical Customer Support (Project Manager, capital equipment) "
+    },
+    {
+      "identifier": "TEaMConsulting",
+      "valid": true,
+      "totalFound": 167,
+      "sampleCompanyName": "TEaM Consulting",
+      "sampleTitle": "Entry Gate Manager - Delivery Manager"
+    },
+    {
+      "identifier": "MaxMaraFashionGroup",
+      "valid": true,
+      "totalFound": 166,
+      "sampleCompanyName": "Max Mara Fashion Group",
+      "sampleTitle": "Assistant Store Manager - Max Mara Venezia"
+    },
+    {
+      "identifier": "TimmonsGroup1",
+      "valid": true,
+      "totalFound": 164,
+      "sampleCompanyName": "Timmons Group",
+      "sampleTitle": "Survey Instrument Operator"
+    },
+    {
+      "identifier": "EBreuningerGmbHCo",
+      "valid": true,
+      "totalFound": 163,
+      "sampleCompanyName": "E. Breuninger GmbH & Co.",
+      "sampleTitle": "Verkäufer:in Herrenbereich (in Teilzeit/ Minijob)"
+    },
+    {
+      "identifier": "ABOUTYOUGmbH",
+      "valid": true,
+      "totalFound": 162,
+      "sampleCompanyName": "ABOUT YOU SE & Co. KG",
+      "sampleTitle": "Senior Frontend Engineer - Project Delivery Add-ons (all genders)"
+    },
+    {
+      "identifier": "AdlerAllan1",
+      "valid": true,
+      "totalFound": 162,
+      "sampleCompanyName": "Adler & Allan",
+      "sampleTitle": "Recruitment Business Partner  "
+    },
+    {
+      "identifier": "ImplifyInc",
+      "valid": true,
+      "totalFound": 162,
+      "sampleCompanyName": "Implify Inc",
+      "sampleTitle": "Senior System Administrator"
+    },
+    {
+      "identifier": "MUFGInvestorServices",
+      "valid": true,
+      "totalFound": 160,
+      "sampleCompanyName": "MUFG Investor Services",
+      "sampleTitle": "HR Systems Consultant - 12 month FTC"
+    },
+    {
+      "identifier": "KanadeviaInova",
+      "valid": true,
+      "totalFound": 158,
+      "sampleCompanyName": "Kanadevia Inova",
+      "sampleTitle": "Field Service Manager"
+    },
+    {
+      "identifier": "MotelOne",
+      "valid": true,
+      "totalFound": 158,
+      "sampleCompanyName": "Motel One",
+      "sampleTitle": "Reservierungsmitarbeiter (m/w/d)"
+    },
+    {
+      "identifier": "O-I",
+      "valid": true,
+      "totalFound": 158,
+      "sampleCompanyName": "O-I",
+      "sampleTitle": "Apprenti Opérateur (contrat de 4 mois)"
+    },
+    {
+      "identifier": "UniversityHealthNetwork",
+      "valid": true,
+      "totalFound": 157,
+      "sampleCompanyName": "University Health Network",
+      "sampleTitle": "Sales and Customer Service Associate"
+    },
+    {
+      "identifier": "Rydge",
+      "valid": true,
+      "totalFound": 153,
+      "sampleCompanyName": "Rydge",
+      "sampleTitle": "Collaborateur Comptable Confirmé F/H"
+    },
+    {
+      "identifier": "TheracareINC",
+      "valid": true,
+      "totalFound": 153,
+      "sampleCompanyName": "Theracare INC",
+      "sampleTitle": "Cook"
+    },
+    {
+      "identifier": "NEXTON",
+      "valid": true,
+      "totalFound": 152,
+      "sampleCompanyName": "NEXTON",
+      "sampleTitle": "Ingénieur d'affaires H/F"
+    },
+    {
+      "identifier": "CareerGuidant",
+      "valid": true,
+      "totalFound": 150,
+      "sampleCompanyName": "Career Guidant",
+      "sampleTitle": "Java Developer"
+    },
+    {
+      "identifier": "RobertBoschKrankenhausGmbH",
+      "valid": true,
+      "totalFound": 149,
+      "sampleCompanyName": "Robert Bosch Krankenhaus GmbH",
+      "sampleTitle": "Psychologische Beratung (m/w/d) für das PORT Gesundheitszentrum Bosch Health Campus "
+    },
+    {
+      "identifier": "WynnResorts",
+      "valid": true,
+      "totalFound": 149,
+      "sampleCompanyName": "Wynn Resorts",
+      "sampleTitle": "Shift Manager - Cocktail Services"
+    },
+    {
+      "identifier": "Quantix",
+      "valid": true,
+      "totalFound": 144,
+      "sampleCompanyName": "Quantix",
+      "sampleTitle": "Medical Director"
+    },
+    {
+      "identifier": "Redcare-Pharmacy",
+      "valid": true,
+      "totalFound": 144,
+      "sampleCompanyName": "Redcare Pharmacy",
+      "sampleTitle": "Senior Java Engineer (m/f/d)"
+    },
+    {
+      "identifier": "EsolvitInc",
+      "valid": true,
+      "totalFound": 140,
+      "sampleCompanyName": "Esolvit Inc",
+      "sampleTitle": "#1999  Programmer/Developer"
+    },
+    {
+      "identifier": "EuropeanHomecareGmbH",
+      "valid": true,
+      "totalFound": 138,
+      "sampleCompanyName": "European Homecare GmbH",
+      "sampleTitle": "Notfallsanitäter (m/w/d)"
+    },
+    {
+      "identifier": "Avaloq1",
+      "valid": true,
+      "totalFound": 137,
+      "sampleCompanyName": "Avaloq",
+      "sampleTitle": "Business Analyst - Regulatory Reporting"
+    },
+    {
+      "identifier": "CityAndCountyOfSanFrancisco1",
+      "valid": true,
+      "totalFound": 137,
+      "sampleCompanyName": "City and County of San Francisco",
+      "sampleTitle": "Institution Utility Worker (7524) - Citywide - C00420"
+    },
+    {
+      "identifier": "IkanoRetail",
+      "valid": true,
+      "totalFound": 137,
+      "sampleCompanyName": "Ikano-Retail",
+      "sampleTitle": "Online Sales Leader"
+    },
+    {
+      "identifier": "LLNL",
+      "valid": true,
+      "totalFound": 136,
+      "sampleCompanyName": "LLNL",
+      "sampleTitle": " Atomistic Modeling of Materials Degradation - Postdoctoral Researcher "
+    },
+    {
+      "identifier": "Beamery",
+      "valid": true,
+      "totalFound": 135,
+      "sampleCompanyName": "Beamery",
+      "sampleTitle": "YVasiliy Test job2"
+    },
+    {
+      "identifier": "GhobashGroup",
+      "valid": true,
+      "totalFound": 134,
+      "sampleCompanyName": "Ghobash Group",
+      "sampleTitle": "Ductman"
+    },
+    {
+      "identifier": "REWEInternationalDienstleistungsgesellschaftmbH",
+      "valid": true,
+      "totalFound": 134,
+      "sampleCompanyName": "REWE International Dienstleistungsgesellschaft m.b.H",
+      "sampleTitle": "IT Internship (m/f/x) I Integration Platform "
+    },
+    {
+      "identifier": "StaubliGroup",
+      "valid": true,
+      "totalFound": 134,
+      "sampleCompanyName": "Stäubli",
+      "sampleTitle": "Comptable fournisseurs (H/F) - Alternance"
+    },
+    {
+      "identifier": "DeutscheTelekomITSolutionsSlovakia",
+      "valid": true,
+      "totalFound": 129,
+      "sampleCompanyName": "Deutsche Telekom IT Solutions Slovakia",
+      "sampleTitle": "Full Stack Developer (Node.js / Vue.js/React) "
+    },
+    {
+      "identifier": "SBTGlobalInc",
+      "valid": true,
+      "totalFound": 129,
+      "sampleCompanyName": "SBT Global, Inc.",
+      "sampleTitle": "Warehouse Innovation Project Manager"
+    },
+    {
+      "identifier": "CapTechConsulting",
+      "valid": true,
+      "totalFound": 127,
+      "sampleCompanyName": "CapTech Consulting",
+      "sampleTitle": "Full-Stack Developer (.NET based)"
+    },
+    {
+      "identifier": "Lely1",
+      "valid": true,
+      "totalFound": 126,
+      "sampleCompanyName": "Lely",
+      "sampleTitle": "IT Service Manager"
+    },
+    {
+      "identifier": "Sodexo",
+      "valid": true,
+      "totalFound": 126,
+      "sampleCompanyName": "Sodexo",
+      "sampleTitle": "Program Manager - Cleaning Optimisation | Mon to Fri 38hrs | Balcatta Support Centre"
+    },
+    {
+      "identifier": "SRITechSolutionsInc",
+      "valid": true,
+      "totalFound": 124,
+      "sampleCompanyName": "SRI Tech solutions Inc",
+      "sampleTitle": "Technical IOT Architect"
+    },
+    {
+      "identifier": "ColliersInternationalEMEA",
+      "valid": true,
+      "totalFound": 123,
+      "sampleCompanyName": "Colliers International EMEA",
+      "sampleTitle": "Valuer"
+    },
+    {
+      "identifier": "UAPInc",
+      "valid": true,
+      "totalFound": 122,
+      "sampleCompanyName": "UAP Inc.",
+      "sampleTitle": "Driver (Temporary)"
+    },
+    {
+      "identifier": "JSHeldLLC",
+      "valid": true,
+      "totalFound": 121,
+      "sampleCompanyName": "J.S. Held LLC",
+      "sampleTitle": "Office Administrator"
+    },
+    {
+      "identifier": "Playtech",
+      "valid": true,
+      "totalFound": 121,
+      "sampleCompanyName": "Playtech",
+      "sampleTitle": "Live Dealer/3PM-11PM Shift/Southfield, MI"
+    },
+    {
+      "identifier": "APF-Entreprises",
+      "valid": true,
+      "totalFound": 120,
+      "sampleCompanyName": "APF ENTREPRISES",
+      "sampleTitle": "Agent de maintenance polyvalent – Secteur du luxe (H/F) - RQTH"
+    },
+    {
+      "identifier": "Boskalis",
+      "valid": true,
+      "totalFound": 120,
+      "sampleCompanyName": "Boskalis",
+      "sampleTitle": "ROV Pilot Technician I"
+    },
+    {
+      "identifier": "ArkaInfotechInc",
+      "valid": true,
+      "totalFound": 119,
+      "sampleCompanyName": "Arka Infotech Inc",
+      "sampleTitle": "Oracle Incentive Compensation"
+    },
+    {
+      "identifier": "StowGroup",
+      "valid": true,
+      "totalFound": 119,
+      "sampleCompanyName": "STOW Group",
+      "sampleTitle": "Commissioning Engineer"
+    },
+    {
+      "identifier": "DrReddysLaboratoriesLimited",
+      "valid": true,
+      "totalFound": 118,
+      "sampleCompanyName": "Dr Reddy's Laboratories Limited",
+      "sampleTitle": "Territory Manager"
+    },
+    {
+      "identifier": "Nemera",
+      "valid": true,
+      "totalFound": 118,
+      "sampleCompanyName": "Nemera",
+      "sampleTitle": "Tooling Technician (Mold Maker)"
+    },
+    {
+      "identifier": "IntegratedDermatology",
+      "valid": true,
+      "totalFound": 116,
+      "sampleCompanyName": "Integrated Dermatology",
+      "sampleTitle": "Patient Care Coordinator - Dermatology"
+    },
+    {
+      "identifier": "NECSWS",
+      "valid": true,
+      "totalFound": 116,
+      "sampleCompanyName": "NECSWS",
+      "sampleTitle": "Service Desk Manager"
+    },
+    {
+      "identifier": "NazarbayevUniversity1",
+      "valid": true,
+      "totalFound": 114,
+      "sampleCompanyName": "Nazarbayev University",
+      "sampleTitle": "Postdoctoral Fellow (PDF) – Water Modelling Engineer"
+    },
+    {
+      "identifier": "BOCCARD",
+      "valid": true,
+      "totalFound": 113,
+      "sampleCompanyName": "BOCCARD",
+      "sampleTitle": "mécanicien machines tournantes H/F"
+    },
+    {
+      "identifier": "Colliers",
+      "valid": true,
+      "totalFound": 112,
+      "sampleCompanyName": "Colliers",
+      "sampleTitle": "Team Administrator"
+    },
+    {
+      "identifier": "LouvreHotelsGroup",
+      "valid": true,
+      "totalFound": 111,
+      "sampleCompanyName": "Louvre Hotels Group",
+      "sampleTitle": " Femme/valet de chambre - H/F"
+    },
+    {
+      "identifier": "Brainlab",
+      "valid": true,
+      "totalFound": 110,
+      "sampleCompanyName": "Brainlab",
+      "sampleTitle": "IT Project Consultant"
+    },
+    {
+      "identifier": "SigmaSoftware2",
+      "valid": true,
+      "totalFound": 110,
+      "sampleCompanyName": "Sigma Software",
+      "sampleTitle": "Front-End Developer (Swedish Ad Platform)"
+    },
+    {
+      "identifier": "Sportradar",
+      "valid": true,
+      "totalFound": 110,
+      "sampleCompanyName": "Sportradar",
+      "sampleTitle": "Software Developer"
+    },
+    {
+      "identifier": "Flink3",
+      "valid": true,
+      "totalFound": 108,
+      "sampleCompanyName": "Flink",
+      "sampleTitle": "Working Student Legal"
+    },
+    {
+      "identifier": "ScalableGmbH",
+      "valid": true,
+      "totalFound": 108,
+      "sampleCompanyName": "Scalable GmbH",
+      "sampleTitle": "AI Software Engineer – Python (m/f/x)"
+    },
+    {
+      "identifier": "Wix2",
+      "valid": true,
+      "totalFound": 107,
+      "sampleCompanyName": "Wix",
+      "sampleTitle": "People Partner"
+    },
+    {
+      "identifier": "ThirdBridge",
+      "valid": true,
+      "totalFound": 105,
+      "sampleCompanyName": "Third Bridge",
+      "sampleTitle": " Associate Sub-editor, Forum (US Hours)"
+    },
+    {
+      "identifier": "AllegisGlobalSolutions",
+      "valid": true,
+      "totalFound": 104,
+      "sampleCompanyName": "Allegis Global Solutions",
+      "sampleTitle": "Graphic Designer "
+    },
+    {
+      "identifier": "RESPECInc",
+      "valid": true,
+      "totalFound": 104,
+      "sampleCompanyName": "RE/SPEC Inc.",
+      "sampleTitle": "Senior Business Analyst (FED IHS)"
+    },
+    {
+      "identifier": "AIRCommunities",
+      "valid": true,
+      "totalFound": 97,
+      "sampleCompanyName": "AIR Communities",
+      "sampleTitle": "Community Manager - Pine and Parker"
+    },
+    {
+      "identifier": "CoServeGlobalSolutions",
+      "valid": true,
+      "totalFound": 95,
+      "sampleCompanyName": "CoServe Global Solutions",
+      "sampleTitle": "OSP Technician"
+    },
+    {
+      "identifier": "Bet3651",
+      "valid": true,
+      "totalFound": 94,
+      "sampleCompanyName": "bet365",
+      "sampleTitle": "Senior Full Stack Engineer-DTS"
+    },
+    {
+      "identifier": "Bosch-HomeComfort",
+      "valid": true,
+      "totalFound": 94,
+      "sampleCompanyName": "Bosch-HomeComfort",
+      "sampleTitle": "Counter Sales Associate"
+    },
+    {
+      "identifier": "ComputerFutures3",
+      "valid": true,
+      "totalFound": 94,
+      "sampleCompanyName": "Computer Futures",
+      "sampleTitle": "Cloud System Engineer"
+    },
+    {
+      "identifier": "GDMSI",
+      "valid": true,
+      "totalFound": 94,
+      "sampleCompanyName": "General Dynamics Missions System International",
+      "sampleTitle": "Software Engineers, Canadian Air"
+    },
+    {
+      "identifier": "InformaGroupPlc",
+      "valid": true,
+      "totalFound": 94,
+      "sampleCompanyName": "Informa Group Plc.",
+      "sampleTitle": "Senior Marketing Manager – Corporate Solutions"
+    },
+    {
+      "identifier": "InPost",
+      "valid": true,
+      "totalFound": 93,
+      "sampleCompanyName": "InPost",
+      "sampleTitle": "(Senior) Software Engineer Java+Angular (m/f/n)"
+    },
+    {
+      "identifier": "Idexcel3",
+      "valid": true,
+      "totalFound": 91,
+      "sampleCompanyName": "idexcel",
+      "sampleTitle": "data engineer"
+    },
+    {
+      "identifier": "TechnicAtome",
+      "valid": true,
+      "totalFound": 91,
+      "sampleCompanyName": "TechnicAtome",
+      "sampleTitle": "Coordinateur activités MCO équipements controle commande F/H"
+    },
+    {
+      "identifier": "TurnitinLLC",
+      "valid": true,
+      "totalFound": 91,
+      "sampleCompanyName": "Turnitin, LLC",
+      "sampleTitle": "Technical Support Representative, Tier 1 - Turkish Speaker (Philippines Remote)"
+    },
+    {
+      "identifier": "Fabergent",
+      "valid": true,
+      "totalFound": 90,
+      "sampleCompanyName": "Fabergent",
+      "sampleTitle": "Sr. Java Developer Lead (Front Office)"
+    },
+    {
+      "identifier": "MYNRMA",
+      "valid": true,
+      "totalFound": 89,
+      "sampleCompanyName": "My NRMA",
+      "sampleTitle": "Frontline Operations Manager"
+    },
+    {
+      "identifier": "KOSTALGroup",
+      "valid": true,
+      "totalFound": 88,
+      "sampleCompanyName": "KOSTAL Group",
+      "sampleTitle": "INGENIERO DE AMEF DE DISEÑO- Design Assurance engineer"
+    },
+    {
+      "identifier": "Lakeshore",
+      "valid": true,
+      "totalFound": 88,
+      "sampleCompanyName": "Lakeshore Learning Materials, LLC",
+      "sampleTitle": "Classroom Installer - Various Locations"
+    },
+    {
+      "identifier": "InterIKEAGroup",
+      "valid": true,
+      "totalFound": 87,
+      "sampleCompanyName": "Inter IKEA Group",
+      "sampleTitle": "Transport Planner"
+    },
+    {
+      "identifier": "Prosum2",
+      "valid": true,
+      "totalFound": 85,
+      "sampleCompanyName": "Prosum",
+      "sampleTitle": "Backend Engineer"
+    },
+    {
+      "identifier": "CDPROJEKTRED",
+      "valid": true,
+      "totalFound": 84,
+      "sampleCompanyName": "CD PROJEKT RED",
+      "sampleTitle": "Online Services/Backend Intern"
+    },
+    {
+      "identifier": "Keenfinity",
+      "valid": true,
+      "totalFound": 84,
+      "sampleCompanyName": "Keenfinity",
+      "sampleTitle": "Business Controller"
+    },
+    {
+      "identifier": "Quadient1",
+      "valid": true,
+      "totalFound": 83,
+      "sampleCompanyName": "Quadient",
+      "sampleTitle": "Service Technician "
+    },
+    {
+      "identifier": "LegalAndGeneral",
+      "valid": true,
+      "totalFound": 81,
+      "sampleCompanyName": "LegalAndGeneral",
+      "sampleTitle": "Associate Director of Portfolio Management, US Real Estate Equity, L&G, Asset Management - America"
+    },
+    {
+      "identifier": "SOCOTECUKIreland",
+      "valid": true,
+      "totalFound": 81,
+      "sampleCompanyName": "SOCOTEC UK & Ireland",
+      "sampleTitle": "Marketing Executive"
+    },
+    {
+      "identifier": "Nexthink",
+      "valid": true,
+      "totalFound": 80,
+      "sampleCompanyName": "Nexthink",
+      "sampleTitle": "Operational Marketing Assistant (Work-Study Program/Apprentissage)"
+    },
+    {
+      "identifier": "PilmicoFoodsCorporation",
+      "valid": true,
+      "totalFound": 80,
+      "sampleCompanyName": "Pilmico Foods Corporation",
+      "sampleTitle": "Data Management Assistant (Stay In Set Up)"
+    },
+    {
+      "identifier": "BSGroup",
+      "valid": true,
+      "totalFound": 79,
+      "sampleCompanyName": "B&S Group",
+      "sampleTitle": "Senior Concept Developer Brand & Private Label"
+    },
+    {
+      "identifier": "HitachiSolutions",
+      "valid": true,
+      "totalFound": 78,
+      "sampleCompanyName": "Hitachi Solutions",
+      "sampleTitle": "Team Lead - Finance"
+    },
+    {
+      "identifier": "LGCGroup",
+      "valid": true,
+      "totalFound": 76,
+      "sampleCompanyName": "LGC Group",
+      "sampleTitle": "Researcher (1 year FTC)"
+    },
+    {
+      "identifier": "NatixisInPortugal",
+      "valid": true,
+      "totalFound": 76,
+      "sampleCompanyName": "Natixis in Portugal",
+      "sampleTitle": "Supply Officer ( French Speaker) | SM&W"
+    },
+    {
+      "identifier": "SWGroup",
+      "valid": true,
+      "totalFound": 76,
+      "sampleCompanyName": "SW Group",
+      "sampleTitle": "Valuations Assistant Manager "
+    },
+    {
+      "identifier": "CGLRS1",
+      "valid": true,
+      "totalFound": 75,
+      "sampleCompanyName": "CGLRS",
+      "sampleTitle": "Casual Retail Merchandiser"
+    },
+    {
+      "identifier": "HSSSoft",
+      "valid": true,
+      "totalFound": 74,
+      "sampleCompanyName": "HSSSoft",
+      "sampleTitle": "Need Mantas Technical SME ( Developer )"
+    },
+    {
+      "identifier": "TeamworkCorporate",
+      "valid": true,
+      "totalFound": 74,
+      "sampleCompanyName": "Teamwork Corporate",
+      "sampleTitle": "SAP MM Consultant AMS Support / Remote - Colombia"
+    },
+    {
+      "identifier": "Ergomed",
+      "valid": true,
+      "totalFound": 73,
+      "sampleCompanyName": "Ergomed",
+      "sampleTitle": "Pharmacovigilance Project Manager"
+    },
+    {
+      "identifier": "HUG",
+      "valid": true,
+      "totalFound": 73,
+      "sampleCompanyName": "Hôpitaux Universitaires de Genève",
+      "sampleTitle": "Secrétaire de médecin-chef ou cheffe de service - 100%"
+    },
+    {
+      "identifier": "QADInc",
+      "valid": true,
+      "totalFound": 73,
+      "sampleCompanyName": "QAD, Inc.",
+      "sampleTitle": "Bilingual Operational Excellence Manager"
+    },
+    {
+      "identifier": "SoftwareMind",
+      "valid": true,
+      "totalFound": 72,
+      "sampleCompanyName": "Software Mind",
+      "sampleTitle": "Full Stack Engineer"
+    },
+    {
+      "identifier": "CERN",
+      "valid": true,
+      "totalFound": 70,
+      "sampleCompanyName": "CERN",
+      "sampleTitle": "DAQ and Detector Developer (EP-CMS-ID-2026-71-GRAP)"
+    },
+    {
+      "identifier": "somfygroup",
+      "valid": true,
+      "totalFound": 70,
+      "sampleCompanyName": "SOMFY Group",
+      "sampleTitle": "Alternance - Chef de Produit Marketing (H/F)"
+    },
+    {
+      "identifier": "AxelSpringerNewsMediaNational",
+      "valid": true,
+      "totalFound": 69,
+      "sampleCompanyName": "Axel Springer News Media National",
+      "sampleTitle": "Werkstudent Bildbearbeitung (m/w/d)"
+    },
+    {
+      "identifier": "CityofPhiladelphia",
+      "valid": true,
+      "totalFound": 69,
+      "sampleCompanyName": "City of Philadelphia",
+      "sampleTitle": "Vice President, Real Estate & Property Management"
+    },
+    {
+      "identifier": "NorthwesternMutual",
+      "valid": true,
+      "totalFound": 69,
+      "sampleCompanyName": "Northwestern Mutual",
+      "sampleTitle": "Advanced Technology Support Consultant"
+    },
+    {
+      "identifier": "SpruceInfotechInc",
+      "valid": true,
+      "totalFound": 68,
+      "sampleCompanyName": "Spruce Infotech Inc",
+      "sampleTitle": "Solutions Architect – Microsoft Azure / Cloud Transformation (Software)"
+    },
+    {
+      "identifier": "Blend360",
+      "valid": true,
+      "totalFound": 66,
+      "sampleCompanyName": "Blend360",
+      "sampleTitle": "QA Analyst"
+    },
+    {
+      "identifier": "M3USA",
+      "valid": true,
+      "totalFound": 66,
+      "sampleCompanyName": "M3USA",
+      "sampleTitle": "Manager of Project Delivery (Remote)"
+    },
+    {
+      "identifier": "AustroHolding",
+      "valid": true,
+      "totalFound": 63,
+      "sampleCompanyName": "Austro Holding",
+      "sampleTitle": "Möbelmonteur (all genders)"
+    },
+    {
+      "identifier": "DeutscheGlasfaser",
+      "valid": true,
+      "totalFound": 62,
+      "sampleCompanyName": "Deutsche Glasfaser",
+      "sampleTitle": "Mitarbeiter Kreditorenbuchhaltung (m/w/d)"
+    },
+    {
+      "identifier": "Septeo",
+      "valid": true,
+      "totalFound": 62,
+      "sampleCompanyName": "Septeo",
+      "sampleTitle": "Technicien Support Applicatif H/F"
+    },
+    {
+      "identifier": "CarousellGroup",
+      "valid": true,
+      "totalFound": 61,
+      "sampleCompanyName": "Carousell Group",
+      "sampleTitle": "Frontliner (Offline Store)"
+    },
+    {
+      "identifier": "IKEABulgaria",
+      "valid": true,
+      "totalFound": 61,
+      "sampleCompanyName": "IKEA Bulgaria",
+      "sampleTitle": "Декоратор, интериор - съветник за обзавеждане на дома, 8-часов работен ден, магазин ИКЕА МОЛ София"
+    },
+    {
+      "identifier": "KMSTechnology1",
+      "valid": true,
+      "totalFound": 61,
+      "sampleCompanyName": "KMS Technology",
+      "sampleTitle": "Senior Full-stack Test Engineer, based in Da Nang"
+    },
+    {
+      "identifier": "LVMH2",
+      "valid": true,
+      "totalFound": 61,
+      "sampleCompanyName": "LVMH",
+      "sampleTitle": "Regional Service Desk Intern"
+    },
+    {
+      "identifier": "AHRCNYC1",
+      "valid": true,
+      "totalFound": 60,
+      "sampleCompanyName": "AHRC NYC",
+      "sampleTitle": "Job Coach (Special Needs) - Brooklyn & Queens"
+    },
+    {
+      "identifier": "Resillion",
+      "valid": true,
+      "totalFound": 60,
+      "sampleCompanyName": "Resillion",
+      "sampleTitle": "Mastering QC Operator"
+    },
+    {
+      "identifier": "BryceTech",
+      "valid": true,
+      "totalFound": 59,
+      "sampleCompanyName": "BryceTech",
+      "sampleTitle": "Organization Development Specialist II"
+    },
+    {
+      "identifier": "Flywire1",
+      "valid": true,
+      "totalFound": 59,
+      "sampleCompanyName": "Flywire",
+      "sampleTitle": "Implementation Consultant II"
+    },
+    {
+      "identifier": "INXInternationalInkCo",
+      "valid": true,
+      "totalFound": 58,
+      "sampleCompanyName": "INX International Ink Co.",
+      "sampleTitle": "Inplant Ink Technician / Production"
+    },
+    {
+      "identifier": "KPN",
+      "valid": true,
+      "totalFound": 58,
+      "sampleCompanyName": "KPN",
+      "sampleTitle": "Medior XP&A (FP&A) Controller | System Integrator"
+    },
+    {
+      "identifier": "MicroStrategy1",
+      "valid": true,
+      "totalFound": 57,
+      "sampleCompanyName": "MicroStrategy",
+      "sampleTitle": "Account Executive - OEM"
+    },
+    {
+      "identifier": "Assent",
+      "valid": true,
+      "totalFound": 56,
+      "sampleCompanyName": "Assent",
+      "sampleTitle": " Customer/Supplier Support Associate (Korean speaking)"
+    },
+    {
+      "identifier": "FischerGroup",
+      "valid": true,
+      "totalFound": 55,
+      "sampleCompanyName": "fischer Group",
+      "sampleTitle": "DH Studium BWL-International Business (B.A.) (m/w/d) - Start 2027"
+    },
+    {
+      "identifier": "SoftNiceINC1",
+      "valid": true,
+      "totalFound": 55,
+      "sampleCompanyName": "SoftNice INC",
+      "sampleTitle": "oracle consultant"
+    },
+    {
+      "identifier": "WJCompany",
+      "valid": true,
+      "totalFound": 55,
+      "sampleCompanyName": "Woongjin, Inc",
+      "sampleTitle": " Logistics Operations Coordinator - Bilingual (English/Korean)"
+    },
+    {
+      "identifier": "BetaSoftSystems3",
+      "valid": true,
+      "totalFound": 54,
+      "sampleCompanyName": "Beta.SoftSystems",
+      "sampleTitle": "Business Analyst (BA)"
+    },
+    {
+      "identifier": "Solidigm",
+      "valid": true,
+      "totalFound": 53,
+      "sampleCompanyName": "Solidigm",
+      "sampleTitle": "Talent Programs Specialist"
+    },
+    {
+      "identifier": "PrecoatMetals",
+      "valid": true,
+      "totalFound": 52,
+      "sampleCompanyName": "Precoat Metals",
+      "sampleTitle": "Industrial Maintenance Tech"
+    },
+    {
+      "identifier": "Swissquote",
+      "valid": true,
+      "totalFound": 52,
+      "sampleCompanyName": "Swissquote",
+      "sampleTitle": "Junior Relationship Manager"
+    },
+    {
+      "identifier": "TAL",
+      "valid": true,
+      "totalFound": 52,
+      "sampleCompanyName": "TAL",
+      "sampleTitle": "Head of Strategic Transactions"
+    },
+    {
+      "identifier": "McDonaldsCorporation",
+      "valid": true,
+      "totalFound": 51,
+      "sampleCompanyName": "McDonald's Corporation",
+      "sampleTitle": "Security, Business Continuity & Crisis Management Consultant"
+    },
+    {
+      "identifier": "Summerset1",
+      "valid": true,
+      "totalFound": 51,
+      "sampleCompanyName": "Summerset",
+      "sampleTitle": "Registered Nurse - Night Shifts"
+    },
+    {
+      "identifier": "3SBusinessCorporationInc1",
+      "valid": true,
+      "totalFound": 48,
+      "sampleCompanyName": "3 s Business Corporation Inc.",
+      "sampleTitle": "Excellent Job Opportunities in IT Industry @ 3S Busines Corporation."
+    },
+    {
+      "identifier": "AVIVGroup",
+      "valid": true,
+      "totalFound": 48,
+      "sampleCompanyName": "AVIV Group",
+      "sampleTitle": "Chargé d’études économiques - Stage (f/h/x)"
+    },
+    {
+      "identifier": "Axiado",
+      "valid": true,
+      "totalFound": 48,
+      "sampleCompanyName": "Axiado",
+      "sampleTitle": "Corporate Controller"
+    },
+    {
+      "identifier": "LowellCommunityHealthCenter",
+      "valid": true,
+      "totalFound": 48,
+      "sampleCompanyName": "Lowell Community Health Center",
+      "sampleTitle": "Call Center Representative- Arabic Fluency"
+    },
+    {
+      "identifier": "StarbucksAU",
+      "valid": true,
+      "totalFound": 48,
+      "sampleCompanyName": "Starbucks",
+      "sampleTitle": "Part time Baristas - Armstrong Creek (Upcoming New Store) "
+    },
+    {
+      "identifier": "HRConnectLimited",
+      "valid": true,
+      "totalFound": 47,
+      "sampleCompanyName": "HR Connect Limited",
+      "sampleTitle": "Senior Site Supervisor"
+    },
+    {
+      "identifier": "NAVANTIAUK",
+      "valid": true,
+      "totalFound": 47,
+      "sampleCompanyName": "NAVANTIA UK",
+      "sampleTitle": "Cleaner"
+    },
+    {
+      "identifier": "NETZSCHGroup",
+      "valid": true,
+      "totalFound": 47,
+      "sampleCompanyName": "NETZSCH Group",
+      "sampleTitle": "Werkstudent (m/w/d) im Bereich Service Support"
+    },
+    {
+      "identifier": "IngramContentGroup1",
+      "valid": true,
+      "totalFound": 46,
+      "sampleCompanyName": "Ingram Content Group",
+      "sampleTitle": "Library Processor - 1st -$17.50/ hr"
+    },
+    {
+      "identifier": "Catch22",
+      "valid": true,
+      "totalFound": 45,
+      "sampleCompanyName": "Catch22",
+      "sampleTitle": "Administration & Data Analyst"
+    },
+    {
+      "identifier": "ContinentalTechnologySolutions",
+      "valid": true,
+      "totalFound": 45,
+      "sampleCompanyName": "Continental Technology Solutions",
+      "sampleTitle": "Team Foundation Server – TFS_Support"
+    },
+    {
+      "identifier": "GriffithUniversity",
+      "valid": true,
+      "totalFound": 45,
+      "sampleCompanyName": "Griffith University",
+      "sampleTitle": "Research Support Officer"
+    },
+    {
+      "identifier": "SilfabSolar",
+      "valid": true,
+      "totalFound": 45,
+      "sampleCompanyName": "Silfab Solar",
+      "sampleTitle": "Corporate Trade Compliance Manager"
+    },
+    {
+      "identifier": "UniversidadDelValleDeGuatemala",
+      "valid": true,
+      "totalFound": 45,
+      "sampleCompanyName": "Universidad del Valle de Guatemala",
+      "sampleTitle": "Asistente de Investigación Educativa"
+    },
+    {
+      "identifier": "Nearmap",
+      "valid": true,
+      "totalFound": 44,
+      "sampleCompanyName": "Nearmap",
+      "sampleTitle": "Senior Software Engineer"
+    },
+    {
+      "identifier": "OceanaGold",
+      "valid": true,
+      "totalFound": 44,
+      "sampleCompanyName": "OceanaGold",
+      "sampleTitle": "Experienced Jumbo Operator "
+    },
+    {
+      "identifier": "Cricut",
+      "valid": true,
+      "totalFound": 43,
+      "sampleCompanyName": "Cricut",
+      "sampleTitle": "Customer Service Technical Support Representative"
+    },
+    {
+      "identifier": "InitialSAS",
+      "valid": true,
+      "totalFound": 43,
+      "sampleCompanyName": "Initial SAS",
+      "sampleTitle": "Commercial Prospection BtoB H/F"
+    },
+    {
+      "identifier": "PriviaHealth",
+      "valid": true,
+      "totalFound": 43,
+      "sampleCompanyName": "Privia Health",
+      "sampleTitle": "Analyst, Business Analytics"
+    },
+    {
+      "identifier": "Consultadd4",
+      "valid": true,
+      "totalFound": 42,
+      "sampleCompanyName": "Consultadd",
+      "sampleTitle": "IT Consultant/Software Developer/Business Analyst/Functional Consultant"
+    },
+    {
+      "identifier": "Freshworks",
+      "valid": true,
+      "totalFound": 42,
+      "sampleCompanyName": "Freshworks",
+      "sampleTitle": "Employment Counsel"
+    },
+    {
+      "identifier": "PSLogistics",
+      "valid": true,
+      "totalFound": 42,
+      "sampleCompanyName": "PS Logistics",
+      "sampleTitle": "Driver Manager"
+    },
+    {
+      "identifier": "JobMobz1",
+      "valid": true,
+      "totalFound": 41,
+      "sampleCompanyName": "Job Mobz",
+      "sampleTitle": "Experienced File Clerk (On-site, temp)"
+    },
+    {
+      "identifier": "LinkSolutionsInc",
+      "valid": true,
+      "totalFound": 41,
+      "sampleCompanyName": "Link Solutions, Inc.",
+      "sampleTitle": "Systems Engineer (SME) Subject Matter Expert"
+    },
+    {
+      "identifier": "Vitol",
+      "valid": true,
+      "totalFound": 41,
+      "sampleCompanyName": "Vitol",
+      "sampleTitle": "Senior Machine Learning Engineer"
+    },
+    {
+      "identifier": "MATHoldings",
+      "valid": true,
+      "totalFound": 40,
+      "sampleCompanyName": "MAT Holdings, Inc",
+      "sampleTitle": "Operations Manager"
+    },
+    {
+      "identifier": "DeltaElectronics",
+      "valid": true,
+      "totalFound": 39,
+      "sampleCompanyName": "Delta Electronics",
+      "sampleTitle": "Technical Sales Engineer - Energy Storage Systems (m/w/d)"
+    },
+    {
+      "identifier": "StratasFoods",
+      "valid": true,
+      "totalFound": 39,
+      "sampleCompanyName": "Stratas Foods",
+      "sampleTitle": "Pumper Loader Operator – $20.57 (2nd Shift, Floater) "
+    },
+    {
+      "identifier": "AcumenSolutions",
+      "valid": true,
+      "totalFound": 38,
+      "sampleCompanyName": "Acumen Solutions",
+      "sampleTitle": "Solutions Architect"
+    },
+    {
+      "identifier": "ASOS",
+      "valid": true,
+      "totalFound": 38,
+      "sampleCompanyName": "ASOS",
+      "sampleTitle": "Finance Analyst"
+    },
+    {
+      "identifier": "LACROIX1",
+      "valid": true,
+      "totalFound": 38,
+      "sampleCompanyName": "LACROIX",
+      "sampleTitle": "Technicien(ne) Méthodes Test"
+    },
+    {
+      "identifier": "SampoernaSchoolsSystem",
+      "valid": true,
+      "totalFound": 38,
+      "sampleCompanyName": "Sampoerna Schools System",
+      "sampleTitle": "SAMPOERNA UNIVERSITY -  HEAD OF INFORMATION SYSTEM STUDY PROGRAM"
+    },
+    {
+      "identifier": "VisageINC",
+      "valid": true,
+      "totalFound": 38,
+      "sampleCompanyName": "Visage INC",
+      "sampleTitle": "[STAGING TEST]"
+    },
+    {
+      "identifier": "Cint",
+      "valid": true,
+      "totalFound": 37,
+      "sampleCompanyName": "Cint",
+      "sampleTitle": "Senior Analyst, Partner Success"
+    },
+    {
+      "identifier": "EvelynPartners",
+      "valid": true,
+      "totalFound": 37,
+      "sampleCompanyName": "Evelyn Partners",
+      "sampleTitle": "Operations Executive -  Client Relations "
+    },
+    {
+      "identifier": "UKAtomicEnergyAuthority",
+      "valid": true,
+      "totalFound": 37,
+      "sampleCompanyName": "UK Atomic Energy Authority",
+      "sampleTitle": "Head of Regulatory Compliance & Engagement"
+    },
+    {
+      "identifier": "AJBell1",
+      "valid": true,
+      "totalFound": 36,
+      "sampleCompanyName": "AJ Bell",
+      "sampleTitle": "Operational Oversight Manager"
+    },
+    {
+      "identifier": "JulhietSterwen",
+      "valid": true,
+      "totalFound": 36,
+      "sampleCompanyName": "Julhiet Sterwen",
+      "sampleTitle": "Gestionnaire de Formation H/F"
+    },
+    {
+      "identifier": "ColumbiaUniversity1",
+      "valid": true,
+      "totalFound": 35,
+      "sampleCompanyName": "Columbia University",
+      "sampleTitle": "Adjunct Lecturer, Survey and Polling Methodology (On-Campus Fall ’26 & Spring ’27)"
+    },
+    {
+      "identifier": "PactGroup",
+      "valid": true,
+      "totalFound": 35,
+      "sampleCompanyName": "Pact Group",
+      "sampleTitle": " Health, Safety and Environment Advisor"
+    },
+    {
+      "identifier": "WellmarkInc",
+      "valid": true,
+      "totalFound": 35,
+      "sampleCompanyName": "Wellmark, Inc.",
+      "sampleTitle": "Healthcare Data Analytics & Reporting Consultant (Open to hiring at Senior-level)"
+    },
+    {
+      "identifier": "WilliamsRacing",
+      "valid": true,
+      "totalFound": 35,
+      "sampleCompanyName": "Williams Racing",
+      "sampleTitle": "People Change & Transformation Lead"
+    },
+    {
+      "identifier": "RadiantInfoSystemsLtd",
+      "valid": true,
+      "totalFound": 34,
+      "sampleCompanyName": "Radiant Info Systems Ltd",
+      "sampleTitle": "Project Manager"
+    },
+    {
+      "identifier": "TheUniversityOfAuckland",
+      "valid": true,
+      "totalFound": 33,
+      "sampleCompanyName": "University of Auckland",
+      "sampleTitle": "Lifeguard - Part Time "
+    },
+    {
+      "identifier": "AdeptSolutionsInc",
+      "valid": true,
+      "totalFound": 32,
+      "sampleCompanyName": "Adept Solutions Inc.",
+      "sampleTitle": "Web Developer"
+    },
+    {
+      "identifier": "Dailymotion",
+      "valid": true,
+      "totalFound": 31,
+      "sampleCompanyName": "Dailymotion",
+      "sampleTitle": "Senior Backend Engineer — Core Components (Full remote France)"
+    },
+    {
+      "identifier": "AceTate",
+      "valid": true,
+      "totalFound": 30,
+      "sampleCompanyName": "Ace & Tate",
+      "sampleTitle": "Optical Assistant"
+    },
+    {
+      "identifier": "ApplaudoStudios",
+      "valid": true,
+      "totalFound": 30,
+      "sampleCompanyName": "Applaudo Studios",
+      "sampleTitle": "Senior PeopleSoft HCM Consultant"
+    },
+    {
+      "identifier": "IKEA-AlHomaiziLimited",
+      "valid": true,
+      "totalFound": 30,
+      "sampleCompanyName": "IKEA - Al Homaizi Limited",
+      "sampleTitle": "Sales Co-worker - Limited Contract "
+    },
+    {
+      "identifier": "Akuo",
+      "valid": true,
+      "totalFound": 29,
+      "sampleCompanyName": "Akuo",
+      "sampleTitle": "Solution Expert OT (H/F)"
+    },
+    {
+      "identifier": "Cuscal1",
+      "valid": true,
+      "totalFound": 29,
+      "sampleCompanyName": "Cuscal",
+      "sampleTitle": "Financial Crime Intelligence & Investigations Manager "
+    },
+    {
+      "identifier": "EACH1",
+      "valid": true,
+      "totalFound": 29,
+      "sampleCompanyName": "EACH",
+      "sampleTitle": "Counsellor (Gamblers Help)"
+    },
+    {
+      "identifier": "Mirantis",
+      "valid": true,
+      "totalFound": 29,
+      "sampleCompanyName": "Mirantis",
+      "sampleTitle": "Sales Operations Manager"
+    },
+    {
+      "identifier": "Schrder",
+      "valid": true,
+      "totalFound": 29,
+      "sampleCompanyName": "Schréder",
+      "sampleTitle": "B2B - Business Development Manager"
+    },
+    {
+      "identifier": "SMGSwissMarketplaceGroup",
+      "valid": true,
+      "totalFound": 29,
+      "sampleCompanyName": "SMG Swiss Marketplace Group",
+      "sampleTitle": "Junior Legal Counsel – Data Protection (f/m/d) | 100% | Hybrid working model | Zurich"
+    },
+    {
+      "identifier": "GesellschaftFrGesundheitUndPdagogikMbH",
+      "valid": true,
+      "totalFound": 28,
+      "sampleCompanyName": "Gesellschaft für Gesundheit und Pädagogik mbH",
+      "sampleTitle": "Erzieher*in (m/w/d) für die Kindertagesstätte »Am Kurpark« Malchow in Elternzeitvertretung"
+    },
+    {
+      "identifier": "InternationalDairyQueen",
+      "valid": true,
+      "totalFound": 28,
+      "sampleCompanyName": "International Dairy Queen, Inc.",
+      "sampleTitle": "Vice President, Digital Commerce & Loyalty, US and Canada"
+    },
+    {
+      "identifier": "SoftpathSystemLLC",
+      "valid": true,
+      "totalFound": 28,
+      "sampleCompanyName": "Softpath System LLC",
+      "sampleTitle": "Cassandra Developer"
+    },
+    {
+      "identifier": "SmartRecruiters",
+      "valid": true,
+      "totalFound": 27,
+      "sampleCompanyName": "SmartRecruiters Inc",
+      "sampleTitle": "Senior Frontend Engineer, Design System & Frontend Platform"
+    },
+    {
+      "identifier": "ChristianLivingCommunities",
+      "valid": true,
+      "totalFound": 26,
+      "sampleCompanyName": "Christian Living Communities",
+      "sampleTitle": "Personal Care Partner II QMAP Saturday & Sunday 6am-6pm $20.75 - $22.88 / hour"
+    },
+    {
+      "identifier": "DecipheraPharmaceuticals1",
+      "valid": true,
+      "totalFound": 26,
+      "sampleCompanyName": "Deciphera Pharmaceuticals",
+      "sampleTitle": "Medical Science Liaison II, Mid Atlantic "
+    },
+    {
+      "identifier": "EttainGroup",
+      "valid": true,
+      "totalFound": 26,
+      "sampleCompanyName": "ettain group",
+      "sampleTitle": "Linux Support Engineer"
+    },
+    {
+      "identifier": "Hiflylabs",
+      "valid": true,
+      "totalFound": 26,
+      "sampleCompanyName": "Hiflylabs",
+      "sampleTitle": "Lead Solution Architect (AI & Data Applications)"
+    },
+    {
+      "identifier": "PortsmouthHospitalsUniversityNHSTrust",
+      "valid": true,
+      "totalFound": 26,
+      "sampleCompanyName": "Portsmouth Hospitals University NHS Trust",
+      "sampleTitle": "Health Improvement Facilitator"
+    },
+    {
+      "identifier": "Vericast",
+      "valid": true,
+      "totalFound": 26,
+      "sampleCompanyName": "Vericast",
+      "sampleTitle": "Associate Campaign Insights Analyst (Remote)"
+    },
+    {
+      "identifier": "AbbeyRecruitment",
+      "valid": true,
+      "totalFound": 25,
+      "sampleCompanyName": "Abbey Recruitment",
+      "sampleTitle": "Chef de Partie - 5 Star Hotel - Banqueting"
+    },
+    {
+      "identifier": "Achieve1",
+      "valid": true,
+      "totalFound": 25,
+      "sampleCompanyName": "Achieve",
+      "sampleTitle": "Social Media Coordinator"
+    },
+    {
+      "identifier": "Masdar",
+      "valid": true,
+      "totalFound": 25,
+      "sampleCompanyName": "Masdar",
+      "sampleTitle": "UAE National Graduates "
+    },
+    {
+      "identifier": "BlueScope",
+      "valid": true,
+      "totalFound": 24,
+      "sampleCompanyName": "BlueScope",
+      "sampleTitle": "Customer Service Representative "
+    },
+    {
+      "identifier": "TimocomGmbH1",
+      "valid": true,
+      "totalFound": 24,
+      "sampleCompanyName": "Timocom GmbH",
+      "sampleTitle": "HR Business Partner (m/w/d)"
+    },
+    {
+      "identifier": "WabashValleyPowerAlliance",
+      "valid": true,
+      "totalFound": 24,
+      "sampleCompanyName": "Wabash Valley Power Alliance",
+      "sampleTitle": "NineStar Connect - Operations Assistant"
+    },
+    {
+      "identifier": "DataIntellect",
+      "valid": true,
+      "totalFound": 23,
+      "sampleCompanyName": "Data Intellect",
+      "sampleTitle": "Business Development Executive"
+    },
+    {
+      "identifier": "Deezer",
+      "valid": true,
+      "totalFound": 23,
+      "sampleCompanyName": "Deezer",
+      "sampleTitle": "Sales Enablement Intern - 6 months (Native French/Fluent English speaking mandatory) m/f/d"
+    },
+    {
+      "identifier": "EntCreditUnion1",
+      "valid": true,
+      "totalFound": 23,
+      "sampleCompanyName": "Ent Credit Union",
+      "sampleTitle": "Mortgage Loan Officer"
+    },
+    {
+      "identifier": "Kioxia",
+      "valid": true,
+      "totalFound": 23,
+      "sampleCompanyName": "Kioxia",
+      "sampleTitle": "Full Stack Engineer - 2250"
+    },
+    {
+      "identifier": "SanaCommerce",
+      "valid": true,
+      "totalFound": 23,
+      "sampleCompanyName": "Sana Commerce",
+      "sampleTitle": "Product Software Architect"
+    },
+    {
+      "identifier": "SQexpetsLLC",
+      "valid": true,
+      "totalFound": 23,
+      "sampleCompanyName": "SQexpets LLC",
+      "sampleTitle": "QA Analyst - entry level"
+    },
+    {
+      "identifier": "Unit44",
+      "valid": true,
+      "totalFound": 23,
+      "sampleCompanyName": "Unit4",
+      "sampleTitle": "Konsultant Techniczny "
+    },
+    {
+      "identifier": "GuardantHealth",
+      "valid": true,
+      "totalFound": 22,
+      "sampleCompanyName": "Guardant Health",
+      "sampleTitle": "Client Services Associate (Fixed Term)"
+    },
+    {
+      "identifier": "IntegriChain1",
+      "valid": true,
+      "totalFound": 22,
+      "sampleCompanyName": "IntegriChain",
+      "sampleTitle": "Corporate Counsel "
+    },
+    {
+      "identifier": "CirrusAssetManagement",
+      "valid": true,
+      "totalFound": 21,
+      "sampleCompanyName": "Cirrus Asset Management",
+      "sampleTitle": "Part-Time Maintenance Technician - 32 hours per week (52658)"
+    },
+    {
+      "identifier": "PioneerDataSystemsInc",
+      "valid": true,
+      "totalFound": 21,
+      "sampleCompanyName": "Pioneer Data Systems, Inc",
+      "sampleTitle": "Lab Technician I"
+    },
+    {
+      "identifier": "Revalize",
+      "valid": true,
+      "totalFound": 21,
+      "sampleCompanyName": "Revalize",
+      "sampleTitle": "Senior Financial Analyst"
+    },
+    {
+      "identifier": "InsilicoLogix",
+      "valid": true,
+      "totalFound": 20,
+      "sampleCompanyName": "Insilico Logix",
+      "sampleTitle": "Entry Level- QA/ Tester"
+    },
+    {
+      "identifier": "TruvenHealthAnalyticsanIBMCompany",
+      "valid": true,
+      "totalFound": 20,
+      "sampleCompanyName": "Truven Health Analytics, an IBM Company",
+      "sampleTitle": "Senior Research Analyst"
+    },
+    {
+      "identifier": "CaliforniaISO",
+      "valid": true,
+      "totalFound": 19,
+      "sampleCompanyName": "California ISO",
+      "sampleTitle": "Sr Transmission Assets Engineer (Hybrid or Local Remote)"
+    },
+    {
+      "identifier": "CanadianBankNoteCompany",
+      "valid": true,
+      "totalFound": 19,
+      "sampleCompanyName": "Canadian Bank Note Company",
+      "sampleTitle": "Bilingual Account Associate - BUMP Group"
+    },
+    {
+      "identifier": "IOMAXISLLC",
+      "valid": true,
+      "totalFound": 19,
+      "sampleCompanyName": "MAXISIQ, Inc.",
+      "sampleTitle": "Network Engineer"
+    },
+    {
+      "identifier": "ACCESA",
+      "valid": true,
+      "totalFound": 18,
+      "sampleCompanyName": "Accesa",
+      "sampleTitle": "UX / UI Designer with German"
+    },
+    {
+      "identifier": "FinanzennetGmbH",
+      "valid": true,
+      "totalFound": 16,
+      "sampleCompanyName": "finanzen.net GmbH",
+      "sampleTitle": "Director of Engineering - Group Platform (m/w/d) "
+    },
+    {
+      "identifier": "HorizonTechnologiesInc",
+      "valid": true,
+      "totalFound": 16,
+      "sampleCompanyName": "Horizon Technologies Inc.,",
+      "sampleTitle": "Salesforce Developer"
+    },
+    {
+      "identifier": "MontamoGmbH",
+      "valid": true,
+      "totalFound": 16,
+      "sampleCompanyName": "montamo GmbH",
+      "sampleTitle": "Franchise-Unternehmer (m/w/d) als Elektro-Meister"
+    },
+    {
+      "identifier": "VivaEnergyAustralia",
+      "valid": true,
+      "totalFound": 16,
+      "sampleCompanyName": "Viva Energy Australia",
+      "sampleTitle": "Fuel Tanker Driver - HC/MC"
+    },
+    {
+      "identifier": "BETSOL",
+      "valid": true,
+      "totalFound": 15,
+      "sampleCompanyName": "BETSOL",
+      "sampleTitle": "Security Engineer"
+    },
+    {
+      "identifier": "MONEXT",
+      "valid": true,
+      "totalFound": 15,
+      "sampleCompanyName": "MONEXT",
+      "sampleTitle": "Alternant(e) Chargé(e) Support QA – Moyens de test & non-régression - F/H"
+    },
+    {
+      "identifier": "SEAKREngineering",
+      "valid": true,
+      "totalFound": 15,
+      "sampleCompanyName": "SEAKR Engineering",
+      "sampleTitle": "Senior Hardware Integration & Test Electrical Engineer"
+    },
+    {
+      "identifier": "BlueOptima",
+      "valid": true,
+      "totalFound": 14,
+      "sampleCompanyName": "BlueOptima",
+      "sampleTitle": "Senior Machine Learning Founding Engineer"
+    },
+    {
+      "identifier": "CloudMoyo",
+      "valid": true,
+      "totalFound": 14,
+      "sampleCompanyName": "CloudMoyo",
+      "sampleTitle": "Customer Engagement Manager - Guadalajara, MX"
+    },
+    {
+      "identifier": "ContactEnergy",
+      "valid": true,
+      "totalFound": 14,
+      "sampleCompanyName": "Contact Energy",
+      "sampleTitle": "Strategy & Investor Relations Specialist"
+    },
+    {
+      "identifier": "McDonaldsCanada",
+      "valid": true,
+      "totalFound": 14,
+      "sampleCompanyName": "McDonald's Restaurants",
+      "sampleTitle": "Assistant Store Manager"
+    },
+    {
+      "identifier": "synava",
+      "valid": true,
+      "totalFound": 14,
+      "sampleCompanyName": "synava",
+      "sampleTitle": "IT Systemadministrator (m/w/d)"
+    },
+    {
+      "identifier": "Octopus1",
+      "valid": true,
+      "totalFound": 13,
+      "sampleCompanyName": "Octopus",
+      "sampleTitle": "External Business Development Manager - South East"
+    },
+    {
+      "identifier": "ApexCleanEnergy",
+      "valid": true,
+      "totalFound": 12,
+      "sampleCompanyName": "Apex Clean Energy",
+      "sampleTitle": "Associate General Counsel"
+    },
+    {
+      "identifier": "ATPCO1",
+      "valid": true,
+      "totalFound": 12,
+      "sampleCompanyName": "ATPCO",
+      "sampleTitle": "Principal Support Analyst"
+    },
+    {
+      "identifier": "LeCollectionist",
+      "valid": true,
+      "totalFound": 12,
+      "sampleCompanyName": "Le Collectionist",
+      "sampleTitle": "Sales Advisor Assistant (H/F/X) - Stage - Démarrage Septembre 2026 - Marseille"
+    },
+    {
+      "identifier": "Rjt1",
+      "valid": true,
+      "totalFound": 12,
+      "sampleCompanyName": "rjt1",
+      "sampleTitle": "Sitecore Web developers at Davie, FL"
+    },
+    {
+      "identifier": "SibyllineLtd",
+      "valid": true,
+      "totalFound": 12,
+      "sampleCompanyName": "Sibylline Ltd",
+      "sampleTitle": "Embedded Technology Coordinator"
+    },
+    {
+      "identifier": "Comcast-CentralPA",
+      "valid": true,
+      "totalFound": 11,
+      "sampleCompanyName": "Comcast - Central PA",
+      "sampleTitle": "Payment Services Representative"
+    },
+    {
+      "identifier": "GenomicsEngland",
+      "valid": true,
+      "totalFound": 11,
+      "sampleCompanyName": "Genomics England",
+      "sampleTitle": "Executive & Office Support Assistant (London office based min 3 times per week)"
+    },
+    {
+      "identifier": "ProximateTechnologiesInc1",
+      "valid": true,
+      "totalFound": 11,
+      "sampleCompanyName": "Proximate Technologies Inc.",
+      "sampleTitle": "Mainframe Developer"
+    },
+    {
+      "identifier": "Resultant",
+      "valid": true,
+      "totalFound": 11,
+      "sampleCompanyName": "Resultant",
+      "sampleTitle": "IT Service Delivery Analyst (Hybrid in Fort Wayne, IN)"
+    },
+    {
+      "identifier": "4DSCorp",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "4DS Corp",
+      "sampleTitle": "E-Commerce Creative Director"
+    },
+    {
+      "identifier": "AccelLearning",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Accel Learning",
+      "sampleTitle": "ENGLISH TEACHER"
+    },
+    {
+      "identifier": "AlMosafer",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "AlMosafer",
+      "sampleTitle": "Data Intelligence Analyst – Officer/Senior Officer"
+    },
+    {
+      "identifier": "AltenCalsoftLabs",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Alten Calsoft Labs",
+      "sampleTitle": "Android Framework Developer"
+    },
+    {
+      "identifier": "ArtechInfosystemsLtd",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Artech Infosystems Ltd.",
+      "sampleTitle": "Business Consultant"
+    },
+    {
+      "identifier": "AutomationAnywhere1",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Automation Anywhere",
+      "sampleTitle": "Pricing Analyst"
+    },
+    {
+      "identifier": "CarrotInstitute",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Carrot Institute",
+      "sampleTitle": "Quality Assurance (QA) Engineer"
+    },
+    {
+      "identifier": "EnergyCapitalPower",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Energy Capital & Power",
+      "sampleTitle": "Operations Internship"
+    },
+    {
+      "identifier": "GatewayVisaSolution",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Gateway Visa Solution",
+      "sampleTitle": "Human Resource Officer"
+    },
+    {
+      "identifier": "KGSTechnologyGroupInc",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "KGS Technology Group Inc",
+      "sampleTitle": "Remote Bootcamp"
+    },
+    {
+      "identifier": "Laxir1",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Laxir",
+      "sampleTitle": "Mortgage/Lending Executive"
+    },
+    {
+      "identifier": "LenmarConsultingInc",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Lenmar Consulting Inc.",
+      "sampleTitle": "KYC / AML Analyst  (Max $36/hr W2)"
+    },
+    {
+      "identifier": "MIPartners",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "M&I/Partners",
+      "sampleTitle": "Adviseur/projectleider informatiebeveiliging en privacy"
+    },
+    {
+      "identifier": "MyriadGenetics1",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Myriad Genetics",
+      "sampleTitle": "Strategic People Leader (South San Francisco)"
+    },
+    {
+      "identifier": "OteemoInc",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Oteemo, Inc",
+      "sampleTitle": "Federal Business Development Executive"
+    },
+    {
+      "identifier": "ParkhyaSolutionsPvtLtd",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Parkhya Solutions Pvt Ltd",
+      "sampleTitle": "Business Development Executive/Manager (IT-Upwork, Freelancer, PPH , bidding ETC) - 2 to 10 years"
+    },
+    {
+      "identifier": "PeerlessIndustries",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Peerless Industries",
+      "sampleTitle": "Tool & Die Maker / Designer and Feature Cam Programmer"
+    },
+    {
+      "identifier": "PiringKecilResto",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Piring Kecil Resto",
+      "sampleTitle": "LOKER TERBARU UNTUK PENEMPATAN DAERAH BEKASI  |  LOWONGAN KERJA UNTUK BULAN APRIL 2026 DI DAERAH BEKASI  "
+    },
+    {
+      "identifier": "ROOMHEROGmbH",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "ROOMHERO GmbH",
+      "sampleTitle": "Werkstudent/in in der Ausführungsphase (w/m/d) (Teilzeit)"
+    },
+    {
+      "identifier": "SeekOut",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "SeekOut",
+      "sampleTitle": "Yura A's Test Job"
+    },
+    {
+      "identifier": "SottasSA",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Sottas SA",
+      "sampleTitle": "Technicien/ne en support informatique (50%)"
+    },
+    {
+      "identifier": "SyncreonConsulting",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "Syncreon Consulting",
+      "sampleTitle": "SAP Ariba - guided sourcing, icertis experience is Mandatory"
+    },
+    {
+      "identifier": "ThePlace1",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "The Place",
+      "sampleTitle": "Senior Market Research Specialist"
+    },
+    {
+      "identifier": "TMSLLC",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "TMS LLC",
+      "sampleTitle": "Senior Machine Learning Engineer (Cloud & Data Platform) - |5-8 years of exp. | Canada Role | Bank & Finance|"
+    },
+    {
+      "identifier": "VAMSystems",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "VAM Systems",
+      "sampleTitle": "UAE VAT Specialist"
+    },
+    {
+      "identifier": "VTekisConsultingLLP",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "VTekis Consulting LLP",
+      "sampleTitle": "LDAP Senior Engineer - Ping Directory"
+    },
+    {
+      "identifier": "ZILLIONTECHNOLOGIESINC",
+      "valid": true,
+      "totalFound": 10,
+      "sampleCompanyName": "ZILLION TECHNOLOGIES, INC",
+      "sampleTitle": "Cybersecurity Engineer – Data Loss Prevention & Messaging Security"
+    },
+    {
+      "identifier": "Alodokter",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Alodokter",
+      "sampleTitle": "Android Engineer - Freshgraduate"
+    },
+    {
+      "identifier": "Apex-LinkedInACTwo",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Apex - LinkedIn AC Two",
+      "sampleTitle": "AC 3.32 Test - ignore this job"
+    },
+    {
+      "identifier": "Ballantynes",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Ballantynes",
+      "sampleTitle": "Pantry Salesperson"
+    },
+    {
+      "identifier": "BTranz",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "bTranz",
+      "sampleTitle": "IT Recruiter "
+    },
+    {
+      "identifier": "CaribbeanUniversity",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Caribbean University",
+      "sampleTitle": "PROFESOR(A) DE  TRABAJO SOCIAL - ( DIURNO - PRESENCIAL) - BAYAMON / PONCE"
+    },
+    {
+      "identifier": "CICOITSOLUTION",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "CICO IT SOLUTION",
+      "sampleTitle": "Application Support Engineer"
+    },
+    {
+      "identifier": "Free2move",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Free2move",
+      "sampleTitle": "Product Manager (Remote or Onsite)"
+    },
+    {
+      "identifier": "IESFAG",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "IESF AG",
+      "sampleTitle": "Senior Web3 Back End Engineer"
+    },
+    {
+      "identifier": "Infasta",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Infasta",
+      "sampleTitle": "Hiring for Freshers for Tele caller Role"
+    },
+    {
+      "identifier": "ixigo",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "ixigo",
+      "sampleTitle": "Research Engineer - Applied AI/ML"
+    },
+    {
+      "identifier": "Learnkwikcom",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Learnkwik.com",
+      "sampleTitle": "Agentic AI Training"
+    },
+    {
+      "identifier": "PDDNINC",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "PDDN INC.",
+      "sampleTitle": "Functional Safety Engineer With STPA Remote Job"
+    },
+    {
+      "identifier": "ProceptAssociatesProfessionalServicesLimited",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Procept Associates Professional Services Limited",
+      "sampleTitle": "Delivery Manager – Automation & SDET"
+    },
+    {
+      "identifier": "RestoMerantiNusantara",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Resto Meranti Nusantara",
+      "sampleTitle": "BUTUHKAN SEGERA KARYAWAN/TI UNTUK PENEMPATAN DI JABODETABEK  |  BUTUH SEGERA KARYAWAN/TI UNTUK DI DAERAH JABODETABEK  "
+    },
+    {
+      "identifier": "SOLEDOSGmbH",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "SOLEDOS GmbH",
+      "sampleTitle": "Produktionsmitarbeiter (m/w/d) – Lager & Produktion"
+    },
+    {
+      "identifier": "SourceDirectTalent",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "SourceDirect Talent",
+      "sampleTitle": "Controller"
+    },
+    {
+      "identifier": "Tilencia",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Tilencia",
+      "sampleTitle": "Développeur Backend Data – Elasticsearch"
+    },
+    {
+      "identifier": "TreehouseStrategyAndCommunicatio",
+      "valid": true,
+      "totalFound": 9,
+      "sampleCompanyName": "Treehouse Strategy and Communications",
+      "sampleTitle": "Technical lead / Full stack developer"
+    },
+    {
+      "identifier": "3HPartners",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "3H Partners",
+      "sampleTitle": "Business Analyst - French Speaker"
+    },
+    {
+      "identifier": "BicycleTherapeutics",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Bicycle Therapeutics",
+      "sampleTitle": "Senior Scientist, Translational Science & Diagnostics (TSDx)"
+    },
+    {
+      "identifier": "CypressGlobalServicesInc",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Cypress Global Services, Inc",
+      "sampleTitle": "Jr. Full stack .net developer (Charlotte, NC)"
+    },
+    {
+      "identifier": "ExpertInstitute",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Expert Institute",
+      "sampleTitle": "Senior Product Manager (Hybrid - NYC)"
+    },
+    {
+      "identifier": "Finmo",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Finmo",
+      "sampleTitle": "Senior Software Engineer / Tech Lead, Finmo"
+    },
+    {
+      "identifier": "GlobalLogic4",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "GlobalLogic",
+      "sampleTitle": "ETL TESTER"
+    },
+    {
+      "identifier": "IncorporanInc",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Incorporan.Inc",
+      "sampleTitle": "Salesforce Technical Architect"
+    },
+    {
+      "identifier": "Kataai",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Kata.ai",
+      "sampleTitle": "Software Engineer Enterprise (Bot Builder) Freelance"
+    },
+    {
+      "identifier": "KoneoMobileInc",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Koneo Mobile Inc.",
+      "sampleTitle": "Advertiser Account Manager"
+    },
+    {
+      "identifier": "MForceStaffing",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "M Force Staffing",
+      "sampleTitle": "Design Engineer"
+    },
+    {
+      "identifier": "MobInspirePvtLtd",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Mob Inspire (Pvt) Ltd",
+      "sampleTitle": "Finance Manager (Mid Level)"
+    },
+    {
+      "identifier": "MovingWallsIndiaPvtLtd",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Moving walls India Pvt ltd",
+      "sampleTitle": "Client Servicing Executive"
+    },
+    {
+      "identifier": "MOYOStuttgartGmbH",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "MOYO Stuttgart GmbH",
+      "sampleTitle": "Niederlassungsleiter - Bochum oder Dortmund (m/w/d) - ab sofort"
+    },
+    {
+      "identifier": "MyTime",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "MyTime",
+      "sampleTitle": "Product Manager"
+    },
+    {
+      "identifier": "NileBits",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Nile Bits",
+      "sampleTitle": "ServiceNow CSM Implementer / Administrator"
+    },
+    {
+      "identifier": "SolutionsResource2",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Solutions Resource",
+      "sampleTitle": "iOS Application Developer"
+    },
+    {
+      "identifier": "Value1",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Value",
+      "sampleTitle": "Mobile Software Developer (iOS)"
+    },
+    {
+      "identifier": "VertexSolutionsInternationalLtd",
+      "valid": true,
+      "totalFound": 8,
+      "sampleCompanyName": "Vertex Solutions International Ltd",
+      "sampleTitle": "Squish Automation testers (Desktop Applications)"
+    },
+    {
+      "identifier": "AbbieITMartPvtLtd",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Abbie IT Mart Pvt. Ltd.",
+      "sampleTitle": "Inside Sales Executive (Male/Female Required) for Kolkata"
+    },
+    {
+      "identifier": "ArthurGrandTechnologiesInc",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Arthur Grand Technologies Inc",
+      "sampleTitle": "Oracle ERP DBA  - Richmond, VA"
+    },
+    {
+      "identifier": "ColibriTeams",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Colibri Teams",
+      "sampleTitle": "Executive Client Partner Sales Director"
+    },
+    {
+      "identifier": "Compugain1",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Compugain",
+      "sampleTitle": "Sr. Data Analyst (Brokerage/Finance) - SQL/Python"
+    },
+    {
+      "identifier": "ecolem",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "École M",
+      "sampleTitle": "Pre-School English Teacher [CDI @Paris]"
+    },
+    {
+      "identifier": "I360technologies",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "i360technologies",
+      "sampleTitle": "Oracle EBS Application Developer"
+    },
+    {
+      "identifier": "InsightsLearningDevelopmentLtd",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Insights Learning & Development Ltd",
+      "sampleTitle": "Marketing Intern"
+    },
+    {
+      "identifier": "Justworks",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Justworks",
+      "sampleTitle": "Sales Development Associate"
+    },
+    {
+      "identifier": "LinkedInInternalTest",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "LinkedIn Internal Test",
+      "sampleTitle": "test_li"
+    },
+    {
+      "identifier": "MicroPyramidInformaticsPvtLtd",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "MicroPyramid Informatics Pvt Ltd",
+      "sampleTitle": "Free Internship 2021"
+    },
+    {
+      "identifier": "MStaffing1",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "M Staffing",
+      "sampleTitle": "Inside Sales Quoting Supervisor"
+    },
+    {
+      "identifier": "MullenLoweRomania",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Mullen Lowe Romania",
+      "sampleTitle": "Talent Acquisition Specialist @ Lowe Group Romania"
+    },
+    {
+      "identifier": "OGEGmbH1",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "OGE GmbH",
+      "sampleTitle": "Techniker Instandhaltung (m/w/d) Automationstechnik"
+    },
+    {
+      "identifier": "QuantAIs",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Quant AIs",
+      "sampleTitle": "C/C++ Network  Architect"
+    },
+    {
+      "identifier": "STCU1",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "STCU",
+      "sampleTitle": "Member Consultant"
+    },
+    {
+      "identifier": "TargetSource",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Target Source",
+      "sampleTitle": "Finance Assistant"
+    },
+    {
+      "identifier": "VolkerWesselsTelecomDeutschlandGmbH",
+      "valid": true,
+      "totalFound": 7,
+      "sampleCompanyName": "Volker Wessels Telecom Deutschland GmbH",
+      "sampleTitle": "Projektleiter Glasfasernetzausbau FttX"
+    },
+    {
+      "identifier": "AbOvoInc",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Ab Ovo inc.",
+      "sampleTitle": "Project Manager with direct client in Health Industry"
+    },
+    {
+      "identifier": "AheadDigital",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Ahead Digital",
+      "sampleTitle": "Consultant.e WebPerformance Freelance"
+    },
+    {
+      "identifier": "Apex-LinkedInACOne",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Apex - LinkedIn AC One",
+      "sampleTitle": "AC 1.6 fixed template test - please ignore this job6"
+    },
+    {
+      "identifier": "ASTDefeasance",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "AST Defeasance",
+      "sampleTitle": "Senior Commercial Real Estate (CRE) Finance Analyst"
+    },
+    {
+      "identifier": "barkbackLlc",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "barkback, llc",
+      "sampleTitle": "Customer Success Manager"
+    },
+    {
+      "identifier": "BishEnterprises",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Bish Enterprises",
+      "sampleTitle": "Agricultural Equipment Mechanic (PT or FT)"
+    },
+    {
+      "identifier": "ComcastCareerCenter",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Comcast Career Center",
+      "sampleTitle": "Comcast Xfinity Career Fair"
+    },
+    {
+      "identifier": "CustomEquipmentInc",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Custom Equipment, Inc",
+      "sampleTitle": "Production Welder (MIG) 2nd Shift"
+    },
+    {
+      "identifier": "EGS3",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "EGS",
+      "sampleTitle": "DevOps Engineer"
+    },
+    {
+      "identifier": "ExcylInc",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Excyl Inc",
+      "sampleTitle": "IOS Developer"
+    },
+    {
+      "identifier": "Fastjobsio1",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Fastjobs.io",
+      "sampleTitle": "Backend Developer"
+    },
+    {
+      "identifier": "GSGGmbH",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "GSG GmbH",
+      "sampleTitle": "Frontend Developer (m/w/d)"
+    },
+    {
+      "identifier": "Intelerad",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Intelerad",
+      "sampleTitle": "Enterprise Account Executive - Medical Imaging Software (Northern UK & Ireland)"
+    },
+    {
+      "identifier": "LecleVietnam1",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Lecle Vietnam",
+      "sampleTitle": "Senior Mobile Developer (Android)"
+    },
+    {
+      "identifier": "Londontown",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Londontown",
+      "sampleTitle": "Remote Java Developer - Fulltime"
+    },
+    {
+      "identifier": "M3BI",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "M3BI",
+      "sampleTitle": "Hadoop Administrator"
+    },
+    {
+      "identifier": "Netatmo",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Netatmo",
+      "sampleTitle": "E-Shop Manager (H/F)"
+    },
+    {
+      "identifier": "RAKUNA1",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "RAKUNA",
+      "sampleTitle": "Open to Hanoi (LONG BIEN)- Junior Sales Development Rep cum QA (Full-time) "
+    },
+    {
+      "identifier": "TexasWaterDevelopmentBoardTWDB",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Texas Water Development Board (TWDB)",
+      "sampleTitle": "TWDB - 26-74: Revenue Accountant (Accountant II)"
+    },
+    {
+      "identifier": "TrekkiAB",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "Trekki AB",
+      "sampleTitle": "Pega System Developer"
+    },
+    {
+      "identifier": "TSSConsultancyPvtLtd",
+      "valid": true,
+      "totalFound": 6,
+      "sampleCompanyName": "TSS Consultancy Pvt. Ltd.",
+      "sampleTitle": "IT Administrator"
+    },
+    {
+      "identifier": "Adobe1",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Adobe",
+      "sampleTitle": "AEM Senior Consultant"
+    },
+    {
+      "identifier": "AltagramGmbH",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Altagram GmbH",
+      "sampleTitle": "Localization Project Manager (f/d/m) – Video Game Localization"
+    },
+    {
+      "identifier": "AVANCOGmbH",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "AVANCO GmbH",
+      "sampleTitle": "Mitarbeiter in der Produktion (M/W/D)"
+    },
+    {
+      "identifier": "BabbleCloud",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Babble Cloud",
+      "sampleTitle": "Data Engineer"
+    },
+    {
+      "identifier": "Bilue",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Bilue",
+      "sampleTitle": "Technical Pre-Sales Engineer"
+    },
+    {
+      "identifier": "Dev9",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Dev9",
+      "sampleTitle": "Software Developer (Java, TDD)"
+    },
+    {
+      "identifier": "Game5Mobile",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Game5Mobile",
+      "sampleTitle": "Game Designer"
+    },
+    {
+      "identifier": "GTCMachiningLLC",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "GTC Machining, LLC",
+      "sampleTitle": "Quality Engineer"
+    },
+    {
+      "identifier": "HoveinGmbH",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Hovein GmbH",
+      "sampleTitle": "Ausbildung zur/zum Immobilienkauffrau/-mann (m/w/d) zum 01.08.2026"
+    },
+    {
+      "identifier": "Interco",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Interco",
+      "sampleTitle": "Department Supervisor"
+    },
+    {
+      "identifier": "IPRHConseil",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "IPRH Conseil",
+      "sampleTitle": "Responsable d’Affaires en Électricité Industrielle expérimenté(e) H/F"
+    },
+    {
+      "identifier": "JMGroupInc",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "J&M Group Inc",
+      "sampleTitle": "Azure Developer"
+    },
+    {
+      "identifier": "Karackterz",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Karackterz",
+      "sampleTitle": "SENIOR PHP DEVELOPER - MULTINATIONAL CANADIAN COMPANY"
+    },
+    {
+      "identifier": "KimohaTechnologies",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Kimoha Technologies",
+      "sampleTitle": "Cloud Engineers & DevOps Experts"
+    },
+    {
+      "identifier": "Klap6",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Klap6",
+      "sampleTitle": "Sr Java SDET - 100% Remote"
+    },
+    {
+      "identifier": "Lever1",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Lever",
+      "sampleTitle": "Sustainable Foods Corporate Policy Program Manager"
+    },
+    {
+      "identifier": "MarsCapital",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Mars Capital",
+      "sampleTitle": " Senior Site Reliability Engineer"
+    },
+    {
+      "identifier": "MiracleSoftwareSystem1",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Miracle software system",
+      "sampleTitle": "Software Developer - Full time"
+    },
+    {
+      "identifier": "MitsubishiPowerEMEA",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Mitsubishi Power EMEA",
+      "sampleTitle": "Lead Control Systems Engineer"
+    },
+    {
+      "identifier": "OGDSolutions1",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "OGD Solutions",
+      "sampleTitle": "React.js Developer"
+    },
+    {
+      "identifier": "RobertBosch",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Bosch Group",
+      "sampleTitle": "Engine Dyno Engineering Technician (Tester Job)"
+    },
+    {
+      "identifier": "SajixSoftwareSolutionPrivateLimited",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Sajix Software Solution Private Limited",
+      "sampleTitle": "Data Analyst"
+    },
+    {
+      "identifier": "Shippeo",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Shippeo",
+      "sampleTitle": "Customer Delivery Manager (German-Speaking)"
+    },
+    {
+      "identifier": "SpringVentureGroup1",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Spring Venture Group",
+      "sampleTitle": "Staff Accountant - Intern"
+    },
+    {
+      "identifier": "TargetCWSandbox",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "TargetCW Sandbox",
+      "sampleTitle": "Lead Technical Recruiter"
+    },
+    {
+      "identifier": "TridentConsultingInc2",
+      "valid": true,
+      "totalFound": 5,
+      "sampleCompanyName": "Trident Consulting Inc",
+      "sampleTitle": "Production Operator "
+    },
+    {
+      "identifier": "AmigaInformatics",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Amiga Informatics",
+      "sampleTitle": "Data Architect"
+    },
+    {
+      "identifier": "Apttus",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Apttus",
+      "sampleTitle": "TEST - Sr. WEB DEVELOPER - AUSTIN TX"
+    },
+    {
+      "identifier": "BondsteinTechnologiesLtd",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Bondstein Technologies Ltd.",
+      "sampleTitle": "Executive - IT and Admin"
+    },
+    {
+      "identifier": "CellfieMobile",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Cellfie Mobile",
+      "sampleTitle": "Information Security/Technical Security Lead"
+    },
+    {
+      "identifier": "FISHBOWL1",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "FISHBOWL",
+      "sampleTitle": "Team Member | FISHBOWL Brisbane"
+    },
+    {
+      "identifier": "FuturumTechnologyLtd",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Futurum Technology Ltd.",
+      "sampleTitle": "Frontend Team Lead "
+    },
+    {
+      "identifier": "GroupMCanada",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "GroupM Canada",
+      "sampleTitle": "Account Coordinator – SEM (Paid Search)"
+    },
+    {
+      "identifier": "iHeartMedia",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "iHeartMedia",
+      "sampleTitle": "Digital Sales Executive-Atlanta"
+    },
+    {
+      "identifier": "Instructure",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Instructure",
+      "sampleTitle": "Marketing and Events Coordinator - APAC"
+    },
+    {
+      "identifier": "ISLTechsolutions",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "ISL Techsolutions",
+      "sampleTitle": "SDET with .Net/C#"
+    },
+    {
+      "identifier": "MobileProgrammingLLC",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Mobile Programming LLC",
+      "sampleTitle": "Data Center Network Architect"
+    },
+    {
+      "identifier": "OCXGmbH",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "OCX GmbH",
+      "sampleTitle": "IT-Netzwerkadministrator (m/w/d)"
+    },
+    {
+      "identifier": "QUAYOMobility",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "QUAYO Mobility",
+      "sampleTitle": "Full Stack Developer"
+    },
+    {
+      "identifier": "TechVedika",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "TechVedika",
+      "sampleTitle": "L1 Support Engineer – Microsoft 365 & Cloud (AWS/Azure)"
+    },
+    {
+      "identifier": "TeleconnectGmbH",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Teleconnect GmbH",
+      "sampleTitle": "(Senior-) Entwicklungsingenieur Hardware (m/w/d)"
+    },
+    {
+      "identifier": "TenMileSquareTechnologies",
+      "valid": true,
+      "totalFound": 4,
+      "sampleCompanyName": "Ten Mile Square Technologies",
+      "sampleTitle": "Lead Software Engineer"
+    },
+    {
+      "identifier": "AdobeAssociatesInc",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Adobe Associates Inc",
+      "sampleTitle": "Staff Engineer"
+    },
+    {
+      "identifier": "AgencyRevolution",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Agency Revolution",
+      "sampleTitle": "Business Development Manager"
+    },
+    {
+      "identifier": "ArtechInformationSystems3",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Artech Information Systems",
+      "sampleTitle": "Solution Consultant"
+    },
+    {
+      "identifier": "BestBuy2",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Best Buy",
+      "sampleTitle": "Appliance Sales (Part Time)"
+    },
+    {
+      "identifier": "Codeage",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Codeage",
+      "sampleTitle": "Writer/Editor Intern"
+    },
+    {
+      "identifier": "FiscalTeam",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Fiscal Team",
+      "sampleTitle": "Responsable de fiduciaire"
+    },
+    {
+      "identifier": "FisherAssociates1",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Fisher & Associates",
+      "sampleTitle": "Management Trainee"
+    },
+    {
+      "identifier": "IKEAMexico",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "IKEA Mexico",
+      "sampleTitle": "Payroll & HR Admin Specialist"
+    },
+    {
+      "identifier": "InnovaSolutions2",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "innova solutions",
+      "sampleTitle": "Node.JS -SDET "
+    },
+    {
+      "identifier": "LivewireMarkets",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Livewire Markets",
+      "sampleTitle": "Financial Markets Writer (Junior)"
+    },
+    {
+      "identifier": "PalRobotics",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "pal robotics",
+      "sampleTitle": "Robotics & Reinforcement Learning Engineer"
+    },
+    {
+      "identifier": "PicaviGmbH",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Picavi GmbH",
+      "sampleTitle": "Technischer Projektleiter Entwicklung (m/w)"
+    },
+    {
+      "identifier": "Privafy",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Privafy",
+      "sampleTitle": "Android Embedded Software Engineer"
+    },
+    {
+      "identifier": "RheindataGmbH",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "rheindata GmbH",
+      "sampleTitle": "Power BI Berater (all genders)"
+    },
+    {
+      "identifier": "SymmetryIT",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Symmetry I.T.",
+      "sampleTitle": "Business Development Sales – IT & Cybersecurity"
+    },
+    {
+      "identifier": "TinQwise",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "TinQwise",
+      "sampleTitle": "Allround administratief medewerker (medior/senior)"
+    },
+    {
+      "identifier": "TokyoTechie",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "TokyoTechie",
+      "sampleTitle": "Blockchain NFT Developer"
+    },
+    {
+      "identifier": "Zenefits",
+      "valid": true,
+      "totalFound": 3,
+      "sampleCompanyName": "Zenefits",
+      "sampleTitle": "Account Executive, SMB"
+    },
+    {
+      "identifier": "AbuseRefugeOrg",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Abuse Refuge Org",
+      "sampleTitle": "Special Projects Intern (Volunteer/Remote)"
+    },
+    {
+      "identifier": "AxleInformaticsLLC",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Axle Informatics LLC",
+      "sampleTitle": "Computer Science/Bioinformatics Intern"
+    },
+    {
+      "identifier": "BeconGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "becon GmbH",
+      "sampleTitle": "Python AWS Developer (m/w/d)"
+    },
+    {
+      "identifier": "BigCommerce",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Bigcommerce",
+      "sampleTitle": "Rene's Test Job"
+    },
+    {
+      "identifier": "Blinqlabs",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Blinqlabs",
+      "sampleTitle": "DevOps Engineer"
+    },
+    {
+      "identifier": "COTECOInformaticaInternacionalSL",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "COTECO Informatica Internacional, S.L.",
+      "sampleTitle": "Test jobs for options check"
+    },
+    {
+      "identifier": "DeltarapidGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Deltarapid GmbH",
+      "sampleTitle": "Kaltenkirchen - Kurierfahrer // Paketzusteller (m/w/d)"
+    },
+    {
+      "identifier": "F5Networks1",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "F5 Networks",
+      "sampleTitle": "Sr. Software Engineer - WAF RP1008141"
+    },
+    {
+      "identifier": "FLYACTSGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "FLYACTS GmbH",
+      "sampleTitle": "Test test test"
+    },
+    {
+      "identifier": "HCentiveInc",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "hCentive Inc",
+      "sampleTitle": "Lead Business Analyst"
+    },
+    {
+      "identifier": "IndianaUniversityFoundation",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Indiana University Foundation",
+      "sampleTitle": "Compliance & Disbursement Services Associate"
+    },
+    {
+      "identifier": "InfiniteQuant",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "InfiniteQuant",
+      "sampleTitle": "Quantitative Trader"
+    },
+    {
+      "identifier": "InnoviMobile",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "InnoviMobile",
+      "sampleTitle": "Android Developer"
+    },
+    {
+      "identifier": "IntelligenceBank",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "IntelligenceBank",
+      "sampleTitle": "Senior Implementation Specialist"
+    },
+    {
+      "identifier": "KitePing",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Kite Ping",
+      "sampleTitle": "Data Analyst (with Preparation Material)"
+    },
+    {
+      "identifier": "KonoomGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Konoom GmbH",
+      "sampleTitle": "Vozač / Dostavljač (DA) – Puno radno vrijeme"
+    },
+    {
+      "identifier": "LogicPlanetINC2",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Logic Planet INC",
+      "sampleTitle": "Android Engineer"
+    },
+    {
+      "identifier": "MAWONGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "MAWON GmbH",
+      "sampleTitle": "Paketzusteller für Amazon gesucht - DSY1"
+    },
+    {
+      "identifier": "MHelpDesk",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "mHelpDesk",
+      "sampleTitle": "Account Executive"
+    },
+    {
+      "identifier": "ODIONGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "ODION GmbH",
+      "sampleTitle": "(Senior) Software Engineer // Odoo Developer (m/w/d)"
+    },
+    {
+      "identifier": "PolsterandoGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Polsterando GmbH",
+      "sampleTitle": "Inbound Sales Manager Vollzeit (m/w/x) remote"
+    },
+    {
+      "identifier": "ProntoMarketing",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Pronto Marketing",
+      "sampleTitle": "Site Manager"
+    },
+    {
+      "identifier": "RandstadSourcerightNAForHoneywell",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Randstad Sourceright NA for Honeywell",
+      "sampleTitle": "(IoT) Software Product Manager"
+    },
+    {
+      "identifier": "ReTargeter1",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "ReTargeter",
+      "sampleTitle": "Strategic Account Manager"
+    },
+    {
+      "identifier": "ScalorsGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Scalors GmbH",
+      "sampleTitle": "RTS Software Engineer"
+    },
+    {
+      "identifier": "SennderGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "sennder GmbH",
+      "sampleTitle": "Senior Operations Manager (f/m) Italy"
+    },
+    {
+      "identifier": "Skyward1",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Skyward",
+      "sampleTitle": "Technical Writer - Intern"
+    },
+    {
+      "identifier": "TargetVisionOy",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Target Vision Oy",
+      "sampleTitle": "SRV tuotantoinsinööri"
+    },
+    {
+      "identifier": "TriwerkGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Triwerk GmbH",
+      "sampleTitle": "Sachbearbeiter / Versand (m/w)"
+    },
+    {
+      "identifier": "YazjiGmbH",
+      "valid": true,
+      "totalFound": 2,
+      "sampleCompanyName": "Yazji GmbH",
+      "sampleTitle": "سائقي توصيل طرود أمازون لصالح شريكنا في أيسن 16,20 يورو الساعة"
+    },
+    {
+      "identifier": "3Sharp",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "3Sharp",
+      "sampleTitle": "Senior Cloud Solutions Consultant"
+    },
+    {
+      "identifier": "ABBEYCARENWLIMITED",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "ABBEY CARE (NW) LIMITED",
+      "sampleTitle": "Care Support worker"
+    },
+    {
+      "identifier": "Abbott5",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Abbott",
+      "sampleTitle": "Front Line Lead Supervisor Material Control"
+    },
+    {
+      "identifier": "AbsoluteFacilitySolutionsLLC",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Absolute Facility Solutions, LLC",
+      "sampleTitle": "Application Engineer (remote U.S.-based ONLY)"
+    },
+    {
+      "identifier": "AccessDevelopment",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Access Development",
+      "sampleTitle": "BI Developer Position (Based in Salt Lake City-Hybrid in Office)"
+    },
+    {
+      "identifier": "ACOXGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "ACOX GmbH",
+      "sampleTitle": "CNC - Dreher o. Fräser (m/w/d) ► ab 15,-€/Std. + Metalltarif"
+    },
+    {
+      "identifier": "ACSInformaticos",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "ACS Informaticos ",
+      "sampleTitle": "ANALISTAS SENIORS COBOL-HOST SECTOR FINANCIERO"
+    },
+    {
+      "identifier": "ADALOGGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "ADALOG GmbH",
+      "sampleTitle": "DRP4 - DriverExpress"
+    },
+    {
+      "identifier": "AdeptConsultingPartners",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Adept Consulting Partners",
+      "sampleTitle": "Brand Manager - Ethical Marketing"
+    },
+    {
+      "identifier": "Advanced-Online",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Advanced-Online",
+      "sampleTitle": "C# .Net Entry Level Web Developer Less Than 5 Years’ experience"
+    },
+    {
+      "identifier": "ApploftGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "apploft GmbH",
+      "sampleTitle": "Senior Android Developer (m/w/d)"
+    },
+    {
+      "identifier": "AssetbirdGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "assetbird GmbH",
+      "sampleTitle": "Senior Sales Manager (m/w/d)"
+    },
+    {
+      "identifier": "BalipalmGmbH1",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Balipalm GmbH",
+      "sampleTitle": "Praktikant Verkauf/Handyreparaturen"
+    },
+    {
+      "identifier": "BeyondMA1",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Beyond M&A",
+      "sampleTitle": "Business Development Executive"
+    },
+    {
+      "identifier": "BlogfosterGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "blogfoster GmbH",
+      "sampleTitle": "Sales Manager D/A/CH (m|w) | Online Marketing"
+    },
+    {
+      "identifier": "Buildium",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Buildium",
+      "sampleTitle": "Customer Care Agent"
+    },
+    {
+      "identifier": "CatalystsGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Catalysts GmbH",
+      "sampleTitle": "Software Developer"
+    },
+    {
+      "identifier": "ChaingrGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "chaingr GmbH",
+      "sampleTitle": "Projektmanager (m/w/d)  für IoT-Lösungen"
+    },
+    {
+      "identifier": "CirculaGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Circula GmbH",
+      "sampleTitle": "Entrepreneur-in-Residence Praktikum"
+    },
+    {
+      "identifier": "DAKAPOGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "DAKAPO GmbH",
+      "sampleTitle": "Servicetechniker/in im Außendienst"
+    },
+    {
+      "identifier": "DECATHLON",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "DECATHLON",
+      "sampleTitle": "Marketing Operations Manager"
+    },
+    {
+      "identifier": "DeniszcobanLogistikGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Denis Özcoban Logistik GmbH",
+      "sampleTitle": "Paketzusteller/Fahrer (m/w/x) Gesucht werden Paketzusteller (m/w/x) im Ausmaß 40h/Woche"
+    },
+    {
+      "identifier": "DonsMobileNotary",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Don's Mobile Notary",
+      "sampleTitle": "Mobile Notary / Certified Signing Agent"
+    },
+    {
+      "identifier": "EliteMobileFleetServicesLLC",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Elite Mobile Fleet Services, LLC",
+      "sampleTitle": "Fleet Diesel Mechanic"
+    },
+    {
+      "identifier": "ERGOWERKGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "ERGOWERK GmbH",
+      "sampleTitle": "Screen-Designer/in ::: UX-Designer"
+    },
+    {
+      "identifier": "ExpandMobileUG",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Expand Mobile UG",
+      "sampleTitle": "Advertiser Account Manager"
+    },
+    {
+      "identifier": "FirstPointMobileGuard",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "FirstPoint Mobile Guard",
+      "sampleTitle": "Content Marketing Manager"
+    },
+    {
+      "identifier": "Fishpond",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Fishpond",
+      "sampleTitle": "LA Fulfillment Manager"
+    },
+    {
+      "identifier": "Flink1",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Flink",
+      "sampleTitle": "Auxiliar Contable Junior"
+    },
+    {
+      "identifier": "FlyteSolutionsLtd",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Flyte Solutions Ltd",
+      "sampleTitle": "iOS Developer – Flyte Solutions Ltd."
+    },
+    {
+      "identifier": "GoodforgrowthGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "goodforgrowth GmbH",
+      "sampleTitle": "Key Account Manager (m/w)"
+    },
+    {
+      "identifier": "GuacciGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Guacci GmbH",
+      "sampleTitle": "DriverExpress // Paketzusteller (m/w/d) "
+    },
+    {
+      "identifier": "Gusto2",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Gusto",
+      "sampleTitle": "Gusto's Partner Advisory Council"
+    },
+    {
+      "identifier": "H-RecruitmentLtd",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "H-Recruitment Ltd",
+      "sampleTitle": "Pallet Network Planner"
+    },
+    {
+      "identifier": "H2Concepts1",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "H2 Concepts",
+      "sampleTitle": "Full Time Customer Service Associates Needed ASAP!"
+    },
+    {
+      "identifier": "H2MExpress",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "H2M express",
+      "sampleTitle": "Chauffeur livreur"
+    },
+    {
+      "identifier": "HardinDesign",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Hardin Design ",
+      "sampleTitle": "Web Developer - Entry Level"
+    },
+    {
+      "identifier": "HiBob",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Hibob",
+      "sampleTitle": "IT Assistant"
+    },
+    {
+      "identifier": "HMMacConstruction",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "H.M.Mac Construction",
+      "sampleTitle": "Administrator/Coordinator"
+    },
+    {
+      "identifier": "HokifyGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "hokify GmbH",
+      "sampleTitle": "JUSTIN Dev new 2"
+    },
+    {
+      "identifier": "Hybeio",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Hybe.io",
+      "sampleTitle": "Business Development Manager EMEA"
+    },
+    {
+      "identifier": "HyperMLimited",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Hyper M Limited",
+      "sampleTitle": "Quality Assurance/Test Analyst"
+    },
+    {
+      "identifier": "IdeenschupserGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Ideenschupser GmbH",
+      "sampleTitle": "Pflicht-Jahrespraktikum Marketing"
+    },
+    {
+      "identifier": "IFS-InternationalFlightSupport",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "IFS - International Flight Support",
+      "sampleTitle": "Technical Account Associate"
+    },
+    {
+      "identifier": "InQuInformaticsGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "InQu Informatics GmbH",
+      "sampleTitle": "Senior Expert Softwareentwickler Automatisierungstechnik (m/w/d)"
+    },
+    {
+      "identifier": "InterproGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Interpro GmbH",
+      "sampleTitle": "Paketzusteller/ Fahrer/ Auslieferungsfahrer"
+    },
+    {
+      "identifier": "IROCMobile",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "IROC Mobile",
+      "sampleTitle": "Writer/Content Creator - Intern"
+    },
+    {
+      "identifier": "Ironclad1",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Ironclad",
+      "sampleTitle": "Sales Development Representative"
+    },
+    {
+      "identifier": "JMEvents",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "J&M Events",
+      "sampleTitle": "DJs & MCs for Special Events (part-time)"
+    },
+    {
+      "identifier": "JoeFish",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Joe Fish",
+      "sampleTitle": "Art Director / Digital Designer"
+    },
+    {
+      "identifier": "LemonExpressGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Lemon Express GmbH",
+      "sampleTitle": "Paketzusteller (m/w/d) bei Lemon Express GmbH"
+    },
+    {
+      "identifier": "M-TRIBESGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "M-TRIBES GmbH",
+      "sampleTitle": "Working student (f/m/d)"
+    },
+    {
+      "identifier": "MNDeliveryServiceGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "M+N Delivery Service GmbH",
+      "sampleTitle": "Paketzusteller m/w/d mit CargoBike Leipzig Mitte"
+    },
+    {
+      "identifier": "Mobilejobs",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "mobilejobs",
+      "sampleTitle": "HR-Manager"
+    },
+    {
+      "identifier": "MStreetEntertainmentGroup1",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "M Street Entertainment Group",
+      "sampleTitle": "IT Generalist"
+    },
+    {
+      "identifier": "Namely",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Namely",
+      "sampleTitle": "Account Executive"
+    },
+    {
+      "identifier": "NavilonGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Navilon GmbH",
+      "sampleTitle": "Geschäftsstellenleiter - (m/w/d)"
+    },
+    {
+      "identifier": "O7Therapy",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "O7 Therapy",
+      "sampleTitle": "IOS Developer "
+    },
+    {
+      "identifier": "OpenersGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Openers GmbH",
+      "sampleTitle": "Assistenz der Geschäftsführung / Teamassistenz"
+    },
+    {
+      "identifier": "ParksideInformationstechnologieGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Parkside Informationstechnologie GmbH",
+      "sampleTitle": "Frontend Developer"
+    },
+    {
+      "identifier": "PEMAGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "PEMA GmbH",
+      "sampleTitle": "IT System Administrator (m/w/d)"
+    },
+    {
+      "identifier": "PhenomPeopleInc",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Phenom People, Inc.",
+      "sampleTitle": "Front-End Developer"
+    },
+    {
+      "identifier": "PlansystemeGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Plansysteme GmbH",
+      "sampleTitle": "Softwareentwickler/innen Mixed Reality"
+    },
+    {
+      "identifier": "PrimelogistikGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Primelogistik GmbH",
+      "sampleTitle": "Paketzusteller / Auslieferungsfahrer (m/w/d)"
+    },
+    {
+      "identifier": "RevolutionaryManagementInc",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Revolutionary Management Inc.",
+      "sampleTitle": "Sales Management Trainee"
+    },
+    {
+      "identifier": "Riby",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Riby",
+      "sampleTitle": "Android Developer"
+    },
+    {
+      "identifier": "SatusSystems",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Satus Systems",
+      "sampleTitle": "Native Android Developer (Immediate Joining Only) "
+    },
+    {
+      "identifier": "ScientiaMobile",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "ScientiaMobile",
+      "sampleTitle": "Support Engineer II (Bengaluru)"
+    },
+    {
+      "identifier": "SearchmetricsGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Searchmetrics GmbH",
+      "sampleTitle": "Team Lead Software Engineering (m/f/x)"
+    },
+    {
+      "identifier": "Sezzle",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Sezzle",
+      "sampleTitle": "Senior Software Developer"
+    },
+    {
+      "identifier": "ShoptimaxGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "shoptimax GmbH",
+      "sampleTitle": "SOFTWAREENTWICKLER E-COMMERCE (M/W) VOLL- ODER TEILZEIT"
+    },
+    {
+      "identifier": "SipwiseGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Sipwise GmbH",
+      "sampleTitle": "BACKEND SOFTWARE ENGINEER (all genders)"
+    },
+    {
+      "identifier": "Sprinklr1",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Sprinklr",
+      "sampleTitle": "Intern-Moderation Services"
+    },
+    {
+      "identifier": "StafferyGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Staffery GmbH",
+      "sampleTitle": "Backend Developer – Node.js - Django - Python (m/w/d)"
+    },
+    {
+      "identifier": "StraightGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "straight. GmbH",
+      "sampleTitle": "User Experience Designer (m/w)"
+    },
+    {
+      "identifier": "TargetCW2",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "TargetCW",
+      "sampleTitle": "Account Executive, Inside Sales"
+    },
+    {
+      "identifier": "TargetMarketMedia",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Target Market Media",
+      "sampleTitle": "Freelance Fashion Editors/Writers"
+    },
+    {
+      "identifier": "TKMovesGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "TK moves GmbH",
+      "sampleTitle": "Paket-Zusteller (m/w/d) für Amazon DSP in Olching – 16,70 €/Std."
+    },
+    {
+      "identifier": "VerizonWirelessWorldNJ",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Verizon Wireless World NJ",
+      "sampleTitle": "Wireless Retail Sales Representative"
+    },
+    {
+      "identifier": "VRProIT",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "VRProIT",
+      "sampleTitle": "Java - SDET"
+    },
+    {
+      "identifier": "WestchesterNetworkingForProfessionals",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Westchester Networking for Professionals",
+      "sampleTitle": "NextGen Event Marketing & Communications Internship (Remote)"
+    },
+    {
+      "identifier": "WMTransGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "W&M Trans GmbH",
+      "sampleTitle": "Auslieferungsfahrer/in "
+    },
+    {
+      "identifier": "Yardi",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Yardi",
+      "sampleTitle": "Software Development Engineer II"
+    },
+    {
+      "identifier": "YategoGmbH",
+      "valid": true,
+      "totalFound": 1,
+      "sampleCompanyName": "Yatego GmbH",
+      "sampleTitle": "Inside Sales Mitarbeiter (m/w)"
+    }
+  ],
+  "invalid": [
+    {
+      "identifier": "Verizon",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Comcast",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "T-Mobile",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Charter",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Dell",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "HP",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Lenovo",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Qualcomm",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Broadcom",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Marvell",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Zebra-Technologies",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Trimble",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "NCR",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Fiserv",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "FIS",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Jack-Henry",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "SAP",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Celonis",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "UiPath",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "NICE",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Verint",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Medallia",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Qualtrics",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Momentive",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "SurveyMonkey",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Zuora",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Conga",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Model-N",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Vendavo",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Zilliant",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Icertis",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "LinkSquares",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "ContractPodAi",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Evisort",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Juro",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Palo-Alto-Networks",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Fortinet",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "CrowdStrike",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "SentinelOne",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Darktrace",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Vectra-AI",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Abnormal-Security",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Proofpoint",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Mimecast",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Tessian",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Recorded-Future",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "ThreatConnect",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Exabeam",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "LogRhythm",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Securonix",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Sumo-Logic",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Rapid7",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Tenable",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Qualys",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Orca-Security",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Wiz",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Lacework",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Sysdig",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Aqua-Security",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Snyk",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Checkmarx",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Veracode",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "WhiteSource",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Sonatype",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "JFrog",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "GitLab",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "HashiCorp",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Teradata",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Informatica",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Talend",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "ThoughtSpot",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Sisense",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Looker",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Sigma-Computing",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Matillion",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Stitch",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Fivetran",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "dbt-Labs",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Airbyte",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "StreamSets",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Attunity",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Precisely",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Syncsort",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Mastercard",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "PayPal",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Stripe",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Square",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Adyen",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Checkout",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Marqeta",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Galileo",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Green-Dot",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Chime",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Current",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Dave",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Brigit",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Earnin",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Affirm",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Klarna",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Splitit",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Paidy",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Zip",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Blend",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Roostify",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Maxwell",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Better",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "LoanSnap",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Credibly",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Kabbage",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "OnDeck",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Fundbox",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Brex",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Ramp",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Airbase",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Divvy",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Expensify",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Concur",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "TripActions",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Navan",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Spotnana",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Workday",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Personio",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Rippling",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "BambooHR",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Lattice",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Culture-Amp",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Leapsome",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Betterworks",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Reflektive",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "15Five",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Engagedly",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Trakstar",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Reviewsnap",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Greenhouse",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Ashby",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "iCIMS",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Jobvite",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "JazzHR",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Bullhorn",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Eightfold",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Veeva",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Medidata",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Flatiron",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Tempus",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Komodo-Health",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Definitive",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Arcadia",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Health-Catalyst",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Innovaccer",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Ro",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Hims-Hers",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Noom",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Teladoc",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Amwell",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "MDLive",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Doceree",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "PatientPoint",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Outcome",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Evolent",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Aledade",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Shopify",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Magento",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Salesforce-Commerce",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Commercetools",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Fabric",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Constructor",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Bloomreach",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Bazaarvoice",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "PowerReviews",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Yotpo",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Attentive",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Postscript",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "SMSBump",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Klaviyo",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Omnisend",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Drip",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Listrak",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Cordial",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Iterable",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "project44",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "FourKites",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Flexport",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Transfix",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Convoy",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Uber-Freight",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "KeepTruckin",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Motive",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Samsara",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Platform-Science",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Trimble-Transport",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Manhattan-Associates",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Blue-Yonder",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "o9-Solutions",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Kinaxis",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Llamasoft",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Opendoor",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Offerpad",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Knock",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Orchard",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    },
+    {
+      "identifier": "Ribbon",
+      "valid": false,
+      "status": 200,
+      "totalFound": 0,
+      "contentLen": 0
+    }
+  ]
+}
