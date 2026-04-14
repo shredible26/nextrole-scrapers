@@ -497,6 +497,10 @@ const EXCLUSION_KEYWORDS = [
   // Lead titles
   'lead engineer', 'lead developer', 'lead scientist',
   'lead analyst', 'lead software', 'lead data', 'lead ml',
+  'lead machine', 'lead product', 'lead research',
+  'lead architect', 'lead cloud', 'lead mobile',
+  'lead frontend', 'lead backend', 'lead full stack',
+  'lead qa', 'lead sre', 'lead infrastructure',
   'lead security', 'lead devops', 'lead platform',
   'tech lead', 'technical lead', 'senior technical',
   // Mid-level numbered patterns (II / 2 / III / 3 / IV / 4+)
@@ -674,6 +678,7 @@ const NEW_GRAD_DESC_KEYWORDS = [
  */
 function isExcluded(title: string): boolean {
   const padded = ' ' + title.toLowerCase() + ' ';
+  if (/^\s*lead\s+\w/i.test(padded.trim())) return true;
   return EXCLUSION_KEYWORDS.some(k => {
     if (k.includes('\\b')) {
       return new RegExp(k, 'i').test(padded);
