@@ -1,4 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { setTimeout as delay } from 'node:timers/promises';
+import { pathToFileURL } from 'node:url';
 
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
@@ -11,9 +13,9 @@ import {
 } from '../utils/normalize';
 
 const SOURCE = 'smartrecruiters';
-const REQUEST_TIMEOUT_MS = 8_000;
-const COMPANY_BATCH_SIZE = 15;
-const COMPANY_BATCH_DELAY_MS = 300;
+const REQUEST_TIMEOUT_MS = 5_000;
+const COMPANY_BATCH_SIZE = 30;
+const COMPANY_BATCH_DELAY_MS = 200;
 const POSTINGS_PAGE_SIZE = 100;
 
 const SMARTRECRUITERS_COMPANIES = [
@@ -139,9 +141,12 @@ type SmartRecruitersCompanyResponse = {
   totalFound?: number;
 };
 
+type SmartRecruitersScreenedCompany = {
+  identifier?: string;
+};
+
 type SmartRecruitersCompanyFetch = {
   companyName: string;
-  companyPath: string;
   postings: SmartRecruitersPostingSummary[];
 };
 
@@ -220,6 +225,27 @@ function buildPublicUrl(
     : `https://jobs.smartrecruiters.com/${companyPath}/${postingId}`;
 }
 
+function loadCompanySlugs(): string[] {
+  const screenedCompanies = JSON.parse(
+    readFileSync(
+      new URL('../cache/smartrecruiters-screened.json', import.meta.url),
+      'utf-8',
+    ),
+  ) as SmartRecruitersScreenedCompany[];
+
+  const screenedSlugs = screenedCompanies
+    .map((company) => company.identifier?.trim())
+    .filter((identifier): identifier is string => Boolean(identifier));
+
+  const companySlugs = Array.from(
+    new Set([...SMARTRECRUITERS_COMPANIES, ...screenedSlugs]),
+  );
+
+  console.log(`  [${SOURCE}] Total slugs loaded: ${companySlugs.length}`);
+
+  return companySlugs;
+}
+
 async function fetchJson<T>(url: string): Promise<FetchJsonResult<T>> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -244,77 +270,36 @@ async function fetchJson<T>(url: string): Promise<FetchJsonResult<T>> {
   }
 }
 
-function getCompanyPathVariants(companyName: string): string[] {
-  return Array.from(new Set([companyName, encodeURIComponent(companyName)]));
-}
-
 async function fetchCompanyPostings(companyName: string): Promise<SmartRecruitersCompanyFetch | null> {
-  for (const companyPath of getCompanyPathVariants(companyName)) {
-    const postings: SmartRecruitersPostingSummary[] = [];
-    const seenPostingIds = new Set<string>();
-    let offset = 0;
+  const { status, data } = await fetchJson<SmartRecruitersCompanyResponse>(
+    `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(companyName)}/postings?limit=${POSTINGS_PAGE_SIZE}&offset=0`,
+  );
 
-    while (true) {
-      const { status, data } = await fetchJson<SmartRecruitersCompanyResponse>(
-        `https://api.smartrecruiters.com/v1/companies/${companyPath}/postings?limit=${POSTINGS_PAGE_SIZE}&offset=${offset}`,
-      );
-
-      if (status === 404) {
-        break;
-      }
-
-      if (!data || !Array.isArray(data.content)) {
-        break;
-      }
-
-      const page = data.content;
-      if (page.length === 0) {
-        break;
-      }
-
-      let addedOnPage = 0;
-
-      for (const posting of page) {
-        const postingId = posting.id?.trim() || posting.uuid?.trim();
-        if (postingId) {
-          if (seenPostingIds.has(postingId)) continue;
-          seenPostingIds.add(postingId);
-        }
-
-        postings.push(posting);
-        addedOnPage += 1;
-      }
-
-      if (addedOnPage === 0) {
-        break;
-      }
-
-      const pageLimit = typeof data.limit === 'number' && data.limit > 0
-        ? data.limit
-        : POSTINGS_PAGE_SIZE;
-      const totalFound = typeof data.totalFound === 'number' ? data.totalFound : undefined;
-
-      if (page.length < pageLimit) {
-        break;
-      }
-
-      if (totalFound !== undefined && postings.length >= totalFound) {
-        break;
-      }
-
-      offset += pageLimit;
-    }
-
-    if (postings.length > 0) {
-      return {
-        companyName,
-        companyPath,
-        postings,
-      };
-    }
+  if (status !== 200 || !data || !Array.isArray(data.content) || data.content.length === 0) {
+    return null;
   }
 
-  return null;
+  const postings: SmartRecruitersPostingSummary[] = [];
+  const seenPostingIds = new Set<string>();
+
+  for (const posting of data.content) {
+    const postingId = posting.id?.trim() || posting.uuid?.trim();
+    if (postingId) {
+      if (seenPostingIds.has(postingId)) continue;
+      seenPostingIds.add(postingId);
+    }
+
+    postings.push(posting);
+  }
+
+  if (postings.length === 0) {
+    return null;
+  }
+
+  return {
+    companyName,
+    postings,
+  };
 }
 
 function inferPostingExperienceLevel(posting: SmartRecruitersPostingSummary, title: string) {
@@ -391,7 +376,7 @@ function normalizePosting(
   };
 }
 
-async function fetchCompanyJobs(companyFetch: SmartRecruitersCompanyFetch): Promise<NormalizedJob[]> {
+function fetchCompanyJobs(companyFetch: SmartRecruitersCompanyFetch): NormalizedJob[] {
   const normalized: NormalizedJob[] = [];
 
   for (const posting of companyFetch.postings) {
@@ -405,36 +390,29 @@ async function fetchCompanyJobs(companyFetch: SmartRecruitersCompanyFetch): Prom
 }
 
 export async function scrapeSmartRecruiters(): Promise<NormalizedJob[]> {
-  const companies = Array.from(new Set(SMARTRECRUITERS_COMPANIES));
+  const companies = loadCompanySlugs();
   const jobMap = new Map<string, NormalizedJob>();
   let companiesWithPostings = 0;
+  let jobsFetched = 0;
 
   for (let index = 0; index < companies.length; index += COMPANY_BATCH_SIZE) {
     const batch = companies.slice(index, index + COMPANY_BATCH_SIZE);
     const results = await Promise.allSettled(batch.map(fetchCompanyPostings));
-    const liveCompanies: SmartRecruitersCompanyFetch[] = [];
 
     for (const result of results) {
       if (result.status !== 'fulfilled' || result.value === null) continue;
-      liveCompanies.push(result.value);
-    }
 
-    companiesWithPostings += liveCompanies.length;
+      const companyFetch = result.value;
+      companiesWithPostings += 1;
+      jobsFetched += companyFetch.postings.length;
 
-    const jobResults = await Promise.allSettled(
-      liveCompanies.map(fetchCompanyJobs),
-    );
-
-    for (const result of jobResults) {
-      if (result.status !== 'fulfilled') continue;
-
-      for (const job of result.value) {
+      for (const job of fetchCompanyJobs(companyFetch)) {
         jobMap.set(job.source_id || job.dedup_hash, job);
       }
     }
 
     console.log(
-      `  [smartrecruiters] Processed ${Math.min(index + COMPANY_BATCH_SIZE, companies.length)}/${companies.length} companies; ` +
+      `  [${SOURCE}] Processed ${Math.min(index + COMPANY_BATCH_SIZE, companies.length)}/${companies.length} slugs; ` +
         `live=${companiesWithPostings}; jobs=${jobMap.size}`,
     );
 
@@ -443,8 +421,25 @@ export async function scrapeSmartRecruiters(): Promise<NormalizedJob[]> {
     }
   }
 
-  console.log(`  [smartrecruiters] Companies with postings: ${companiesWithPostings}`);
-  console.log(`  [smartrecruiters] Total unique jobs: ${jobMap.size}`);
+  console.log(`  [${SOURCE}] Jobs fetched: ${jobsFetched}`);
+  console.log(`  [${SOURCE}] Final count: ${jobMap.size}`);
 
   return Array.from(jobMap.values());
+}
+
+async function runStandalone(): Promise<void> {
+  const startedAt = Date.now();
+
+  await scrapeSmartRecruiters();
+
+  const elapsedSeconds = ((Date.now() - startedAt) / 1_000).toFixed(1);
+  console.log(`  [${SOURCE}] Standalone run completed in ${elapsedSeconds}s`);
+}
+
+const entrypoint = process.argv[1];
+if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
+  runStandalone().catch((error) => {
+    console.error(`  [${SOURCE}] Standalone run failed`, error);
+    process.exit(1);
+  });
 }
