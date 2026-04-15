@@ -6,6 +6,12 @@ import {
   NormalizedJob,
 } from '../utils/normalize';
 import { isNonUsLocation } from '../utils/location';
+import { pathToFileURL } from 'node:url';
+import {
+  cleanScrapedDescription,
+  fetchWithTimeout,
+  mapInBatches,
+} from '../utils/scraper-helpers';
 
 const SOURCE = 'workatastartup';
 const APP_ID = '45BWZJ1SGC';
@@ -15,6 +21,9 @@ const ROOT_URL = 'https://www.workatastartup.com';
 const SEARCH_URL = `https://${APP_ID.toLowerCase()}-dsn.algolia.net/1/indexes/${INDEX_NAME}/query`;
 const FALLBACK_API_KEYS = ['b4b5a7956ec7f55c3d4e8d6e12c0e8b4'];
 const HITS_PER_PAGE = 1000;
+const DETAIL_BATCH_SIZE = 10;
+const DETAIL_BATCH_DELAY_MS = 500;
+const DETAIL_REQUEST_TIMEOUT_MS = 10_000;
 const ROLE_PAGE_URLS = [
   'https://www.workatastartup.com/jobs/l/software-engineer',
   'https://www.workatastartup.com/jobs/l/science',
@@ -57,6 +66,14 @@ type WorkAtAStartupPageJob = {
 type WorkAtAStartupPagePayload = {
   props?: {
     jobs?: WorkAtAStartupPageJob[];
+  };
+};
+
+type WorkAtAStartupJobDetailPayload = {
+  props?: {
+    job?: {
+      descriptionHtml?: string;
+    };
   };
 };
 
@@ -137,12 +154,12 @@ function decodeHtmlEntities(value: string): string {
     .replace(/&gt;/g, '>');
 }
 
-function extractPagePayload(html: string): WorkAtAStartupPagePayload | null {
+function extractPagePayload<T>(html: string): T | null {
   const match = html.match(/data-page="([^"]+)"/);
   if (!match?.[1]) return null;
 
   try {
-    return JSON.parse(decodeHtmlEntities(match[1])) as WorkAtAStartupPagePayload;
+    return JSON.parse(decodeHtmlEntities(match[1])) as T;
   } catch (err) {
     console.warn(`  [${SOURCE}] Failed to parse public role page payload:`, (err as Error).message);
     return null;
@@ -156,7 +173,7 @@ async function scrapeRolePagesFallback(existingIds: Set<string>): Promise<Normal
     const html = await fetchHtml(url);
     if (!html) continue;
 
-    const payload = extractPagePayload(html);
+    const payload = extractPagePayload<WorkAtAStartupPagePayload>(html);
     const pageJobs = payload?.props?.jobs ?? [];
     if (pageJobs.length === 0) {
       console.warn(`  [${SOURCE}] Public role page returned 0 jobs: ${url}`);
@@ -170,11 +187,10 @@ async function scrapeRolePagesFallback(existingIds: Set<string>): Promise<Normal
       if (!sourceId || !title || !company || existingIds.has(sourceId)) continue;
 
       const location = (pageJob.location ?? '').trim();
-      const description = (pageJob.companyOneLiner ?? '').trim() || undefined;
       if (!hasTechTitleSignal(title)) continue;
       if (location && isNonUsLocation(location)) continue;
 
-      const level = inferExperienceLevel(title, description);
+      const level = inferExperienceLevel(title, pageJob.companyOneLiner ?? '');
       if (!level) continue;
 
       existingIds.add(sourceId);
@@ -186,7 +202,7 @@ async function scrapeRolePagesFallback(existingIds: Set<string>): Promise<Normal
         location: location || undefined,
         remote: location.toLowerCase().includes('remote'),
         url: pageJob.applyUrl?.trim() || `https://www.workatastartup.com/jobs/${sourceId}`,
-        description,
+        description: '',
         experience_level: level,
         roles: inferRoles(title),
         dedup_hash: generateHash(company, title, location),
@@ -252,6 +268,74 @@ async function fetchSearchPage(
   }
 }
 
+async function fetchWorkAtAStartupDescription(sourceId: string): Promise<string> {
+  const response = await fetchWithTimeout(
+    `https://www.workatastartup.com/jobs/${sourceId}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'text/html,application/xhtml+xml',
+        'User-Agent': 'NextRole Job Aggregator (+https://nextrole-phi.vercel.app)',
+      },
+    },
+    DETAIL_REQUEST_TIMEOUT_MS,
+  );
+
+  if (!response?.ok) return '';
+
+  try {
+    const html = await response.text();
+    const payload = extractPagePayload<WorkAtAStartupJobDetailPayload>(html);
+    return cleanScrapedDescription(payload?.props?.job?.descriptionHtml);
+  } catch {
+    return '';
+  }
+}
+
+async function enrichWorkAtAStartupJobs(jobs: NormalizedJob[]): Promise<NormalizedJob[]> {
+  const jobsNeedingDetails = jobs
+    .map((job, index) => ({ job, index }))
+    .filter(({ job }) => !job.description?.trim() && Boolean(job.source_id));
+
+  if (jobsNeedingDetails.length === 0) {
+    return jobs;
+  }
+
+  const descriptionsByIndex = new Map<number, string>();
+  const fetchedDescriptions = await mapInBatches(
+    jobsNeedingDetails,
+    DETAIL_BATCH_SIZE,
+    DETAIL_BATCH_DELAY_MS,
+    async ({ job, index }) => ({
+      index,
+      description: await fetchWorkAtAStartupDescription(job.source_id!),
+    }),
+  );
+
+  for (const { index, description } of fetchedDescriptions) {
+    descriptionsByIndex.set(index, description);
+  }
+
+  return jobs.map((job, index) => {
+    if (!descriptionsByIndex.has(index)) {
+      return job;
+    }
+
+    return {
+      ...job,
+      description: descriptionsByIndex.get(index) ?? '',
+    };
+  });
+}
+
+function logDescriptionStats(jobs: NormalizedJob[]): void {
+  console.log(
+    `  [${SOURCE}] Jobs with description: ${
+      jobs.filter(job => job.description?.trim()).length
+    }/${jobs.length}`,
+  );
+}
+
 export async function scrapeWorkAtAStartup(): Promise<NormalizedJob[]> {
   const jobs: NormalizedJob[] = [];
   const seenIds = new Set<string>();
@@ -302,9 +386,9 @@ export async function scrapeWorkAtAStartup(): Promise<NormalizedJob[]> {
           locations[0] ??
           locations.join(', ');
         if (location && isNonUsLocation(location)) continue;
-        const description = typeof hit.description === 'string'
-          ? hit.description.slice(0, 5000)
-          : undefined;
+        const description = cleanScrapedDescription(
+          typeof hit.description === 'string' ? hit.description : '',
+        );
         const level = inferExperienceLevel(title, description);
         if (!level) continue;
 
@@ -332,8 +416,10 @@ export async function scrapeWorkAtAStartup(): Promise<NormalizedJob[]> {
 
       const totalPages = result.data.nbPages ?? 0;
       if (totalPages === 0 || page >= totalPages - 1) {
-        console.log(`  [${SOURCE}] ${jobs.length} jobs fetched`);
-        return jobs;
+        const enrichedJobs = await enrichWorkAtAStartupJobs(jobs);
+        console.log(`  [${SOURCE}] ${enrichedJobs.length} jobs fetched`);
+        logDescriptionStats(enrichedJobs);
+        return enrichedJobs;
       }
     }
   }
@@ -341,14 +427,37 @@ export async function scrapeWorkAtAStartup(): Promise<NormalizedJob[]> {
   if (jobs.length === 0 && (algoliaReturnedZeroHits || attemptedKey)) {
     console.warn(`  [${SOURCE}] Falling back to public role pages because Algolia returned no usable jobs`);
     const fallbackJobs = await scrapeRolePagesFallback(seenIds);
-    console.log(`  [${SOURCE}] ${fallbackJobs.length} jobs fetched from public role pages`);
-    return fallbackJobs;
+    const enrichedFallbackJobs = await enrichWorkAtAStartupJobs(fallbackJobs);
+    console.log(`  [${SOURCE}] ${enrichedFallbackJobs.length} jobs fetched from public role pages`);
+    logDescriptionStats(enrichedFallbackJobs);
+    return enrichedFallbackJobs;
   }
 
   if (attemptedKey) {
     console.warn(`  [${SOURCE}] All Algolia key attempts failed, returning ${jobs.length} jobs`);
   }
 
-  console.log(`  [${SOURCE}] ${jobs.length} jobs fetched`);
-  return jobs;
+  const enrichedJobs = await enrichWorkAtAStartupJobs(jobs);
+  console.log(`  [${SOURCE}] ${enrichedJobs.length} jobs fetched`);
+  logDescriptionStats(enrichedJobs);
+  return enrichedJobs;
+}
+
+async function runStandalone(): Promise<void> {
+  const startedAt = Date.now();
+  const jobs = await scrapeWorkAtAStartup();
+  const jobsWithDescription = jobs.filter(job => job.description?.trim()).length;
+  const elapsedSeconds = ((Date.now() - startedAt) / 1_000).toFixed(1);
+
+  console.log(`  [${SOURCE}] Standalone final count: ${jobs.length}`);
+  console.log(`  [${SOURCE}] Standalone descriptions: ${jobsWithDescription}/${jobs.length}`);
+  console.log(`  [${SOURCE}] Standalone run completed in ${elapsedSeconds}s`);
+}
+
+const entrypoint = process.argv[1];
+if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
+  runStandalone().catch((error) => {
+    console.error(`  [${SOURCE}] Standalone run failed`, error);
+    process.exit(1);
+  });
 }

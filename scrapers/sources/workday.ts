@@ -9,6 +9,12 @@ import { isNonUsLocation } from '../utils/location';
 import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import {
+  cleanScrapedDescription,
+  fetchWithTimeout,
+  mapInBatches,
+} from '../utils/scraper-helpers';
 
 // Workday-specific senior/sales title signals not caught by inferExperienceLevel
 const WORKDAY_TITLE_EXCLUSIONS = [
@@ -437,6 +443,9 @@ export const WORKDAY_COMPANIES: [string, string][] = [
 
 const WORKDAY_BATCH_SIZE = 25;
 const WORKDAY_REQUEST_TIMEOUT_MS = 25_000;
+const WORKDAY_DETAIL_BATCH_SIZE = 10;
+const WORKDAY_DETAIL_BATCH_DELAY_MS = 500;
+const WORKDAY_DETAIL_TIMEOUT_MS = 10_000;
 const WORKDAY_SKIP_RUNS = 3;
 const WORKDAY_DEAD_CACHE_PATH = join(process.cwd(), 'scrapers', 'cache', 'workday-dead.json');
 
@@ -551,6 +560,12 @@ interface WorkdayResponse {
   total?: number;
 }
 
+interface WorkdayDetailResponse {
+  jobPostingInfo?: {
+    jobDescription?: string;
+  };
+}
+
 type WorkdayFetchResult = {
   data: WorkdayResponse | null;
   timedOut: boolean;
@@ -561,6 +576,14 @@ type WorkdayResolvedAttempt = {
   jobs: WorkdayJob[];
   wdVersion: string;
   slug: string;
+};
+
+type WorkdayPendingJob = {
+  job: NormalizedJob;
+  company: string;
+  wdVersion: string;
+  slug: string;
+  externalPath: string;
 };
 
 export type WorkdayKnownTarget = {
@@ -597,7 +620,7 @@ type PersistKnownWorkdayTarget = (
 ) => Promise<void>;
 
 type CompanyScrapeResult = {
-  jobs: NormalizedJob[];
+  jobs: WorkdayPendingJob[];
   stats: WorkdayScrapeStats;
   rawJobsCount: number;
   hadSuccessfulResponse: boolean;
@@ -607,7 +630,7 @@ type CompanyScrapeResult = {
 
 type CompanyGroupScrapeResult = {
   company: string;
-  jobs: NormalizedJob[];
+  jobs: WorkdayPendingJob[];
   stats: WorkdayScrapeStats;
   rawJobsCount: number;
   hadSuccessfulResponse: boolean;
@@ -886,6 +909,70 @@ async function fetchWorkdayResponse(
   }
 }
 
+function normalizeWorkdayDetailPath(externalPath: string): string | null {
+  const trimmed = externalPath.trim();
+  if (!trimmed) return null;
+
+  const normalized = trimmed.replace(/^\/[a-z]{2}(?:-[A-Z]{2})?\//, '/');
+  if (normalized.startsWith('/job/')) return normalized;
+
+  return trimmed.startsWith('/job/') ? trimmed : null;
+}
+
+function buildWorkdayDetailUrl(
+  company: string,
+  wdVersion: string,
+  careerSite: string,
+  externalPath: string,
+): string | null {
+  const detailPath = normalizeWorkdayDetailPath(externalPath);
+  if (!detailPath) return null;
+
+  return `https://${company}.${wdVersion}.myworkdayjobs.com/wday/cxs/${company}/${careerSite}${detailPath}`;
+}
+
+async function fetchWorkdayJobDescription(
+  company: string,
+  wdVersion: string,
+  careerSite: string,
+  externalPath: string,
+): Promise<string> {
+  const detailUrl = buildWorkdayDetailUrl(company, wdVersion, careerSite, externalPath);
+  if (!detailUrl) return '';
+
+  const response = await fetchWithTimeout(detailUrl, { method: 'GET' }, WORKDAY_DETAIL_TIMEOUT_MS);
+  if (!response?.ok) return '';
+
+  const contentType = response.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) return '';
+
+  try {
+    const data = await response.json() as WorkdayDetailResponse;
+    return cleanScrapedDescription(data.jobPostingInfo?.jobDescription);
+  } catch {
+    return '';
+  }
+}
+
+async function enrichWorkdayJobsWithDescriptions(
+  pendingJobs: WorkdayPendingJob[],
+): Promise<NormalizedJob[]> {
+  return mapInBatches(
+    pendingJobs,
+    WORKDAY_DETAIL_BATCH_SIZE,
+    WORKDAY_DETAIL_BATCH_DELAY_MS,
+    async (pendingJob) => ({
+      ...pendingJob.job,
+      description: await fetchWorkdayJobDescription(
+        pendingJob.company,
+        pendingJob.wdVersion,
+        pendingJob.slug,
+        pendingJob.externalPath,
+      ),
+    }),
+  );
+}
+
 /**
  * Try all (wdVersion, slug) combinations until one returns HTTP 200 with valid JSON
  * containing a jobPostings array. Returns the jobs plus the working (wdVersion, slug).
@@ -938,7 +1025,7 @@ async function scrapeCompany(
 ): Promise<CompanyScrapeResult> {
   const seen = new Set<string>();
   const seenFetched = new Set<string>();
-  const jobs: NormalizedJob[] = [];
+  const pendingJobs: WorkdayPendingJob[] = [];
   const stats = createEmptyWorkdayStats();
   let rawJobsCount = 0;
   let hadSuccessfulResponse = false;
@@ -1052,30 +1139,36 @@ async function scrapeCompany(
       if (seen.has(hash)) continue;
       seen.add(hash);
 
-      jobs.push({
-        source: 'workday',
-        source_id: extractWorkdaySourceId(company, title, location, posting),
-        title,
-        company: formatWorkdayCompanyName(company),
-        location,
-        remote: inferRemote(location),
-        url,
-        description: posting.bulletFields?.join(' ') ?? undefined,
-        experience_level: level,
-        roles: inferRoles(title),
-        posted_at: parseWorkdayDate(posting.postedOn),
-        dedup_hash: hash,
+      pendingJobs.push({
+        job: {
+          source: 'workday',
+          source_id: extractWorkdaySourceId(company, title, location, posting),
+          title,
+          company: formatWorkdayCompanyName(company),
+          location,
+          remote: inferRemote(location),
+          url,
+          description: '',
+          experience_level: level,
+          roles: inferRoles(title),
+          posted_at: parseWorkdayDate(posting.postedOn),
+          dedup_hash: hash,
+        },
+        company,
+        wdVersion,
+        slug,
+        externalPath,
       });
     }
 
     await delay(100);
   }
 
-  if (jobs.length > 0) {
-    console.log(`  [workday] ${company} (${foundVersion}/${foundSlug}): ${jobs.length} jobs`);
+  if (pendingJobs.length > 0) {
+    console.log(`  [workday] ${company} (${foundVersion}/${foundSlug}): ${pendingJobs.length} jobs`);
   }
 
-  return { jobs, stats, rawJobsCount, hadSuccessfulResponse, hadTimeout, hadNon200Status };
+  return { jobs: pendingJobs, stats, rawJobsCount, hadSuccessfulResponse, hadTimeout, hadNon200Status };
 }
 
 async function scrapeCompanyGroup(
@@ -1083,7 +1176,7 @@ async function scrapeCompanyGroup(
   careerSites: string[],
   persistKnownTarget: PersistKnownWorkdayTarget,
 ): Promise<CompanyGroupScrapeResult> {
-  const dedupedJobs = new Map<string, NormalizedJob>();
+  const dedupedJobs = new Map<string, WorkdayPendingJob>();
   const stats = createEmptyWorkdayStats();
   let rawJobsCount = 0;
   let hadSuccessfulResponse = false;
@@ -1101,7 +1194,7 @@ async function scrapeCompanyGroup(
     stats.filteredNonTech += result.stats.filteredNonTech;
 
     for (const job of result.jobs) {
-      dedupedJobs.set(job.dedup_hash, job);
+      dedupedJobs.set(job.job.dedup_hash, job);
     }
   }
 
@@ -1150,7 +1243,7 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
     companiesToAttempt.push(group);
   }
 
-  const all: NormalizedJob[] = [];
+  const allPending: WorkdayPendingJob[] = [];
   const stats = createEmptyWorkdayStats();
   let companiesWithJobs = 0;
   let timedOutCompanies = 0;
@@ -1164,7 +1257,7 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
     for (const result of results) {
       if (result.status !== 'fulfilled') continue;
 
-      all.push(...result.value.jobs);
+      allPending.push(...result.value.jobs);
       stats.uniqueFetched += result.value.stats.uniqueFetched;
       stats.filteredNonUs += result.value.stats.filteredNonUs;
       stats.filteredNonTech += result.value.stats.filteredNonTech;
@@ -1205,6 +1298,8 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
     console.warn('  [workday] Cache write timed out — skipping');
   }
 
+  const all = await enrichWorkdayJobsWithDescriptions(allPending);
+
   console.log(`  [workday] Cache skipped: ${skippedFromCache} companies`);
   console.log(`  [workday] Attempted: ${companiesToAttempt.length} companies`);
   console.log(`  [workday] Companies with jobs: ${companiesWithJobs}`);
@@ -1213,6 +1308,11 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
   console.log(`  [workday] Filtered out non-US location: ${stats.filteredNonUs}`);
   console.log(`  [workday] Filtered out non-tech role: ${stats.filteredNonTech}`);
   console.log(`  [workday] Kept jobs after filters: ${all.length}`);
+  console.log(
+    `  [workday] Jobs with description: ${
+      all.filter(job => job.description?.trim()).length
+    }/${all.length}`,
+  );
 
   const sampleJobs = all
     .filter(isUsefulWorkdaySampleJob)
@@ -1228,4 +1328,23 @@ export async function scrapeWorkday(): Promise<NormalizedJob[]> {
     });
 
   return all;
+}
+
+async function runStandalone(): Promise<void> {
+  const startedAt = Date.now();
+  const jobs = await scrapeWorkday();
+  const jobsWithDescription = jobs.filter(job => job.description?.trim()).length;
+  const elapsedSeconds = ((Date.now() - startedAt) / 1_000).toFixed(1);
+
+  console.log(`  [workday] Standalone final count: ${jobs.length}`);
+  console.log(`  [workday] Standalone descriptions: ${jobsWithDescription}/${jobs.length}`);
+  console.log(`  [workday] Standalone run completed in ${elapsedSeconds}s`);
+}
+
+const entrypoint = process.argv[1];
+if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
+  runStandalone().catch((error) => {
+    console.error('  [workday] Standalone run failed', error);
+    process.exit(1);
+  });
 }

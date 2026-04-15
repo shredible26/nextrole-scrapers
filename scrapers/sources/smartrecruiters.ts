@@ -12,12 +12,20 @@ import {
   type NormalizedJob,
 } from '../utils/normalize';
 import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
+import {
+  cleanScrapedDescription,
+  fetchWithTimeout,
+  mapInBatches,
+} from '../utils/scraper-helpers';
 
 const SOURCE = 'smartrecruiters';
 const REQUEST_TIMEOUT_MS = 5_000;
+const DETAIL_REQUEST_TIMEOUT_MS = 10_000;
 const COMPANY_BATCH_SIZE = 30;
 const COMPANY_BATCH_DELAY_MS = 200;
 const POSTINGS_PAGE_SIZE = 100;
+const DETAIL_BATCH_SIZE = 15;
+const DETAIL_BATCH_DELAY_MS = 300;
 
 const SMARTRECRUITERS_COMPANIES = [
   // Validated public identifiers with current relevant tech activity.
@@ -149,6 +157,23 @@ type SmartRecruitersScreenedCompany = {
 type SmartRecruitersCompanyFetch = {
   companyName: string;
   postings: SmartRecruitersPostingSummary[];
+};
+
+type SmartRecruitersPostingDetailResponse = {
+  jobAd?: {
+    sections?: {
+      companyDescription?: { text?: string };
+      jobDescription?: { text?: string };
+      qualifications?: { text?: string };
+      additionalInformation?: { text?: string };
+    };
+  };
+};
+
+type SmartRecruitersPendingJob = {
+  job: NormalizedJob;
+  companyIdentifier: string;
+  postingId: string;
 };
 
 type FetchJsonResult<T> = {
@@ -330,7 +355,7 @@ function inferPostingExperienceLevel(posting: SmartRecruitersPostingSummary, tit
 function normalizePosting(
   companyFetch: SmartRecruitersCompanyFetch,
   posting: SmartRecruitersPostingSummary,
-): NormalizedJob | null {
+): SmartRecruitersPendingJob | null {
   const postingId = posting.id?.trim() || posting.uuid?.trim();
   const title = posting.name?.trim();
   if (!postingId || !title || !isLikelyTechTitle(title)) {
@@ -363,22 +388,27 @@ function normalizePosting(
     inferRemote(location);
 
   return {
-    source: SOURCE,
-    source_id: postingId,
-    title,
-    company,
-    location,
-    remote,
-    url: buildPublicUrl(posting, companyIdentifier, title, postingId),
-    experience_level: experienceLevel,
-    roles: inferRoles(title),
-    posted_at: posting.releasedDate,
-    dedup_hash: generateHash(company, title, location ?? ''),
+    job: {
+      source: SOURCE,
+      source_id: postingId,
+      title,
+      company,
+      location,
+      remote,
+      url: buildPublicUrl(posting, companyIdentifier, title, postingId),
+      description: '',
+      experience_level: experienceLevel,
+      roles: inferRoles(title),
+      posted_at: posting.releasedDate,
+      dedup_hash: generateHash(company, title, location ?? ''),
+    },
+    companyIdentifier,
+    postingId,
   };
 }
 
-function fetchCompanyJobs(companyFetch: SmartRecruitersCompanyFetch): NormalizedJob[] {
-  const normalized: NormalizedJob[] = [];
+function fetchCompanyJobs(companyFetch: SmartRecruitersCompanyFetch): SmartRecruitersPendingJob[] {
+  const normalized: SmartRecruitersPendingJob[] = [];
 
   for (const posting of companyFetch.postings) {
     const job = normalizePosting(companyFetch, posting);
@@ -390,9 +420,67 @@ function fetchCompanyJobs(companyFetch: SmartRecruitersCompanyFetch): Normalized
   return normalized;
 }
 
+function buildPostingDescription(detail: SmartRecruitersPostingDetailResponse): string {
+  const sections = detail.jobAd?.sections;
+  const parts = [
+    sections?.companyDescription?.text,
+    sections?.jobDescription?.text,
+    sections?.qualifications?.text,
+    sections?.additionalInformation?.text,
+  ]
+    .map(sectionText => cleanScrapedDescription(sectionText).trim())
+    .filter(Boolean);
+
+  return parts.join('\n\n');
+}
+
+async function fetchPostingDescription(
+  companyIdentifier: string,
+  postingId: string,
+): Promise<string> {
+  const response = await fetchWithTimeout(
+    `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(companyIdentifier)}/postings/${postingId}`,
+    { method: 'GET' },
+    DETAIL_REQUEST_TIMEOUT_MS,
+  );
+
+  if (!response?.ok) {
+    return '';
+  }
+
+  const contentType = response.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) {
+    return '';
+  }
+
+  try {
+    const detail = await response.json() as SmartRecruitersPostingDetailResponse;
+    return buildPostingDescription(detail);
+  } catch {
+    return '';
+  }
+}
+
+async function enrichSmartRecruitersJobs(
+  jobs: SmartRecruitersPendingJob[],
+): Promise<NormalizedJob[]> {
+  return mapInBatches(
+    jobs,
+    DETAIL_BATCH_SIZE,
+    DETAIL_BATCH_DELAY_MS,
+    async (pendingJob) => ({
+      ...pendingJob.job,
+      description: await fetchPostingDescription(
+        pendingJob.companyIdentifier,
+        pendingJob.postingId,
+      ),
+    }),
+  );
+}
+
 export async function scrapeSmartRecruiters(): Promise<NormalizedJob[]> {
   const companies = loadCompanySlugs();
-  const jobMap = new Map<string, NormalizedJob>();
+  const jobMap = new Map<string, SmartRecruitersPendingJob>();
   let companiesWithPostings = 0;
   let jobsFetched = 0;
 
@@ -407,8 +495,11 @@ export async function scrapeSmartRecruiters(): Promise<NormalizedJob[]> {
       companiesWithPostings += 1;
       jobsFetched += companyFetch.postings.length;
 
-      for (const job of fetchCompanyJobs(companyFetch)) {
-        jobMap.set(job.source_id || job.dedup_hash, job);
+      for (const pendingJob of fetchCompanyJobs(companyFetch)) {
+        jobMap.set(
+          pendingJob.job.source_id || pendingJob.job.dedup_hash,
+          pendingJob,
+        );
       }
     }
 
@@ -423,9 +514,15 @@ export async function scrapeSmartRecruiters(): Promise<NormalizedJob[]> {
   }
 
   console.log(`  [${SOURCE}] Jobs fetched: ${jobsFetched}`);
-  console.log(`  [${SOURCE}] Final count: ${jobMap.size}`);
+  const jobs = await enrichSmartRecruitersJobs(Array.from(jobMap.values()));
+  console.log(`  [${SOURCE}] Final count: ${jobs.length}`);
+  console.log(
+    `  [${SOURCE}] Jobs with description: ${
+      jobs.filter(job => job.description?.trim()).length
+    }/${jobs.length}`,
+  );
 
-  return Array.from(jobMap.values());
+  return jobs;
 }
 
 async function runStandalone(): Promise<void> {
