@@ -36,6 +36,7 @@ import { scrapeSimplyHired }         from './sources/simplyhired';
 import { scrapeHandshake }           from './sources/handshake';
 import { scrapeAshby }              from './sources/ashby';
 import { scrapeBambooHR }           from './sources/bamboohr';
+import { scrapePersonio }           from './sources/personio';
 // Rippling disabled: Next.js build IDs change on
 // every deployment, breaking this scraper. Only
 // ever returned 2 jobs. Re-enable if stable API found.
@@ -86,6 +87,7 @@ const SCRAPERS: { name: string; fn: () => Promise<NormalizedJob[]> }[] = [
   { name: 'handshake',            fn: scrapeHandshake },
   { name: 'ashby',               fn: scrapeAshby },
   { name: 'bamboohr',            fn: scrapeBambooHR },
+  { name: 'personio',            fn: scrapePersonio },
   { name: 'dice_rss',            fn: scrapeDiceRss },
   { name: 'usajobs',             fn: scrapeUSAJobs },
   // Week 2 (uncomment when ready):

@@ -495,8 +495,10 @@ This section is included as operational reference. In this checkout, scraper cod
    speedyapply-ai.ts (always 0 jobs, confirmed stubs), make sure to remove correct scrapers
 3. Fix careerjet (0 jobs every run — check if API key expired
    or endpoint changed). Right now, it gracefully fails, but returns 0 jobs (not fixed, but no longer crashes)
-4. [COMPLETED ✅]: Fix rippling if possible (do research) (2 jobs,
+4a. [COMPLETED ✅]: Fix rippling if possible (do research) (2 jobs,
    fragile next.js build ID). If absolutely not possible, then deactivate/remove
+4b.Create careerjet.ts file in nextrole-scrapers! File is non-existent. 
+   Currently 115 jobs from careerjet from an old nextrole scraper - recreate and get as many jobs as possible for all existing roles and experience levels. Make sure to take IP address into account. 
 5a.[COMPLETED ✅]: Potentially remove source filtering, or redesign it so 
    that users cannot easily just go to the sources and search there instead. 
    to design this / figure it out
@@ -512,7 +514,9 @@ This section is included as operational reference. In this checkout, scraper cod
 5f.Manually curate a seed list of ~50-100 tech companies that use
    Recruitee
 5g.TeamTailor - Figure out if I should add via manual seed slug
-   (check website) or if there is a better way      
+   (check website) or if there is a better way  
+5h.For each role filter, add up job count. Then figure out what the difference is between that and 'All'. What are the remaining jobs? How
+   can they be sorted/categorized?    
 
 ---
 
@@ -569,10 +573,11 @@ This section is included as operational reference. In this checkout, scraper cod
     a LOT more detailed.
 22b.Train a small text classifier (e.g. fine-tuned distilbert
     or even a simple sklearn TF-IDF + logistic regression) on labeled job title/description → experience level + role tags.
-22c.Per-source keyword tuning — audit each source's role
+22c.Add ML to roles with no keywords.
+22d.Per-source keyword tuning — audit each source's role
     classification accuracy. Ensure SWE/DS/ML/AI chips
     return correct results per source.
-22d.Make the 'remote' filter toggle in the jobs page dark themed / dark.
+22e.Make the 'remote' filter toggle in the jobs page dark themed / dark.
 23. Role classification improvements — expand inferRoles()
     keyword lists, add more title patterns for each role.
 24. Add more role filters beyond current 7 chips:
@@ -604,6 +609,8 @@ This section is included as operational reference. In this checkout, scraper cod
       tracked, etc.)
 28b.For the search bar feature, make sure you are able to search by job
     source along with everyhting else. (Ex. search 'ZapplyJobs')
+28c.Fix the back button (UI and logic) to become more prominent and make sure
+    it actually works. Right now it resets all filters when clicked. Back button for jobs page, wheen you click on a job and it shows the description etc. 
 29a.[COMPLETED ✅]: Pricing page text rewrite — clarify free vs pro tiers,
     update feature list, mark coming-soon features clearly
 29b.Add button to Tracker page that allows users to add custom job (with
@@ -772,3 +779,6 @@ This section is included as operational reference. In this checkout, scraper cod
 - Cost: One-time training cost, then essentially free
 - Catch: You need labeled training data. You could bootstrap this by using LLM to label a few thousand jobs once, then train on those labels.
 - Complexity: This is a real ML project — 1-2 weeks to do properly
+
+22c:
+jobs that return [] from inferRoles. Right now those jobs have no role chips and essentially disappear from filtered views. A cheap middle ground that's better than full ML: after inferRoles runs, if it returns [], run a second pass using hasTechTitleSignal patterns and map those to a default swe tag. That way nothing falls through the cracks.
