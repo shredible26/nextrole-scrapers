@@ -2,8 +2,11 @@
 // Fully public API — no key, no auth. Paginated. Good remote + EU coverage.
 // Docs: https://documenter.getpostman.com/view/18545278/UVJbJdKh
 
+import { pathToFileURL } from 'node:url';
+
 import { generateHash } from '../utils/dedup';
 import { inferRoles, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const TECH_TAGS = [
   'software-engineer', 'developer', 'data', 'machine-learning',
@@ -68,4 +71,19 @@ export async function scrapeArbeitnow(): Promise<NormalizedJob[]> {
   }
 
   return results;
+}
+
+async function runStandalone(): Promise<void> {
+  const jobs = await scrapeArbeitnow();
+  await uploadJobs(jobs);
+  await deactivateStaleJobs('arbeitnow', jobs.map(job => job.dedup_hash));
+  console.log(`  [arbeitnow] Uploaded ${jobs.length} jobs`);
+}
+
+const entrypoint = process.argv[1];
+if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
+  runStandalone().catch((error) => {
+    console.error('  [arbeitnow] Standalone run failed', error);
+    process.exit(1);
+  });
 }
