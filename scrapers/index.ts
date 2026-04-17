@@ -43,7 +43,7 @@ import { scrapePersonio }           from './sources/personio';
 // import { scrapeRippling } from './sources/rippling';
 import { scrapeDiceRss }            from './sources/dice-rss';
 import { scrapeUSAJobs }            from './sources/usajobs';
-import { uploadJobs, deactivateStaleJobs } from './utils/upload';
+import { uploadJobs, deactivateStaleJobs, countActiveJobsForSource } from './utils/upload';
 import { NormalizedJob } from './utils/normalize';
 import { GITHUB_REPO_SOURCE_SET } from '../lib/source-groups';
 
@@ -126,6 +126,14 @@ type FetchResult =
       success: false;
       startedAt: number;
     };
+
+type PersistResult = {
+  name: string;
+  count: number;
+  success: boolean;
+  elapsed: string;
+  freshHashes: string[];
+};
 
 const DEFAULT_SCRAPER_TIMEOUT_MS = 120_000;
 
@@ -231,31 +239,38 @@ function getActiveScrapers() {
 
 async function persistScraper(result: FetchResult) {
   if (!result.success) {
-    return { name: result.name, count: 0, success: false, elapsed: ((Date.now() - result.startedAt) / 1000).toFixed(1) };
+    return {
+      name: result.name,
+      count: 0,
+      success: false,
+      elapsed: ((Date.now() - result.startedAt) / 1000).toFixed(1),
+      freshHashes: [],
+    } satisfies PersistResult;
   }
 
   try {
-    const uploadStats = await uploadJobs(result.jobs);
-    let staleCount = 0;
-
-    // jobspy jobs carry per-site sources (e.g. jobspy_indeed) so we can't
-    // deactivate stale entries by the orchestrator-level name 'jobspy'.
-    if (result.name !== 'jobspy') {
-      staleCount = await deactivateStaleJobs(result.name, result.jobs.map(job => job.dedup_hash));
-    }
-
-    if (result.name === 'workday') {
-      console.log(`  [workday] Upserted ${uploadStats.upserted} jobs; marked ${staleCount} stale`);
-    }
+    await uploadJobs(result.jobs);
 
     const elapsed = ((Date.now() - result.startedAt) / 1000).toFixed(1);
     console.log(`  [${result.name}] ✓ Done in ${elapsed}s`);
 
-    return { name: result.name, count: result.jobs.length, success: true, elapsed };
+    return {
+      name: result.name,
+      count: result.jobs.length,
+      success: true,
+      elapsed,
+      freshHashes: result.jobs.map(job => job.dedup_hash),
+    } satisfies PersistResult;
   } catch (err) {
     const elapsed = ((Date.now() - result.startedAt) / 1000).toFixed(1);
     console.error(`  [${result.name}] ✗ Failed after ${elapsed}s:`, (err as Error).message);
-    return { name: result.name, count: 0, success: false, elapsed };
+    return {
+      name: result.name,
+      count: 0,
+      success: false,
+      elapsed,
+      freshHashes: [],
+    } satisfies PersistResult;
   }
 }
 
@@ -332,7 +347,7 @@ async function run() {
   );
 
   const dedupedResults = dedupeGitHubRepoJobs(fetchResults);
-  const summary = [];
+  const summary: PersistResult[] = [];
 
   for (const result of dedupedResults) {
     summary.push(await persistScraper(result));
@@ -349,6 +364,42 @@ async function run() {
   console.log(`\n  Total jobs processed: ${summary.reduce((acc, s) => acc + s.count, 0)}`);
   console.log(`  Wall time: ${totalElapsed}s`);
   console.log('──────────────────────────────────────────────────\n');
+
+  const deactivationTargets = summary.filter(
+    result => result.success && result.name !== 'jobspy',
+  );
+
+  console.log(`Starting stale job deactivation for ${deactivationTargets.length} sources...`);
+
+  const deactivationStart = Date.now();
+  let totalDeactivated = 0;
+
+  for (const target of deactivationTargets) {
+    if (target.freshHashes.length === 0) {
+      try {
+        const activeCount = await countActiveJobsForSource(target.name);
+        if (activeCount > 0) {
+          console.warn(
+            `[${target.name}] ⚠ Returned 0 jobs but has ${activeCount} active jobs in DB. Skipping deactivation as a precaution.`,
+          );
+          continue;
+        }
+      } catch (error) {
+        console.warn(
+          `[${target.name}] ⚠ Failed to verify active job count after 0-job scrape: ${(error as Error).message}. Skipping deactivation as a precaution.`,
+        );
+        continue;
+      }
+    }
+
+    totalDeactivated += await deactivateStaleJobs(target.name, target.freshHashes);
+  }
+
+  const deactivationElapsed = ((Date.now() - deactivationStart) / 1000).toFixed(1);
+  console.log(`All deactivation complete. Total wall time: ${deactivationElapsed}s`);
+  console.log(
+    `Deactivation complete. Total deactivated: ${totalDeactivated} jobs across ${deactivationTargets.length} sources.`,
+  );
 }
 
 run().catch(err => {
