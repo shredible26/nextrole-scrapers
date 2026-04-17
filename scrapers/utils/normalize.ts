@@ -76,7 +76,10 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'game engineer', 'game developer', 'gameplay engineer', 'engine developer',
     'compiler engineer', 'programming language',
     'distributed systems', 'storage engineer', 'database engineer',
+    'growth engineer', 'platform engineer', 'infrastructure engineer',
+    'reliability engineer', 'site reliability', 'sre',
     'tools engineer', 'developer tools', 'developer experience', 'dx engineer',
+    'tooling engineer', 'forward deployed engineer', 'field engineer',
     'build engineer', 'release engineer',
     // QA / Testing
     'qa engineer', 'quality engineer', 'quality assurance',
@@ -112,21 +115,26 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     // Quant research (overlap with finance but data-heavy)
     'quantitative researcher', 'quant researcher',
     'quantitative scientist', 'computational researcher',
+    'decision scientist',
     // Other data
     'data modeler', 'data architect', 'data solutions',
     'reporting engineer', 'bi engineer', 'bi developer',
+    'business intelligence', 'reporting analyst',
+    'insights analyst', 'strategy analyst',
     'business intelligence engineer', 'business intelligence developer',
   ],
   ml: [
     // Core ML
     'machine learning', 'ml engineer', 'ml developer',
     'mlops', 'ml ops', 'ml platform', 'ml infrastructure',
+    'machine learning platform', 'ai engineer', 'ai/ml',
     'ml systems', 'ml research', 'ml scientist',
     // Model / training
     'model engineer', 'model developer', 'training engineer',
     'inference engineer', 'model deployment',
     // Recommendation / ranking / search
     'recommendation engineer', 'recommendation scientist',
+    'recommendation systems',
     'ranking engineer', 'ranking scientist',
     'search engineer', 'search scientist', 'search relevance',
     // CV / NLP / Speech
@@ -141,6 +149,7 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'autonomous', 'autonomy engineer', 'autonomy scientist',
     'self-driving', 'slam engineer',
     // Other ML specializations
+    'deep learning',
     'anomaly detection', 'forecasting engineer',
     'feature engineer', 'feature platform',
   ],
@@ -180,22 +189,27 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'consumer insights', 'market research analyst',
     // Operations
     'operations analyst', 'ops analyst',
+    'operational analyst', 'process analyst',
     'supply chain analyst', 'logistics analyst',
     'pricing analyst', 'revenue analyst',
     // Systems / IT
     'systems analyst', 'it analyst',
+    'functional analyst',
     'technology analyst', 'technical analyst',
     // Strategy
     'strategy analyst', 'strategic analyst',
     'corporate strategy', 'business strategy analyst',
     // Finance adjacent (non-quant)
     'financial analyst', 'fp&a analyst', 'fpa analyst',
+    'market analyst', 'risk analyst', 'compliance analyst',
+    'fraud analyst', 'content analyst', 'quality analyst',
     'corporate finance analyst', 'investment analyst',
     'research analyst', 'equity research analyst',
     'credit analyst', 'loan analyst',
     // Policy / program
     'policy analyst', 'program analyst',
     'intelligence analyst', 'research associate',
+    'trust and safety',
     // Catch-all with word boundary guard
     ' analyst',
   ],
@@ -203,8 +217,10 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     // Core PM
     'product manager', 'product management',
     'associate product manager', 'associate pm', 'apm',
+    'product analyst', 'product operations', 'product specialist',
     // Technical PM
     'technical product manager', 'technical pm',
+    'technical program manager', 'tpm',
     'platform product manager',
     // Program management (non-TPM)
     'program manager',
@@ -486,7 +502,8 @@ const EXCLUSION_KEYWORDS = [
   'staff product', 'staff analyst', 'staff developer',
   'principal engineer', 'principal software', 'principal data', 'principal ml',
   'principal scientist', 'principal architect', 'principal analyst',
-  'distinguished engineer', 'distinguished scientist', 'fellow',
+  'distinguished engineer', 'distinguished scientist',
+  ' fellow,', 'google fellow', 'ieee fellow',
   // Management / Leadership
   'engineering manager', 'engineering director', 'director of engineering',
   'director of software', 'director of data', 'director of ml',
@@ -496,12 +513,7 @@ const EXCLUSION_KEYWORDS = [
   'head of product', 'head of ml', 'head of ai',
   // Lead titles
   'lead engineer', 'lead developer', 'lead scientist',
-  'lead analyst', 'lead software', 'lead data', 'lead ml',
-  'lead machine', 'lead product', 'lead research',
-  'lead architect', 'lead cloud', 'lead mobile',
-  'lead frontend', 'lead backend', 'lead full stack',
-  'lead qa', 'lead sre', 'lead infrastructure',
-  'lead security', 'lead devops', 'lead platform',
+  'lead software', 'lead architect',
   'tech lead', 'technical lead', 'senior technical',
   // Mid-level numbered patterns (II / 2 / III / 3 / IV / 4+)
   'software engineer ii', 'software engineer 2',
@@ -518,6 +530,9 @@ const EXCLUSION_KEYWORDS = [
   ' l4 ', ' l5 ', ' l6 ', ' l7 ', ' l8 ',
   // E-level (Meta style)
   ' e4 ', ' e5 ', ' e6 ', ' e7 ',
+  // Generic mid-level phrasing
+  'mid-level', 'mid level', 'midlevel',
+  '3+ years', '4+ years', '5+ years', '6+ years', '7+ years', '8+ years', '10+ years',
   // Senior associate (finance / consulting)
   'senior associate',
   // Architects (usually 5+ YOE)
@@ -564,10 +579,13 @@ const NEW_GRAD_KEYWORDS = [
   'college grad', 'college graduate',
   'university grad', 'university graduate',
   'campus hire', 'campus recruit', 'campus entry',
+  'campus recruiting',
   'early career', 'early-career',
   'university hire', 'university recruiting',
   'graduate program', 'graduate leadership', 'graduate rotational',
   'rotational program', 'rotation program',
+  'phd graduate', 'ms graduate', 'bachelor graduate',
+  'grad hire', 'hire program',
   'graduate scheme', // UK term
   '2025 grad', '2026 grad', '2025 graduate', '2026 graduate',
   '2027 grad', '2027 graduate',
@@ -582,6 +600,7 @@ const NEW_GRAD_KEYWORDS = [
   'developer i ', 'developer 1 ',
   'analyst i ', 'analyst 1 ',
   'scientist i ', 'scientist 1 ',
+  'level 1', 'level i',
   // Junior signals
   'junior ', 'jr. ', 'jr ',
   // Associate signals (specific enough to avoid false positives)
@@ -590,7 +609,7 @@ const NEW_GRAD_KEYWORDS = [
   'associate machine learning', 'associate ml engineer',
   'associate developer', 'associate product manager',
   'associate analyst', 'associate scientist', 'associate researcher',
-  'associate engineer',
+  'associate engineer', 'entry engineer',
   // Company-specific new grad patterns
   'new grad software', 'new grad engineer', 'new grad data',
   'new grad ml', 'new grad swe', 'new grad sde',
@@ -611,6 +630,10 @@ const NEW_GRAD_KEYWORDS = [
   'new college grad 2025', 'new college grad 2026', 'new college grad 2027',
   'early career engineer', 'early career developer',
   'early career software', 'early career data',
+  // Boundary-safe short forms
+  '\\bng(?:\\b|,|-)',
+  '\\bl1\\b', '\\bl2\\b', '\\bl3\\b',
+  '\\bmts\\b',
 ];
 
 const ENTRY_LEVEL_KEYWORDS = [
@@ -667,9 +690,30 @@ const NEW_GRAD_DESC_KEYWORDS = [
   'graduate scheme',
 ];
 
+// Signals in descriptions that rescue an otherwise excluded title.
+// This intentionally returns entry_level rather than new_grad because the title
+// still carries senior wording, but the role is clearly junior-targeted.
+const EXCLUDED_TITLE_RESCUE_KEYWORDS = [
+  'new grad', 'new graduate', 'recent graduate', 'recent grad',
+  'bachelor', 'bs/ms', 'b.s.', 'b.s ',
+  '0-2 years', '0-3 years', '0 to 2 years', '0 to 3 years',
+  'no experience required',
+  'entry level', 'entry-level',
+  'early career', 'early-career',
+  'class of 2025', 'class of 2026',
+  'university graduate', 'college graduate', 'fresh graduate',
+];
+
 // ---------------------------------------------------------------------------
 // CORE FUNCTIONS
 // ---------------------------------------------------------------------------
+
+function matchesKeyword(text: string, keyword: string): boolean {
+  if (keyword.includes('\\b')) {
+    return new RegExp(keyword, 'i').test(text);
+  }
+  return text.includes(keyword);
+}
 
 /**
  * Returns true when the title matches any exclusion keyword (senior/leadership roles).
@@ -678,13 +722,7 @@ const NEW_GRAD_DESC_KEYWORDS = [
  */
 function isExcluded(title: string): boolean {
   const padded = ' ' + title.toLowerCase() + ' ';
-  if (/^\s*lead\s+\w/i.test(padded.trim())) return true;
-  return EXCLUSION_KEYWORDS.some(k => {
-    if (k.includes('\\b')) {
-      return new RegExp(k, 'i').test(padded);
-    }
-    return padded.includes(k);
-  });
+  return EXCLUSION_KEYWORDS.some(keyword => matchesKeyword(padded, keyword));
 }
 
 /**
@@ -729,8 +767,9 @@ export function inferRemote(location?: string): boolean {
  * Infer the experience level from a job title (and optional description).
  * Returns null when the role is clearly senior — callers should skip those jobs.
  *
- * Check order: exclusion → internship → new_grad (title) → new_grad (desc) →
- *              entry_level (title or desc) → default entry_level.
+ * Check order: exclusion → excluded-title rescue → internship → new_grad
+ *              (title) → new_grad (desc) → entry_level (title or desc) →
+ *              default entry_level.
  *
  * Default behaviour: when no explicit seniority signal is found, returns
  * 'entry_level' so that Greenhouse/Lever/Ashby postings without explicit level
@@ -741,16 +780,24 @@ export function inferExperienceLevel(
   content?: string,
 ): ExperienceLevel | null {
   const t = title.toLowerCase();
+  const paddedTitle = ' ' + t + ' ';
   const c = (content ?? '').toLowerCase();
 
   // 1. Exclusion check — drop senior / management / mid-level roles.
-  if (isExcluded(t)) return null;
+  if (isExcluded(t)) {
+    if (c && EXCLUDED_TITLE_RESCUE_KEYWORDS.some(keyword => c.includes(keyword))) {
+      return 'entry_level';
+    }
+    return null;
+  }
 
   // 2. Internship signals in title.
   if (INTERNSHIP_KEYWORDS.some(k => t.includes(k))) return 'internship';
 
   // 3. New grad signals in title.
-  if (NEW_GRAD_KEYWORDS.some(k => t.includes(k))) return 'new_grad';
+  if (NEW_GRAD_KEYWORDS.some(keyword => matchesKeyword(paddedTitle, keyword))) {
+    return 'new_grad';
+  }
 
   // 3b. New grad signals in description (conservative list — no bare 'bachelor').
   if (c && NEW_GRAD_DESC_KEYWORDS.some(k => c.includes(k))) return 'new_grad';
