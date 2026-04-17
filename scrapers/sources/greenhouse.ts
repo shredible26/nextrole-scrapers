@@ -2,10 +2,21 @@
 // Fully public API — no auth, no key. Hundreds of tech companies use Greenhouse.
 // Strategy: fire all company fetches concurrently; silently skip 404/500s.
 
+import { pathToFileURL } from 'node:url';
+
 import { generateHash } from '../utils/dedup';
 import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const stripHtml = (html: string): string => html.replace(/<[^>]*>/g, ' ');
+const SOURCE = 'greenhouse';
+const REQUEST_TIMEOUT_MS = 15_000;
+const BOARD_TIMEOUT_MS = 5_000;
+const BATCH_SIZE = 10;
+const DELAY_MS = 200;
+const MAX_FETCH_ATTEMPTS = 3;
+const RETRYABLE_STATUS_CODES = new Set([0, 429, 500, 502, 503, 504]);
+const USER_AGENT = 'NextRole Job Aggregator (+https://nextrole-phi.vercel.app)';
 
 const BASE_GREENHOUSE_COMPANIES = [
   // Big Tech & FAANG-adjacent
@@ -300,60 +311,196 @@ const TECH_KEYWORDS = [
   'software', 'backend', 'frontend', 'fullstack', 'full stack', 'product manager',
 ];
 
+type GreenhouseJob = {
+  absolute_url?: string;
+  content?: string;
+  id?: number | string;
+  location?: {
+    name?: string;
+  };
+  title?: string;
+  updated_at?: string;
+};
+
+type GreenhouseBoardResponse = {
+  content?: string;
+  name?: string;
+};
+
+type GreenhouseJobsResponse = {
+  company?: {
+    name?: string;
+  };
+  jobs?: GreenhouseJob[];
+};
+
+type FetchJsonResult<T> = {
+  data: T | null;
+  status: number;
+  timedOut: boolean;
+};
+
 function isTechRole(title: string): boolean {
   const lower = title.toLowerCase();
   return TECH_KEYWORDS.some(k => lower.includes(k));
 }
 
-async function fetchCompany(company: string): Promise<NormalizedJob[]> {
+function isTimeoutError(error: unknown): boolean {
+  return error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError');
+}
+
+async function fetchJsonWithTimeout<T>(
+  url: string,
+  timeoutMs: number,
+): Promise<FetchJsonResult<T>> {
   try {
-    const res = await fetch(
-      `https://boards-api.greenhouse.io/v1/boards/${company}/jobs?content=true`,
-      { signal: AbortSignal.timeout(10_000) }
-    );
-    if (!res.ok) return []; // 404 = company doesn't use Greenhouse; skip silently
+    const res = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': USER_AGENT,
+      },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
 
-    const data = await res.json();
-    const jobs: any[] = data.jobs ?? [];
-
-    const normalized: NormalizedJob[] = [];
-    for (const job of jobs) {
-      if (!isTechRole(job.title ?? '')) continue;
-      const plainContent = stripHtml(job.content ?? '');
-      const level = inferExperienceLevel(job.title ?? '', plainContent);
-      if (level === null) continue;
-
-      const location: string = job.location?.name ?? '';
-      // Greenhouse stores company name in the board metadata; fall back to slug
-      const companyName: string = data.company?.name ?? company;
-      normalized.push({
-        source: 'greenhouse',
-        source_id: String(job.id),
-        title: job.title,
-        company: companyName,
-        location,
-        remote: inferRemote(location),
-        url: job.absolute_url ?? '',
-        description: plainContent || undefined,
-        experience_level: level,
-        roles: inferRoles(job.title),
-        posted_at: job.updated_at ?? undefined,
-        dedup_hash: generateHash(companyName, job.title, location),
-      });
+    if (!res.ok) {
+      return { data: null, status: res.status, timedOut: false };
     }
-    return normalized;
-  } catch {
-    return []; // timeout or network error — skip silently
+
+    const contentType = res.headers.get('content-type') ?? '';
+    if (!contentType.includes('application/json')) {
+      return { data: null, status: res.status, timedOut: false };
+    }
+
+    return {
+      data: (await res.json()) as T,
+      status: res.status,
+      timedOut: false,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      status: 0,
+      timedOut: isTimeoutError(error),
+    };
   }
+}
+
+async function validateGreenhouseBoard(
+  company: string,
+): Promise<{ companyName: string | null; status: number; timedOut: boolean }> {
+  const result = await fetchJsonWithTimeout<GreenhouseBoardResponse>(
+    `https://boards-api.greenhouse.io/v1/boards/${company}`,
+    BOARD_TIMEOUT_MS,
+  );
+
+  return {
+    companyName: result.data?.name?.trim() || null,
+    status: result.status,
+    timedOut: result.timedOut,
+  };
+}
+
+async function fetchCompany(company: string): Promise<NormalizedJob[]> {
+  console.log(`  [${SOURCE}] Starting company: ${company}`);
+
+  const boardValidation = await validateGreenhouseBoard(company);
+  if (boardValidation.status !== 200) {
+    console.log(
+      `  [${SOURCE}] ${company}: board validation failed with status=${boardValidation.status}` +
+        (boardValidation.timedOut ? ' timeout=true' : ''),
+    );
+    console.log(`  [${SOURCE}] Skipping company ${company} due to board validation error`);
+    return [];
+  }
+
+  console.log(`  [${SOURCE}] ${company}: board validation succeeded with status=200`);
+
+  const urls = [
+    `https://boards-api.greenhouse.io/v1/boards/${company}/jobs?content=true`,
+    `https://boards-api.greenhouse.io/v1/boards/${company}/jobs`,
+  ];
+
+  for (const url of urls) {
+    const isFallback = !url.includes('content=true');
+
+    for (let attempt = 1; attempt <= MAX_FETCH_ATTEMPTS; attempt += 1) {
+      const result = await fetchJsonWithTimeout<GreenhouseJobsResponse>(
+        url,
+        REQUEST_TIMEOUT_MS,
+      );
+
+      console.log(
+        `  [${SOURCE}] ${company}: jobs fetch ${isFallback ? '(fallback) ' : ''}` +
+          `attempt ${attempt}/${MAX_FETCH_ATTEMPTS} status=${result.status}` +
+          (result.timedOut ? ' timeout=true' : ''),
+      );
+
+      if (result.status === 200 && result.data) {
+        const jobs = result.data.jobs ?? [];
+        const normalized: NormalizedJob[] = [];
+
+        for (const job of jobs) {
+          if (!isTechRole(job.title ?? '')) continue;
+          const plainContent = stripHtml(job.content ?? '');
+          const level = inferExperienceLevel(job.title ?? '', plainContent);
+          if (level === null) continue;
+
+          const location = job.location?.name ?? '';
+          const companyName =
+            result.data.company?.name?.trim() ||
+            boardValidation.companyName ||
+            company;
+
+          normalized.push({
+            source: SOURCE,
+            source_id: String(job.id),
+            title: job.title ?? '',
+            company: companyName,
+            location,
+            remote: inferRemote(location),
+            url: job.absolute_url ?? '',
+            description: plainContent || undefined,
+            experience_level: level,
+            roles: inferRoles(job.title ?? ''),
+            posted_at: job.updated_at ?? undefined,
+            dedup_hash: generateHash(companyName, job.title ?? '', location),
+          });
+        }
+
+        console.log(
+          `  [${SOURCE}] ${company}: jobs fetch succeeded with status=200; ` +
+            `raw=${jobs.length}; normalized=${normalized.length}`,
+        );
+
+        return normalized;
+      }
+
+      if (!RETRYABLE_STATUS_CODES.has(result.status) || attempt === MAX_FETCH_ATTEMPTS) {
+        break;
+      }
+
+      const backoffMs = 500 * (2 ** (attempt - 1));
+      console.log(
+        `  [${SOURCE}] ${company}: retrying after ${backoffMs}ms due to status=${result.status}`,
+      );
+      await sleep(backoffMs);
+    }
+
+    if (!isFallback) {
+      console.log(`  [${SOURCE}] ${company}: switching to fallback jobs endpoint after repeated failure`);
+    }
+  }
+
+  console.log(`  [${SOURCE}] Skipping company ${company} due to repeated fetch errors`);
+  return [];
 }
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 export async function scrapeGreenhouse(): Promise<NormalizedJob[]> {
-  // Stagger requests in small batches to be polite while still being fast
-  const BATCH_SIZE = 15;
-  const DELAY_MS = 150;
   const all: NormalizedJob[] = [];
+
+  console.log(`  [${SOURCE}] Starting scrape across ${GREENHOUSE_COMPANIES.length} companies`);
 
   for (let i = 0; i < GREENHOUSE_COMPANIES.length; i += BATCH_SIZE) {
     const batch = GREENHOUSE_COMPANIES.slice(i, i + BATCH_SIZE);
@@ -362,13 +509,40 @@ export async function scrapeGreenhouse(): Promise<NormalizedJob[]> {
     for (const result of results) {
       if (result.status === 'fulfilled') {
         all.push(...result.value);
+        continue;
       }
+
+      console.log(`  [${SOURCE}] Skipping company due to batch error: ${String(result.reason)}`);
     }
+
+    console.log(
+      `  [${SOURCE}] Processed ${Math.min(i + BATCH_SIZE, GREENHOUSE_COMPANIES.length)}/${GREENHOUSE_COMPANIES.length} companies; jobs=${all.length}`,
+    );
 
     if (i + BATCH_SIZE < GREENHOUSE_COMPANIES.length) {
       await sleep(DELAY_MS);
     }
   }
 
+  console.log(`  [${SOURCE}] Final count: ${all.length}`);
   return all;
+}
+
+async function runStandalone(): Promise<void> {
+  const startedAt = Date.now();
+
+  const jobs = await scrapeGreenhouse();
+  await uploadJobs(jobs);
+  await deactivateStaleJobs(SOURCE, jobs.map(job => job.dedup_hash));
+
+  const elapsedSeconds = ((Date.now() - startedAt) / 1_000).toFixed(1);
+  console.log(`  [${SOURCE}] Standalone run completed in ${elapsedSeconds}s`);
+}
+
+const entrypoint = process.argv[1];
+if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
+  runStandalone().catch((error) => {
+    console.error(`  [${SOURCE}] Standalone run failed`, error);
+    process.exit(1);
+  });
 }

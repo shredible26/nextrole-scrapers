@@ -14,18 +14,19 @@ import {
 import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 import {
   cleanScrapedDescription,
-  fetchWithTimeout,
   mapInBatches,
 } from '../utils/scraper-helpers';
 
 const SOURCE = 'smartrecruiters';
-const REQUEST_TIMEOUT_MS = 5_000;
-const DETAIL_REQUEST_TIMEOUT_MS = 10_000;
+const REQUEST_TIMEOUT_MS = 15_000;
+const DETAIL_REQUEST_TIMEOUT_MS = 15_000;
 const COMPANY_BATCH_SIZE = 30;
 const COMPANY_BATCH_DELAY_MS = 200;
 const POSTINGS_PAGE_SIZE = 100;
 const DETAIL_BATCH_SIZE = 15;
 const DETAIL_BATCH_DELAY_MS = 300;
+const FETCH_MAX_ATTEMPTS = 3;
+const USER_AGENT = 'NextRole Job Aggregator (+https://nextrole-phi.vercel.app)';
 
 const SMARTRECRUITERS_COMPANIES = [
   // Validated public identifiers with current relevant tech activity.
@@ -179,7 +180,12 @@ type SmartRecruitersPendingJob = {
 type FetchJsonResult<T> = {
   status: number;
   data: T | null;
+  timedOut: boolean;
 };
+
+function isTimeoutError(error: unknown): boolean {
+  return error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError');
+}
 
 function isLikelyTechTitle(title: string): boolean {
   return hasTechTitleSignal(title) || inferRoles(title).length > 0;
@@ -273,59 +279,91 @@ function loadCompanySlugs(): string[] {
 }
 
 async function fetchJson<T>(url: string): Promise<FetchJsonResult<T>> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': USER_AGENT,
+      },
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
     if (!response.ok) {
-      return { status: response.status, data: null };
+      return { status: response.status, data: null, timedOut: false };
     }
 
     const contentType = response.headers.get('content-type') ?? '';
     if (!contentType.includes('application/json')) {
-      return { status: response.status, data: null };
+      return { status: response.status, data: null, timedOut: false };
     }
 
     const data = (await response.json()) as T;
-    return { status: response.status, data };
+    return { status: response.status, data, timedOut: false };
   } catch {
-    return { status: 0, data: null };
-  } finally {
-    clearTimeout(timeout);
+    return { status: 0, data: null, timedOut: true };
   }
 }
 
 async function fetchCompanyPostings(companyName: string): Promise<SmartRecruitersCompanyFetch | null> {
-  const { status, data } = await fetchJson<SmartRecruitersCompanyResponse>(
-    `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(companyName)}/postings?limit=${POSTINGS_PAGE_SIZE}&offset=0`,
-  );
+  console.log(`  [${SOURCE}] Starting company: ${companyName}`);
 
-  if (status !== 200 || !data || !Array.isArray(data.content) || data.content.length === 0) {
-    return null;
-  }
+  for (let attempt = 1; attempt <= FETCH_MAX_ATTEMPTS; attempt += 1) {
+    const { status, data, timedOut } = await fetchJson<SmartRecruitersCompanyResponse>(
+      `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(companyName)}/postings?limit=${POSTINGS_PAGE_SIZE}&offset=0`,
+    );
 
-  const postings: SmartRecruitersPostingSummary[] = [];
-  const seenPostingIds = new Set<string>();
+    console.log(
+      `  [${SOURCE}] ${companyName}: postings fetch attempt ${attempt}/${FETCH_MAX_ATTEMPTS} status=${status}` +
+        (timedOut ? ' timeout=true' : ''),
+    );
 
-  for (const posting of data.content) {
-    const postingId = posting.id?.trim() || posting.uuid?.trim();
-    if (postingId) {
-      if (seenPostingIds.has(postingId)) continue;
-      seenPostingIds.add(postingId);
+    if (status === 200 && data && Array.isArray(data.content)) {
+      if (data.content.length === 0) {
+        console.log(`  [${SOURCE}] ${companyName}: postings fetch succeeded with status=200 but returned 0 postings`);
+        return null;
+      }
+
+      const postings: SmartRecruitersPostingSummary[] = [];
+      const seenPostingIds = new Set<string>();
+
+      for (const posting of data.content) {
+        const postingId = posting.id?.trim() || posting.uuid?.trim();
+        if (postingId) {
+          if (seenPostingIds.has(postingId)) continue;
+          seenPostingIds.add(postingId);
+        }
+
+        postings.push(posting);
+      }
+
+      if (postings.length === 0) {
+        console.log(`  [${SOURCE}] ${companyName}: postings fetch returned only duplicates; skipping`);
+        return null;
+      }
+
+      console.log(
+        `  [${SOURCE}] ${companyName}: postings fetch succeeded with status=200; ` +
+          `raw=${data.content.length}; unique=${postings.length}`,
+      );
+
+      return {
+        companyName,
+        postings,
+      };
     }
 
-    postings.push(posting);
-  }
+    if (attempt < FETCH_MAX_ATTEMPTS && (timedOut || status === 0 || status === 429 || status >= 500)) {
+      const backoffMs = 500 * (2 ** (attempt - 1));
+      console.log(`  [${SOURCE}] ${companyName}: retrying after ${backoffMs}ms`);
+      await delay(backoffMs);
+      continue;
+    }
 
-  if (postings.length === 0) {
+    console.log(`  [${SOURCE}] Skipping company ${companyName} due to postings fetch error`);
     return null;
   }
 
-  return {
-    companyName,
-    postings,
-  };
+  console.log(`  [${SOURCE}] Skipping company ${companyName} due to repeated postings fetch errors`);
+  return null;
 }
 
 function inferPostingExperienceLevel(posting: SmartRecruitersPostingSummary, title: string) {
@@ -438,27 +476,67 @@ async function fetchPostingDescription(
   companyIdentifier: string,
   postingId: string,
 ): Promise<string> {
-  const response = await fetchWithTimeout(
-    `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(companyIdentifier)}/postings/${postingId}`,
-    { method: 'GET' },
-    DETAIL_REQUEST_TIMEOUT_MS,
-  );
+  const url =
+    `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(companyIdentifier)}/postings/${postingId}`;
 
-  if (!response?.ok) {
-    return '';
+  for (let attempt = 1; attempt <= FETCH_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'User-Agent': USER_AGENT,
+        },
+        signal: AbortSignal.timeout(DETAIL_REQUEST_TIMEOUT_MS),
+      });
+
+      if (!response.ok) {
+        console.log(
+          `  [${SOURCE}] ${companyIdentifier}/${postingId}: detail fetch failed with status=${response.status}`,
+        );
+
+        if (attempt < FETCH_MAX_ATTEMPTS && (response.status === 429 || response.status >= 500)) {
+          const backoffMs = 500 * (2 ** (attempt - 1));
+          await delay(backoffMs);
+          continue;
+        }
+
+        return '';
+      }
+
+      const contentType = response.headers.get('content-type') ?? '';
+      if (!contentType.includes('application/json')) {
+        console.log(
+          `  [${SOURCE}] ${companyIdentifier}/${postingId}: detail fetch returned non-JSON content`,
+        );
+        return '';
+      }
+
+      try {
+        const detail = await response.json() as SmartRecruitersPostingDetailResponse;
+        return buildPostingDescription(detail);
+      } catch {
+        console.log(`  [${SOURCE}] ${companyIdentifier}/${postingId}: failed to parse detail JSON`);
+        return '';
+      }
+    } catch (error) {
+      const timedOut = isTimeoutError(error);
+      console.log(
+        `  [${SOURCE}] ${companyIdentifier}/${postingId}: detail fetch failed with status=0` +
+          (timedOut ? ' timeout=true' : ''),
+      );
+
+      if (attempt < FETCH_MAX_ATTEMPTS && timedOut) {
+        const backoffMs = 500 * (2 ** (attempt - 1));
+        await delay(backoffMs);
+        continue;
+      }
+
+      return '';
+    }
   }
 
-  const contentType = response.headers.get('content-type') ?? '';
-  if (!contentType.includes('application/json')) {
-    return '';
-  }
-
-  try {
-    const detail = await response.json() as SmartRecruitersPostingDetailResponse;
-    return buildPostingDescription(detail);
-  } catch {
-    return '';
-  }
+  return '';
 }
 
 async function enrichSmartRecruitersJobs(
@@ -484,12 +562,19 @@ export async function scrapeSmartRecruiters(): Promise<NormalizedJob[]> {
   let companiesWithPostings = 0;
   let jobsFetched = 0;
 
+  console.log(`  [${SOURCE}] Starting scrape across ${companies.length} companies`);
+
   for (let index = 0; index < companies.length; index += COMPANY_BATCH_SIZE) {
     const batch = companies.slice(index, index + COMPANY_BATCH_SIZE);
     const results = await Promise.allSettled(batch.map(fetchCompanyPostings));
 
     for (const result of results) {
-      if (result.status !== 'fulfilled' || result.value === null) continue;
+      if (result.status !== 'fulfilled') {
+        console.log(`  [${SOURCE}] Skipping company due to batch error: ${String(result.reason)}`);
+        continue;
+      }
+
+      if (result.value === null) continue;
 
       const companyFetch = result.value;
       companiesWithPostings += 1;

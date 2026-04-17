@@ -540,5 +540,7 @@
   "cityblock": "Cityblock",
   "airtable": "Airtable",
   "marqeta": "Marqeta",
-  "kraken": "Kraken (Analytics Only)"
+  "kraken": "Kraken (Analytics Only)",
+  "depot": "Depot",
+  "spendesk": "spendesk"
 }
