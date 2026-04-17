@@ -244,7 +244,7 @@ export async function embedNewJobs(jobIds: string[]): Promise<void> {
 
   if (uniqueJobIds.length > EMBEDDING_MAX_JOBS) {
     console.warn(
-      `  ⚠ embedNewJobs received ${uniqueJobIds.length} jobs; embedding only the first ${EMBEDDING_MAX_JOBS}`,
+      `  ⚠ Embedding helper received ${uniqueJobIds.length} jobs; embedding only the first ${EMBEDDING_MAX_JOBS}`,
     );
   }
 
@@ -387,8 +387,6 @@ export async function uploadJobs(jobs: NormalizedJob[]): Promise<UploadStats> {
         ? `; preserved ${stats.preservedConflicts} cross-source duplicates`
         : ''),
   );
-
-  await embedNewJobs(newlyInsertedIds);
 
   return stats;
 }

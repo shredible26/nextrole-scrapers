@@ -75,3 +75,10 @@ jobs:
           PROXY_USER:           ${{ secrets.PROXY_USER }}
           PROXY_PASS:           ${{ secrets.PROXY_PASS }}
           CAREERJET_API_KEY:    ${{ secrets.CAREERJET_API_KEY }}
+
+      - name: Embed new jobs
+        run: pnpm exec tsx scrapers/scripts/generate-embeddings.ts --limit 10000
+        env:
+          SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          OPENAI_API_KEY:       ${{ secrets.OPENAI_API_KEY }}

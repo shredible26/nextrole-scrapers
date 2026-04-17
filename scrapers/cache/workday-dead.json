@@ -616,7 +616,7 @@
     }
   },
   "shipt": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd1",
     "slug": "Shipt_External",
@@ -628,7 +628,7 @@
     }
   },
   "shi": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd12",
     "slug": "shicareers",
@@ -640,7 +640,7 @@
     }
   },
   "salesforce": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd12",
     "slug": "External_Career_Site",
@@ -664,7 +664,7 @@
     }
   },
   "qualcomm": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd12",
     "slug": "external",
@@ -676,7 +676,7 @@
     }
   },
   "vrtx": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd501",
     "slug": "Vertex_Careers",
@@ -688,7 +688,7 @@
     }
   },
   "sprinklr": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd1",
     "slug": "careers",
@@ -700,7 +700,7 @@
     }
   },
   "tmobile": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd1",
     "slug": "External",
@@ -712,7 +712,7 @@
     }
   },
   "zendesk": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd1",
     "slug": "zendesk",
@@ -724,7 +724,7 @@
     }
   },
   "visa": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "visa",
@@ -736,7 +736,7 @@
     }
   },
   "quickenloans": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "rocket_careers",
@@ -748,7 +748,7 @@
     }
   },
   "pfizer": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd1",
     "slug": "pfizercareers",
@@ -760,7 +760,7 @@
     }
   },
   "trimble": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd1",
     "slug": "TrimbleCareers",
@@ -772,7 +772,7 @@
     }
   },
   "transunion": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "TransUnion",
@@ -784,7 +784,7 @@
     }
   },
   "troweprice": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "TRowePrice",
@@ -832,7 +832,7 @@
     }
   },
   "pnc": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "external",
@@ -844,7 +844,7 @@
     }
   },
   "travelers": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "external",
@@ -884,7 +884,7 @@
     }
   },
   "target": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "targetcareers",
@@ -896,7 +896,7 @@
     }
   },
   "workday": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "Workday_Early_Career",
@@ -908,7 +908,7 @@
     }
   },
   "zoom": {
-    "zeroCount": 2,
+    "zeroCount": 1,
     "lastAttempt": "2026-04-15",
     "wdVersion": "wd5",
     "slug": "zoom",
