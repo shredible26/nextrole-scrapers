@@ -400,6 +400,7 @@ async function run() {
   console.log(
     `Deactivation complete. Total deactivated: ${totalDeactivated} jobs across ${deactivationTargets.length} sources.`,
   );
+  process.exit(0);
 }
 
 run().catch(err => {
