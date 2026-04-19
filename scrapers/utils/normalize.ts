@@ -1,3 +1,6 @@
+import { generateHash } from './dedup';
+import { isNonUsLocation } from './location';
+
 export type ExperienceLevel = 'new_grad' | 'entry_level' | 'internship';
 export const ROLE_VALUES = [
   'swe',
@@ -12,6 +15,7 @@ export const ROLE_VALUES = [
   'finance',
 ] as const;
 export type Role = (typeof ROLE_VALUES)[number];
+export const TARGET_ROLE_VALUES = ['swe', 'ds', 'ml', 'ai', 'analyst', 'pm'] as const;
 
 export type NormalizedJob = {
   source: string;
@@ -28,6 +32,21 @@ export type NormalizedJob = {
   roles: Role[];
   posted_at?: string;
   dedup_hash: string;
+};
+
+export type NormalizeJobInput = {
+  source: string;
+  sourceId?: string | null;
+  title?: string | null;
+  company?: string | null;
+  location?: string | null;
+  remote?: boolean | null;
+  url?: string | null;
+  description?: string | null;
+  postedAt?: string | Date | null;
+  roles?: Role[] | null;
+  roleText?: string | null;
+  experienceText?: string | null;
 };
 
 // ---------------------------------------------------------------------------
@@ -478,6 +497,46 @@ const ROLE_ALIASES: Record<string, Role> = {
   finance: 'finance',
 };
 
+const TARGET_ROLE_KEYWORDS: Record<(typeof TARGET_ROLE_VALUES)[number], string[]> = {
+  swe: [
+    'software engineer', 'software developer', 'software development engineer',
+    'software programmer', 'developer', 'swe', 'sde',
+    'frontend engineer', 'frontend developer', 'front end engineer', 'front-end engineer',
+    'backend engineer', 'backend developer', 'back end engineer', 'back-end engineer',
+    'full stack engineer', 'full stack developer', 'fullstack engineer', 'fullstack developer',
+    'web engineer', 'web developer',
+    'mobile engineer', 'mobile developer', 'ios engineer', 'ios developer',
+    'android engineer', 'android developer',
+    'application engineer', 'application developer',
+    'platform software', 'api engineer', 'api developer',
+  ],
+  ds: [
+    'data scientist', 'data science', 'data engineer', 'analytics engineer',
+    'data analyst', 'business intelligence', 'bi analyst', 'bi engineer',
+    'research scientist', 'applied scientist', 'applied research scientist',
+    'decision scientist', 'quantitative analyst', 'quant analyst',
+  ],
+  ml: [
+    'machine learning', 'ml engineer', 'ml scientist', 'ml researcher',
+    'ml developer', 'deep learning', 'nlp engineer', 'nlp scientist',
+    'computer vision', 'cv engineer', 'cv scientist', 'mlops',
+  ],
+  ai: [
+    'artificial intelligence', 'ai engineer', 'ai scientist', 'ai researcher',
+    'llm', 'large language model', 'generative ai', 'genai', 'gen ai',
+    'foundation model', 'prompt engineer', 'agent engineer', 'ai/ml', 'ml/ai',
+  ],
+  analyst: [
+    'data analyst', 'business analyst', 'business intelligence analyst',
+    'bi analyst', 'analytics analyst', 'product analyst', 'technical analyst',
+    'technology analyst', 'research analyst', 'strategy analyst', 'operations analyst',
+  ],
+  pm: [
+    'product manager', 'product management', 'associate product manager',
+    'apm', 'technical product manager', 'product analyst',
+  ],
+};
+
 export function normalizeRoleValue(role: string): Role | null {
   return ROLE_ALIASES[role.trim().toLowerCase()] ?? null;
 }
@@ -488,6 +547,13 @@ export function normalizeRoles(roles: readonly string[] | null | undefined): Rol
     .map(role => normalizeRoleValue(role))
     .filter((role): role is Role => role !== null);
   return Array.from(new Set(normalizedRoles));
+}
+
+export function inferTargetRoles(text: string): Role[] {
+  const lower = text.toLowerCase();
+
+  return TARGET_ROLE_VALUES
+    .filter(role => TARGET_ROLE_KEYWORDS[role].some(keyword => lower.includes(keyword)));
 }
 
 // ---------------------------------------------------------------------------
@@ -704,6 +770,55 @@ const EXCLUDED_TITLE_RESCUE_KEYWORDS = [
   'university graduate', 'college graduate', 'fresh graduate',
 ];
 
+const STRICT_TITLE_EXCLUSION_PATTERNS = [
+  /\bsenior\b/i,
+  /\bsr\.?\b/i,
+  /\bstaff\b/i,
+  /\bprincipal\b/i,
+  /\blead\b/i,
+  /\bdirector\b/i,
+  /\bhead\b/i,
+  /\bchief\b/i,
+  /\bvice president\b/i,
+  /\bvp\b/i,
+  /\bexperienced\b/i,
+  /\bmid(?:-|\s)?level\b/i,
+  /\bexpert\b/i,
+  /\barchitect\b/i,
+  /\blevel\s*[3-9]\b/i,
+  /\biii\b/i,
+  /\biv\b/i,
+  /\bii\b/i,
+];
+
+const EARLY_CAREER_RESCUE_PATTERNS = [
+  /\bnew grad/i,
+  /\bentry(?:-|\s)?level/i,
+  /\brecent grad/i,
+  /\brecent graduate/i,
+  /\bearly career/i,
+  /\bjunior\b/i,
+  /\bassociate\b/i,
+  /\bapm\b/i,
+  /\b0\s*(?:-|to)\s*2\b/i,
+  /\b0\s*(?:-|to)\s*3\b/i,
+  /\b1\s*(?:-|to)\s*2\b/i,
+];
+
+const DISALLOWED_EXPERIENCE_PATTERNS = [
+  /\b(?:minimum|at least|over|more than)?\s*3\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*4\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*5\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*6\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*7\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*8\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*9\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*10\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b3\s*(?:-|to)\s*5\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b4\s*(?:-|to)\s*6\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b5\s*(?:-|to)\s*7\s+years?\s+(?:of\s+)?experience\b/i,
+];
+
 // ---------------------------------------------------------------------------
 // CORE FUNCTIONS
 // ---------------------------------------------------------------------------
@@ -761,6 +876,79 @@ export function inferRemote(location?: string): boolean {
   if (!location) return false;
   return ['remote', 'anywhere', 'distributed', 'work from home', 'wfh']
     .some(k => location.toLowerCase().includes(k));
+}
+
+function normalizePostedAtValue(value?: string | Date | null): string | undefined {
+  if (!value) return undefined;
+
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) return undefined;
+    return value.toISOString();
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) return undefined;
+
+  return parsed.toISOString();
+}
+
+function passesEarlyCareerFilter(title: string, content?: string): boolean {
+  const text = content ?? '';
+  const hasEarlyCareerRescue =
+    EARLY_CAREER_RESCUE_PATTERNS.some(pattern => pattern.test(title)) ||
+    EARLY_CAREER_RESCUE_PATTERNS.some(pattern => pattern.test(text));
+
+  if (!hasEarlyCareerRescue && STRICT_TITLE_EXCLUSION_PATTERNS.some(pattern => pattern.test(title))) {
+    return false;
+  }
+
+  if (!hasEarlyCareerRescue && DISALLOWED_EXPERIENCE_PATTERNS.some(pattern => pattern.test(text))) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Shared normalizer for source scrapers that already know the canonical job
+ * fields but want consistent trimming, location filtering, role inference,
+ * experience inference, remote detection, and dedup hashing.
+ */
+export function normalizeJob(input: NormalizeJobInput): NormalizedJob | null {
+  const title = input.title?.trim();
+  const company = input.company?.trim();
+  const url = input.url?.trim();
+  const location = input.location?.trim() || undefined;
+  const description = input.description?.trim() || undefined;
+
+  if (!title || !company || !url) return null;
+  if (location && isNonUsLocation(location)) return null;
+  if (!passesEarlyCareerFilter(title, input.experienceText ?? description)) return null;
+
+  const experienceLevel = inferExperienceLevel(title, input.experienceText ?? description);
+  if (experienceLevel === null) return null;
+
+  const roles = input.roles?.length
+    ? normalizeRoles(input.roles)
+    : inferRoles(input.roleText ?? title);
+
+  return {
+    source: input.source,
+    source_id: input.sourceId?.trim() || undefined,
+    title,
+    company,
+    location,
+    remote: input.remote === true || inferRemote(location),
+    url,
+    description,
+    experience_level: experienceLevel,
+    roles,
+    posted_at: normalizePostedAtValue(input.postedAt),
+    dedup_hash: generateHash(company, title, location ?? ''),
+  };
 }
 
 /**

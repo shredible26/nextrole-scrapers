@@ -75,3 +75,86 @@ export function cleanScrapedDescription(value: string | null | undefined): strin
 
   return cleaned;
 }
+
+export function decodeHtmlEntities(value: string): string {
+  return value
+    .replace(/&#(\d+);/g, (_, code: string) => String.fromCharCode(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code: string) => String.fromCharCode(parseInt(code, 16)))
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, '\'')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
+}
+
+export function stripHtml(value: string | null | undefined): string {
+  if (!value) return '';
+
+  return cleanScrapedDescription(
+    decodeHtmlEntities(value)
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n\n')
+      .replace(/<\/li>/gi, '\n')
+      .replace(/<li[^>]*>/gi, '- ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\r/g, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .replace(/[ \t]+/g, ' ')
+      .replace(/[ \t]*\n[ \t]*/g, '\n')
+      .trim(),
+  );
+}
+
+function collectJsonLdObjects(value: unknown, objects: Record<string, unknown>[]): void {
+  if (!value) return;
+
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      collectJsonLdObjects(item, objects);
+    }
+    return;
+  }
+
+  if (typeof value !== 'object') return;
+
+  const object = value as Record<string, unknown>;
+  objects.push(object);
+
+  const graph = object['@graph'];
+  if (Array.isArray(graph)) {
+    for (const item of graph) {
+      collectJsonLdObjects(item, objects);
+    }
+  }
+}
+
+export function extractJobPostingJsonLd(html: string): Record<string, unknown> | null {
+  const scriptPattern = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = scriptPattern.exec(html)) !== null) {
+    const raw = match[1]?.trim();
+    if (!raw) continue;
+
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      const objects: Record<string, unknown>[] = [];
+      collectJsonLdObjects(parsed, objects);
+
+      const jobPosting = objects.find((item) => {
+        const type = item['@type'];
+        if (Array.isArray(type)) {
+          return type.some(entry => String(entry).toLowerCase() === 'jobposting');
+        }
+        return String(type ?? '').toLowerCase() === 'jobposting';
+      });
+
+      if (jobPosting) return jobPosting;
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
+}
