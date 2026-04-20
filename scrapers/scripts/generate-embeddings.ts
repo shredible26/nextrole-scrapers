@@ -97,6 +97,11 @@ type EmbeddingBatchResult = {
   totalTokens: number;
 };
 
+type BatchPreparationResult = {
+  jobsToEmbed: JobToEmbed[];
+  filteredEmptyInputCount: number;
+};
+
 function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -442,6 +447,23 @@ async function embedBatchWithSingleRetry(
   return null;
 }
 
+function prepareBatchForEmbedding(
+  batch: JobToEmbed[],
+  batchLabel: string,
+): BatchPreparationResult {
+  const jobsToEmbed = batch.filter(job => job.input.trim().length > 0);
+  const filteredEmptyInputCount = batch.length - jobsToEmbed.length;
+
+  console.log(
+    `[${batchLabel}] filtered ${formatInteger(filteredEmptyInputCount)} jobs with empty embedding input before the OpenAI request.`,
+  );
+
+  return {
+    jobsToEmbed,
+    filteredEmptyInputCount,
+  };
+}
+
 async function updateEmbeddingRow(row: EmbeddingRowUpdate): Promise<void> {
   await withSupabaseRetry(
     `Failed to update embedding for job ${row.id}`,
@@ -516,6 +538,10 @@ async function main(): Promise<void> {
     return;
   }
 
+  if (!OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY must be set unless you are using --dry-run');
+  }
+
   if (estimatedTokens > MAX_ESTIMATED_TOKENS && !options.force) {
     throw new Error(
       `Estimated usage is ${formatInteger(estimatedTokens)} tokens, above the hard cap of ${formatInteger(MAX_ESTIMATED_TOKENS)}. Re-run with --force to continue.`,
@@ -539,7 +565,8 @@ async function main(): Promise<void> {
 
   let processed = 0;
   let embedded = 0;
-  let skipped = 0;
+  let skippedEmptyInput = 0;
+  let skippedApiError = 0;
   let totalTokensUsed = 0;
   let failedWrites = 0;
   const totalBatches = Math.ceil(jobs.length / EMBEDDING_BATCH_SIZE);
@@ -548,23 +575,30 @@ async function main(): Promise<void> {
     const batch = jobs.slice(index, index + EMBEDDING_BATCH_SIZE);
     const batchNumber = Math.floor(index / EMBEDDING_BATCH_SIZE) + 1;
     const batchLabel = formatBatchLabel(batchNumber, totalBatches);
-    const embeddingResult = await embedBatchWithSingleRetry(batch, batchLabel);
 
-    if (!embeddingResult) {
-      skipped += batch.length;
-      processed += batch.length;
+    const { jobsToEmbed, filteredEmptyInputCount } = prepareBatchForEmbedding(batch, batchLabel);
+    skippedEmptyInput += filteredEmptyInputCount;
+
+    if (jobsToEmbed.length === 0) {
+      console.warn(`[${batchLabel}] skipping OpenAI request because every job in the batch had empty input.`);
     } else {
-      totalTokensUsed += embeddingResult.totalTokens;
-      const rows: EmbeddingRowUpdate[] = batch.map((job, batchIndex) => ({
-        id: job.id,
-        embedding: embeddingResult.embeddings[batchIndex]!,
-      }));
-      const updateResult = await updateEmbeddingBatch(rows, batchLabel);
-      embedded += updateResult.updated;
-      failedWrites += updateResult.failed;
-      skipped += updateResult.failed;
-      processed += batch.length;
+      const embeddingResult = await embedBatchWithSingleRetry(jobsToEmbed, batchLabel);
+
+      if (!embeddingResult) {
+        skippedApiError += jobsToEmbed.length;
+      } else {
+        totalTokensUsed += embeddingResult.totalTokens;
+        const rows: EmbeddingRowUpdate[] = jobsToEmbed.map((job, batchIndex) => ({
+          id: job.id,
+          embedding: embeddingResult.embeddings[batchIndex]!,
+        }));
+        const updateResult = await updateEmbeddingBatch(rows, batchLabel);
+        embedded += updateResult.updated;
+        failedWrites += updateResult.failed;
+      }
     }
+
+    processed += batch.length;
 
     if (processed % PROGRESS_LOG_INTERVAL === 0 || processed === jobs.length) {
       console.log(
@@ -577,17 +611,22 @@ async function main(): Promise<void> {
     }
   }
 
+  console.log('Embedding run summary:');
   console.log(`Jobs embedded: ${formatInteger(embedded)}`);
-  console.log(`Jobs skipped: ${formatInteger(skipped)}`);
+  console.log(`Jobs skipped due to empty input: ${formatInteger(skippedEmptyInput)}`);
+  console.log(`Jobs skipped due to API error: ${formatInteger(skippedApiError)}`);
+  if (failedWrites > 0) {
+    console.log(`Jobs failed to write embeddings: ${formatInteger(failedWrites)}`);
+  }
   console.log(`Total tokens used: ${formatInteger(totalTokensUsed)}`);
   console.log(`Total cost: ${formatUsd(estimateUsdCost(totalTokensUsed))}`);
-
-  if (failedWrites > 0 || skipped > 0) {
-    process.exitCode = 1;
-  }
 }
 
-void main().catch(error => {
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exitCode = 1;
-});
+void main()
+  .then(() => {
+    process.exit(0);
+  })
+  .catch(error => {
+    console.error(error instanceof Error ? error.message : String(error));
+    process.exit(1);
+  });
