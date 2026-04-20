@@ -17,7 +17,8 @@ const EMBEDDING_MAX_JOBS = 5_000;
 const OPENAI_EMBEDDINGS_URL = 'https://api.openai.com/v1/embeddings';
 const EMBEDDING_REQUEST_TIMEOUT_MS = 60_000;
 const DEACTIVATION_QUERY_TIMEOUT_MS = 15_000;
-const DEACTIVATION_CHUNK_SIZE = 1000;
+const DEACTIVATION_FETCH_CHUNK_SIZE = 1000;
+const DEACTIVATION_UPDATE_CHUNK_SIZE = 500;
 
 type ExistingJobRow = {
   id: string;
@@ -32,6 +33,11 @@ type SupabaseError = {
 };
 
 type InsertedJobRow = {
+  id: string;
+  dedup_hash: string;
+};
+
+type ActiveJobHashRow = {
   id: string;
   dedup_hash: string;
 };
@@ -114,6 +120,46 @@ function getErrorMessage(error: unknown): string {
   }
 
   return String(error);
+}
+
+function normalizeDedupHash(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+async function fetchActiveJobHashesForSource(
+  sourceName: string,
+): Promise<{ rows: ActiveJobHashRow[]; pagesFetched: number }> {
+  const rows: ActiveJobHashRow[] = [];
+  let pagesFetched = 0;
+
+  for (let offset = 0; ; offset += DEACTIVATION_FETCH_CHUNK_SIZE) {
+    const page =
+      (await runSupabaseWithRetry<ActiveJobHashRow[] | null>(
+        `Supabase deactivation fetch failed for ${sourceName} at offset ${offset}`,
+        () =>
+          supabase
+            .from('jobs')
+            .select('id, dedup_hash')
+            .eq('source', sourceName)
+            .eq('is_active', true)
+            .order('id', { ascending: true })
+            .range(offset, offset + DEACTIVATION_FETCH_CHUNK_SIZE - 1)
+            .abortSignal(AbortSignal.timeout(DEACTIVATION_QUERY_TIMEOUT_MS)),
+      )) ?? [];
+
+    if (page.length === 0) {
+      break;
+    }
+
+    pagesFetched += 1;
+    rows.push(...page);
+
+    if (page.length < DEACTIVATION_FETCH_CHUNK_SIZE) {
+      break;
+    }
+  }
+
+  return { rows, pagesFetched };
 }
 
 export async function countActiveJobsForSource(
@@ -415,7 +461,13 @@ export async function deactivateStaleJobs(
   sourceName: string,
   activeHashes: string[]
 ): Promise<number> {
-  const freshHashes = Array.from(new Set(activeHashes));
+  const freshHashes = Array.from(
+    new Set(
+      activeHashes
+        .map(normalizeDedupHash)
+        .filter(Boolean),
+    ),
+  );
   const freshCount = freshHashes.length;
 
   console.log(`[${sourceName}] Starting deactivation check...`);
@@ -432,6 +484,53 @@ export async function deactivateStaleJobs(
 
   console.log(`[${sourceName}] ${activeCount} active jobs in DB, ${freshCount} scraped this run`);
 
+  let existingJobs: ActiveJobHashRow[] = [];
+  let pagesFetched = 0;
+  try {
+    const fetchResult = await fetchActiveJobHashesForSource(sourceName);
+    existingJobs = fetchResult.rows;
+    pagesFetched = fetchResult.pagesFetched;
+  } catch (error) {
+    console.warn(
+      `[${sourceName}] ⚠ Deactivation fetch query failed: ${getErrorMessage(error)}. Skipping source.`,
+    );
+    return 0;
+  }
+
+  if (existingJobs.length === 0 && activeCount > 0) {
+    console.warn(
+      `[${sourceName}] ⚠ Deactivation fetched 0 active hashes despite ${activeCount} active jobs in DB. Skipping source.`,
+    );
+    return 0;
+  }
+
+  if (existingJobs.length !== activeCount) {
+    console.warn(
+      `[${sourceName}] ⚠ Deactivation fetched ${existingJobs.length} active hashes across ${pagesFetched} page(s), but count query reported ${activeCount}. Continuing with fetched rows.`,
+    );
+  } else {
+    console.log(
+      `[${sourceName}] Fetched ${existingJobs.length} active hashes across ${pagesFetched} page(s) for diffing`,
+    );
+  }
+
+  const activeHashSet = new Set(freshHashes);
+  // Dry-run sanity check:
+  // activeCount=8,610 and freshCount=6,796 should fetch all 8,610 rows across paginated
+  // requests and surface 1,814 stale hashes here before any safety guard can short-circuit.
+  const staleHashes = Array.from(
+    new Set(
+      existingJobs
+        .filter(job => !activeHashSet.has(normalizeDedupHash(job.dedup_hash)))
+        .map(job => job.dedup_hash),
+    ),
+  );
+  const staleCount = staleHashes.length;
+
+  console.log(
+    `[${sourceName}] Diff result before safeguards: ${staleCount} stale hashes (${existingJobs.length} active DB hashes vs ${freshCount} scraped hashes)`,
+  );
+
   if (freshCount === 0) {
     console.warn(
       `[${sourceName}] ⚠ Skipping deactivation — ${freshCount} fresh jobs vs ${activeCount} active. Threshold not met, preserving existing jobs.`,
@@ -446,53 +545,45 @@ export async function deactivateStaleJobs(
     return 0;
   }
 
-  console.log(`[${sourceName}] Deactivating stale jobs (${activeCount} active, ${freshCount} fresh)...`);
-
-  let existingJobs: Array<{ id: string; dedup_hash: string }> | null = null;
-  try {
-    const response = await supabase
-      .from('jobs')
-      .select('id, dedup_hash')
-      .eq('source', sourceName)
-      .eq('is_active', true)
-      .abortSignal(AbortSignal.timeout(DEACTIVATION_QUERY_TIMEOUT_MS));
-
-    if (response.error) {
-      throw new Error(response.error.message);
-    }
-
-    existingJobs = response.data;
-  } catch (error) {
+  if (activeCount > 0 && staleCount > activeCount * 0.8) {
     console.warn(
-      `[${sourceName}] ⚠ Deactivation fetch query failed: ${getErrorMessage(error)}. Skipping source.`,
+      `[${sourceName}] ⚠ Skipping deactivation — computed ${staleCount} stale hashes out of ${activeCount} active jobs (>80%). Preserving existing jobs.`,
     );
     return 0;
   }
 
-  const activeHashSet = new Set(freshHashes);
-  const staleIds = (existingJobs ?? [])
-    .filter(job => !activeHashSet.has(job.dedup_hash))
-    .map(job => job.id);
+  if (staleCount === 0 && activeCount > freshCount) {
+    console.warn(
+      `[${sourceName}] ⚠ Diff produced 0 stale hashes despite ${activeCount} active jobs and only ${freshCount} fresh hashes. Preserving existing jobs because the diff is inconsistent.`,
+    );
+    return 0;
+  }
 
-  if (staleIds.length === 0) {
+  if (staleCount === 0) {
     console.log(`[${sourceName}] ✓ No stale jobs`);
     return 0;
   }
 
+  console.log(
+    `[${sourceName}] Deactivating ${staleCount} stale jobs in chunks of ${DEACTIVATION_UPDATE_CHUNK_SIZE}...`,
+  );
+
   let deactivatedCount = 0;
-  for (let i = 0; i < staleIds.length; i += DEACTIVATION_CHUNK_SIZE) {
-    const staleChunk = staleIds.slice(i, i + DEACTIVATION_CHUNK_SIZE);
+  for (let i = 0; i < staleHashes.length; i += DEACTIVATION_UPDATE_CHUNK_SIZE) {
+    const staleChunk = staleHashes.slice(i, i + DEACTIVATION_UPDATE_CHUNK_SIZE);
 
     try {
-      const { error } = await supabase
-        .from('jobs')
-        .update({ is_active: false })
-        .in('id', staleChunk)
-        .abortSignal(AbortSignal.timeout(DEACTIVATION_QUERY_TIMEOUT_MS));
-
-      if (error) {
-        throw new Error(error.message);
-      }
+      await runSupabaseWithRetry<null>(
+        `Supabase deactivation update failed for ${sourceName}`,
+        () =>
+          supabase
+            .from('jobs')
+            .update({ is_active: false })
+            .eq('source', sourceName)
+            .eq('is_active', true)
+            .in('dedup_hash', staleChunk)
+            .abortSignal(AbortSignal.timeout(DEACTIVATION_QUERY_TIMEOUT_MS)),
+      );
     } catch (error) {
       console.warn(
         `[${sourceName}] ⚠ Deactivation update query failed: ${getErrorMessage(error)}. Skipping source.`,
