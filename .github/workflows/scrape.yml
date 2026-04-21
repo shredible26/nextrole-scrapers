@@ -84,7 +84,7 @@ jobs:
           OPENAI_API_KEY:       ${{ secrets.OPENAI_API_KEY }}
 
       - name: Send job alerts
-        run: dotenv -e .env.local -- tsx scrapers/scripts/send-job-alerts.ts
+        run: npx dotenv-cli -e .env.local -- tsx scrapers/scripts/send-job-alerts.ts
         env:
           SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
