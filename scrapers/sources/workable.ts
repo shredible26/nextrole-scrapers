@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'node:url';
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
 import {
@@ -6,14 +7,22 @@ import {
   inferRoles,
   NormalizedJob,
 } from '../utils/normalize';
+import { stripHtml } from '../utils/scraper-helpers';
+import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const SOURCE = 'workable';
-const SEARCH_URL = 'https://jobs.workable.com/api/v1/jobs';
+const SEARCH_URL = 'https://jobs.workable.com/search';
 const SEARCH_LOCATION = 'United States';
-const SEARCH_LIMIT = 50;
-const MAX_OFFSET = 500;
-const BATCH_SIZE = 4;
-const BATCH_DELAY_MS = 600;
+const MAX_PAGES_PER_TERM = 3;
+const BATCH_SIZE = 3;
+const BATCH_DELAY_MS = 400;
+const PAGE_DELAY_MS = 150;
+const REQUEST_TIMEOUT_MS = 20_000;
+const INITIAL_RETRY_DELAY_MS = 1_000;
+const MAX_RETRY_DELAY_MS = 30_000;
+const MAX_FETCH_RETRIES = 5;
+const USER_AGENT =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36';
 
 const SEARCH_TERMS = [
   // Core engineering roles
@@ -74,45 +83,52 @@ type WorkableJob = {
   title?: string;
   state?: string;
   description?: string;
+  benefitsSection?: string;
   requirementsSection?: string;
   url?: string;
   locations?: string[];
   location?: WorkableLocation;
   created?: string;
+  updated?: string;
   company?: WorkableCompany;
   workplace?: string;
 };
 
-type WorkableSearchResponse = {
+type WorkableSearchPageData = {
   title?: string;
   totalSize?: number;
   nextPageToken?: string;
   jobs?: WorkableJob[];
-  results?: WorkableJob[];
-  autoAppliedFilters?: Record<string, unknown>;
 };
 
 type WorkableSearchTermResult = {
   term: string;
   jobs: WorkableJob[];
+  totalSize?: number;
   zeroReason?: string;
 };
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-const MAX_RATE_LIMIT_RETRIES = 3;
 
 function normalizeLocationText(value?: string | null): string | undefined {
   const trimmed = value?.trim();
   if (!trimmed) return undefined;
+
+  if (/^(telecommute|remote)$/i.test(trimmed)) {
+    return 'Remote';
+  }
 
   const withoutCountry = trimmed.replace(/,\s*United States$/i, '').trim();
   return withoutCountry || trimmed;
 }
 
 function buildLocation(job: WorkableJob): string | undefined {
-  const listedLocation = (job.locations ?? [])
+  const normalizedLocations = (job.locations ?? [])
     .map(value => normalizeLocationText(value))
-    .find((value): value is string => Boolean(value));
+    .filter((value): value is string => Boolean(value));
+
+  const listedLocation =
+    normalizedLocations.find(value => !inferRemote(value)) ?? normalizedLocations[0];
 
   if (listedLocation) return listedLocation;
 
@@ -128,15 +144,23 @@ function buildLocation(job: WorkableJob): string | undefined {
 }
 
 function buildExperienceSignalText(job: WorkableJob): string | undefined {
-  const sections = [job.description?.trim(), job.requirementsSection?.trim()]
-    .filter((value): value is string => Boolean(value));
+  const sections = [
+    stripHtml(job.description),
+    stripHtml(job.requirementsSection),
+    stripHtml(job.benefitsSection),
+  ].filter(Boolean);
 
-  return sections.length ? sections.join('\n') : undefined;
+  return sections.length > 0 ? sections.join('\n') : undefined;
 }
 
 function isRemoteJob(job: WorkableJob, location: string | undefined): boolean {
   if (job.workplace?.trim().toLowerCase() === 'remote') return true;
-  if ((job.locations ?? []).some(entry => inferRemote(entry))) return true;
+
+  const normalizedLocations = (job.locations ?? [])
+    .map(value => normalizeLocationText(value))
+    .filter((value): value is string => Boolean(value));
+
+  if (normalizedLocations.some(entry => inferRemote(entry))) return true;
 
   return inferRemote(location);
 }
@@ -150,15 +174,142 @@ function normalizePostedAt(created?: string): string | undefined {
   return date.toISOString();
 }
 
-function getRetryDelayMs(response: Response, attempt: number): number {
-  const retryAfter = response.headers.get('retry-after');
+function getRetryDelayMs(response: Response | null, attempt: number): number {
+  const retryAfter = response?.headers.get('retry-after');
   const retryAfterSeconds = retryAfter ? Number.parseFloat(retryAfter) : Number.NaN;
 
   if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0) {
-    return Math.ceil(retryAfterSeconds * 1_000);
+    return Math.min(MAX_RETRY_DELAY_MS, Math.ceil(retryAfterSeconds * 1_000));
   }
 
-  return Math.min(8_000, 1_500 * (attempt + 1));
+  const retryAfterDate = retryAfter ? Date.parse(retryAfter) : Number.NaN;
+  if (Number.isFinite(retryAfterDate)) {
+    return Math.min(MAX_RETRY_DELAY_MS, Math.max(1_000, retryAfterDate - Date.now()));
+  }
+
+  return Math.min(MAX_RETRY_DELAY_MS, INITIAL_RETRY_DELAY_MS * 2 ** attempt);
+}
+
+function extractJsonObject(text: string, startIndex: number): string | null {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let index = startIndex; index < text.length; index += 1) {
+    const char = text[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      inString = true;
+      continue;
+    }
+
+    if (char === '{') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === '}') {
+      depth -= 1;
+      if (depth === 0) {
+        return text.slice(startIndex, index + 1);
+      }
+    }
+  }
+
+  return null;
+}
+
+function extractSearchPageData(html: string): WorkableSearchPageData {
+  const jobsMarker = '"api/v1/jobs":{"status":';
+  const jobsMarkerIndex = html.indexOf(jobsMarker);
+  if (jobsMarkerIndex === -1) {
+    throw new Error('embedded jobs payload not found');
+  }
+
+  const dataKeyIndex = html.indexOf('"data":', jobsMarkerIndex);
+  if (dataKeyIndex === -1) {
+    throw new Error('embedded jobs payload missing data key');
+  }
+
+  const objectStartIndex = html.indexOf('{', dataKeyIndex);
+  if (objectStartIndex === -1) {
+    throw new Error('embedded jobs payload missing JSON object');
+  }
+
+  const rawJson = extractJsonObject(html, objectStartIndex);
+  if (!rawJson) {
+    throw new Error('embedded jobs payload was truncated');
+  }
+
+  return JSON.parse(rawJson) as WorkableSearchPageData;
+}
+
+async function fetchSearchPageHtml(term: string, pageToken?: string): Promise<string> {
+  const url = new URL(SEARCH_URL);
+  url.searchParams.set('query', term);
+  url.searchParams.set('location', SEARCH_LOCATION);
+
+  if (pageToken) {
+    url.searchParams.set('pageToken', pageToken);
+  }
+
+  let lastError: Error | null = null;
+
+  for (let attempt = 0; attempt < MAX_FETCH_RETRIES; attempt += 1) {
+    let response: Response | null = null;
+
+    try {
+      response = await fetch(url, {
+        headers: {
+          Accept: 'text/html,application/xhtml+xml',
+          'User-Agent': USER_AGENT,
+        },
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
+
+      if (response.ok) {
+        return await response.text();
+      }
+
+      const body = await response.text();
+      const errorMessage = `HTTP ${response.status}${body ? `: ${body.slice(0, 200)}` : ''}`;
+      lastError = new Error(errorMessage);
+
+      if (response.status !== 429 && response.status < 500) {
+        throw lastError;
+      }
+
+      const delayMs = getRetryDelayMs(response, attempt);
+      console.warn(
+        `  [workable] ${term}${pageToken ? ' paginated' : ''} attempt ${attempt + 1}/${MAX_FETCH_RETRIES} failed (${errorMessage}); retrying in ${delayMs}ms`,
+      );
+      await delay(delayMs);
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (attempt >= MAX_FETCH_RETRIES - 1) {
+        break;
+      }
+
+      const delayMs = getRetryDelayMs(response, attempt);
+      console.warn(
+        `  [workable] ${term}${pageToken ? ' paginated' : ''} attempt ${attempt + 1}/${MAX_FETCH_RETRIES} errored (${lastError.message}); retrying in ${delayMs}ms`,
+      );
+      await delay(delayMs);
+    }
+  }
+
+  throw lastError ?? new Error('Workable search request failed');
 }
 
 function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
@@ -167,7 +318,7 @@ function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
   const company = job.company?.title?.trim();
   const url = job.url?.trim();
   const location = buildLocation(job);
-  const description = job.description?.trim() || undefined;
+  const description = stripHtml(job.description) || undefined;
   const experienceSignalText = buildExperienceSignalText(job);
 
   if (!sourceId || !title || !company || !url) return null;
@@ -188,46 +339,23 @@ function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
     description,
     experience_level: experienceLevel,
     roles: inferRoles(title),
-    posted_at: normalizePostedAt(job.created),
+    posted_at: normalizePostedAt(job.created ?? job.updated),
     dedup_hash: generateHash(company, title, location ?? ''),
   };
 }
 
 async function fetchSearchTerm(term: string): Promise<WorkableSearchTermResult> {
-  let offset = 0;
+  let pageToken: string | undefined;
+  let totalSize: number | undefined;
   const termJobs: WorkableJob[] = [];
   let zeroReason: string | undefined;
 
-  while (true) {
-    const url =
-      `${SEARCH_URL}?query=${encodeURIComponent(term)}` +
-      `&location=${encodeURIComponent(SEARCH_LOCATION)}` +
-      `&limit=${SEARCH_LIMIT}&offset=${offset}`;
-
+  for (let page = 1; page <= MAX_PAGES_PER_TERM; page += 1) {
     try {
-      let attempt = 0;
-      let res: Response;
-
-      while (true) {
-        res = await fetch(url, {
-          headers: { Accept: 'application/json' },
-          signal: AbortSignal.timeout(15_000),
-        });
-
-        if (res.status !== 429 || attempt >= MAX_RATE_LIMIT_RETRIES) break;
-
-        const retryDelayMs = getRetryDelayMs(res, attempt);
-        attempt += 1;
-        await delay(retryDelayMs);
-      }
-
-      if (!res.ok) {
-        if (termJobs.length === 0) zeroReason = `HTTP ${res.status}`;
-        break;
-      }
-
-      const data = (await res.json()) as WorkableSearchResponse;
-      const jobs = data.results ?? data.jobs ?? [];
+      const html = await fetchSearchPageHtml(term, pageToken);
+      const data = extractSearchPageData(html);
+      const jobs = data.jobs ?? [];
+      totalSize = data.totalSize;
 
       if (jobs.length === 0) {
         if (termJobs.length === 0) zeroReason = 'no results';
@@ -236,19 +364,26 @@ async function fetchSearchTerm(term: string): Promise<WorkableSearchTermResult> 
 
       termJobs.push(...jobs);
 
-      if (jobs.length < SEARCH_LIMIT) break;
+      if (!data.nextPageToken) {
+        break;
+      }
 
-      offset += SEARCH_LIMIT;
-      if (offset > MAX_OFFSET) break;
+      pageToken = data.nextPageToken;
+
+      if (page < MAX_PAGES_PER_TERM) {
+        await delay(PAGE_DELAY_MS);
+      }
     } catch (error) {
       if (termJobs.length === 0) {
         zeroReason = error instanceof Error ? error.message : String(error);
+      } else {
+        console.warn(`  [workable] ${term} page ${page} failed after partial success: ${String(error)}`);
       }
       break;
     }
   }
 
-  return { term, jobs: termJobs, zeroReason };
+  return { term, jobs: termJobs, totalSize, zeroReason };
 }
 
 export async function scrapeWorkable(): Promise<NormalizedJob[]> {
@@ -264,7 +399,9 @@ export async function scrapeWorkable(): Promise<NormalizedJob[]> {
         continue;
       }
 
-      console.log(`[workable] ${result.term}: ${result.jobs.length} raw jobs`);
+      console.log(
+        `[workable] ${result.term}: ${result.jobs.length} raw jobs${result.totalSize ? ` (${result.totalSize} available)` : ''}`,
+      );
 
       for (const job of result.jobs) {
         const sourceId = job.id?.trim();
@@ -289,4 +426,23 @@ export async function scrapeWorkable(): Promise<NormalizedJob[]> {
 
   console.log(`[workable] Total unique jobs: ${normalized.length}`);
   return normalized;
+}
+
+async function runStandalone(): Promise<void> {
+  const startedAt = Date.now();
+  const jobs = await scrapeWorkable();
+
+  await uploadJobs(jobs);
+  await deactivateStaleJobs(SOURCE, jobs.map(job => job.dedup_hash));
+
+  const elapsedSeconds = ((Date.now() - startedAt) / 1_000).toFixed(1);
+  console.log(`  [${SOURCE}] Standalone run completed in ${elapsedSeconds}s`);
+}
+
+const entrypoint = process.argv[1];
+if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
+  runStandalone().catch((error) => {
+    console.error(`  [${SOURCE}] Standalone run failed`, error);
+    process.exit(1);
+  });
 }

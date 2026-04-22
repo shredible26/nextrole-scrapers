@@ -1,12 +1,13 @@
+import { pathToFileURL } from 'node:url';
 import { generateHash } from '../utils/dedup';
 import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const SOURCE = 'dice';
-const DICE_ENDPOINT_1 = 'https://job-search-api.svc.dhigroupinc.com/v1/dice/jobs/search';
-const DICE_ENDPOINT_2 = 'https://www.dice.com/jobs/search';
-const DICE_ENDPOINT_3 = 'https://job-search-api.svc.dhigroupinc.com/v1/dice/jobs/search';
+const DICE_API_ENDPOINT = 'https://job-search-api.svc.dhigroupinc.com/v1/dice/jobs/search';
+const DICE_HTML_ENDPOINT = 'https://www.dice.com/jobs/search';
 const MAX_PAGES = 5;
-const PAGE_DELAY_MS = 500;
+const PAGE_DELAY_MS = 200;
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36';
 const DICE_API_KEY = '1YAt0R9wBg4WfsF9VB2778F5CHLAPMVW3WAZcKd8';
@@ -303,7 +304,9 @@ async function fetchLoggedResponse(
 ): Promise<{ status: number; text: string }> {
   const res = await fetch(url, init);
   const text = await res.text();
-  console.log(`  [dice] ${label} HTTP ${res.status}: ${sanitizePreview(text)}`);
+  if (!res.ok) {
+    console.warn(`  [dice] ${label} HTTP ${res.status}: ${sanitizePreview(text)}`);
+  }
   return { status: res.status, text };
 }
 
@@ -319,7 +322,7 @@ function parseDiceApiText(text: string): { jobs: Record<string, unknown>[]; page
   }
 }
 
-async function fetchEndpoint1(term: string, page: number): Promise<DicePageResult> {
+async function fetchApiPage(term: string, page: number): Promise<DicePageResult> {
   const params = new URLSearchParams({
     q: term,
     countryCode2: 'US',
@@ -327,7 +330,6 @@ async function fetchEndpoint1(term: string, page: number): Promise<DicePageResul
     radiusUnit: 'mi',
     page: String(page),
     pageSize: '100',
-    'filters.postedDate': 'THREE',
     language: 'en',
     iam: '0',
     oip: '0',
@@ -335,11 +337,10 @@ async function fetchEndpoint1(term: string, page: number): Promise<DicePageResul
     includeExternalJobs: 'false',
     sortBy: 'relevance',
     descending: 'false',
-    experienceLevel: 'EXP_0_2',
   });
 
   const { status, text } = await fetchLoggedResponse(
-    `${DICE_ENDPOINT_1}?${params}`,
+    `${DICE_API_ENDPOINT}?${params}`,
     {
       headers: {
         'User-Agent': USER_AGENT,
@@ -348,28 +349,26 @@ async function fetchEndpoint1(term: string, page: number): Promise<DicePageResul
         'x-api-key': DICE_API_KEY,
       },
     },
-    `endpoint1 "${term}" page ${page}`,
+    `api "${term}" page ${page}`,
   );
 
   if (status >= 400) {
-    return { jobs: [], endpoint: 'endpoint1' };
+    return { jobs: [], endpoint: 'api' };
   }
 
   const parsed = parseDiceApiText(text);
-  return { jobs: parsed.jobs, pageCount: parsed.pageCount, endpoint: 'endpoint1' };
+  return { jobs: parsed.jobs, pageCount: parsed.pageCount, endpoint: 'api' };
 }
 
-async function fetchEndpoint2(term: string, page: number): Promise<DicePageResult> {
+async function fetchHtmlPage(term: string, page: number): Promise<DicePageResult> {
   const params = new URLSearchParams({
     q: term,
     location: 'United States',
-    'filters.postedDate': 'THREE',
-    'filters.experienceLevel': 'Entry Level',
     page: String(page),
   });
 
   const { status, text } = await fetchLoggedResponse(
-    `${DICE_ENDPOINT_2}?${params}`,
+    `${DICE_HTML_ENDPOINT}?${params}`,
     {
       headers: {
         'User-Agent': USER_AGENT,
@@ -377,64 +376,28 @@ async function fetchEndpoint2(term: string, page: number): Promise<DicePageResul
         Referer: 'https://www.dice.com/jobs',
       },
     },
-    `endpoint2 "${term}" page ${page}`,
+    `html "${term}" page ${page}`,
   );
 
   if (status >= 400) {
-    return { jobs: [], endpoint: 'endpoint2' };
+    return { jobs: [], endpoint: 'html' };
   }
 
   const jsonLdJobs = extractJsonLdJobs(text);
   if (jsonLdJobs.length > 0) {
-    return { jobs: jsonLdJobs, endpoint: 'endpoint2' };
+    return { jobs: jsonLdJobs, endpoint: 'html' };
   }
 
-  return { jobs: extractDiceHtmlCards(text), endpoint: 'endpoint2' };
-}
-
-async function fetchEndpoint3(term: string, page: number): Promise<DicePageResult> {
-  const { status, text } = await fetchLoggedResponse(
-    DICE_ENDPOINT_3,
-    {
-      method: 'POST',
-      headers: {
-        'User-Agent': USER_AGENT,
-        Accept: 'application/json',
-        Referer: 'https://www.dice.com/jobs',
-        'Content-Type': 'application/json',
-        'x-api-key': DICE_API_KEY,
-      },
-      body: JSON.stringify({
-        q: term,
-        countryCode2: 'US',
-        page,
-        pageSize: 100,
-        experienceLevel: 'EXP_0_2',
-        filters: {
-          postedDate: 'THREE',
-        },
-        includeRemote: true,
-      }),
-    },
-    `endpoint3 "${term}" page ${page}`,
-  );
-
-  if (status >= 400) {
-    return { jobs: [], endpoint: 'endpoint3' };
-  }
-
-  const parsed = parseDiceApiText(text);
-  return { jobs: parsed.jobs, pageCount: parsed.pageCount, endpoint: 'endpoint3' };
+  return { jobs: extractDiceHtmlCards(text), endpoint: 'html' };
 }
 
 async function fetchDicePage(term: string, page: number): Promise<DicePageResult> {
-  const results = [
-    await fetchEndpoint1(term, page),
-    await fetchEndpoint2(term, page),
-    await fetchEndpoint3(term, page),
-  ];
+  const apiResult = await fetchApiPage(term, page);
+  if (apiResult.jobs.length > 0) {
+    return apiResult;
+  }
 
-  return results.find(result => result.jobs.length > 0) ?? results[0];
+  return fetchHtmlPage(term, page);
 }
 
 export async function scrapeDice(): Promise<NormalizedJob[]> {
@@ -456,6 +419,10 @@ export async function scrapeDice(): Promise<NormalizedJob[]> {
           jobs.push(normalized);
         }
 
+        console.log(
+          `  [dice] ${term} page ${page}: ${result.jobs.length} raw jobs via ${result.endpoint}; total=${jobs.length}`,
+        );
+
         if (result.pageCount && page >= result.pageCount) {
           break;
         }
@@ -473,4 +440,25 @@ export async function scrapeDice(): Promise<NormalizedJob[]> {
   }
 
   return jobs;
+}
+
+async function runStandalone(): Promise<void> {
+  const startedAt = Date.now();
+  const jobs = await scrapeDice();
+
+  console.log(`  [${SOURCE}] Total unique jobs: ${jobs.length}`);
+
+  await uploadJobs(jobs);
+  await deactivateStaleJobs(SOURCE, jobs.map(job => job.dedup_hash));
+
+  const elapsedSeconds = ((Date.now() - startedAt) / 1_000).toFixed(1);
+  console.log(`  [${SOURCE}] Standalone run completed in ${elapsedSeconds}s`);
+}
+
+const entrypoint = process.argv[1];
+if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
+  runStandalone().catch((error) => {
+    console.error(`  [${SOURCE}] Standalone run failed`, error);
+    process.exit(1);
+  });
 }
