@@ -27,6 +27,7 @@ const JOB_MATCH_LIMIT = 10;
 const JOB_WINDOW_MS = 24 * 60 * 60 * 1000;
 const RESEND_REQUEST_TIMEOUT_MS = 30_000;
 const ANTHROPIC_REQUEST_TIMEOUT_MS = 45_000;
+const ANTHROPIC_REQUEST_DELAY_MS = 15_000;
 const JOB_DESCRIPTION_PROMPT_LIMIT = 8_000;
 const RESUME_PROMPT_LIMIT = 10_000;
 const USER_AGENT = 'nextrole-job-alerts/1.0';
@@ -113,6 +114,12 @@ function getErrorMessage(error: unknown): string {
   }
 
   return String(error);
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function parseJsonResponse<T>(value: string): T | null {
@@ -518,7 +525,11 @@ async function main(): Promise<void> {
       }
 
       if (user.tier === 'pro') {
-        for (const match of matches) {
+        for (const [index, match] of matches.entries()) {
+          if (ANTHROPIC_API_KEY && index > 0) {
+            await sleep(ANTHROPIC_REQUEST_DELAY_MS);
+          }
+
           match.whyThisMatches = await generateWhyThisMatches(user.resumeText, match);
         }
       }
