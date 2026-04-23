@@ -1,7 +1,7 @@
 {
   "capitalone": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd12",
     "slug": "Capital_One",
     "knownTargets": {
@@ -13,7 +13,7 @@
   },
   "clarioclinical": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "clarioclinical_careers",
     "knownTargets": {
@@ -25,7 +25,7 @@
   },
   "draftkings": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "DraftKings",
     "knownTargets": {
@@ -37,7 +37,7 @@
   },
   "caci": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "External",
     "knownTargets": {
@@ -49,7 +49,7 @@
   },
   "geaerospace": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "GE_ExternalSite",
     "knownTargets": {
@@ -61,7 +61,7 @@
   },
   "cisco": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "Cisco_Careers",
     "knownTargets": {
@@ -73,7 +73,7 @@
   },
   "bostondynamics": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "Boston_Dynamics",
     "knownTargets": {
@@ -85,7 +85,7 @@
   },
   "commvault": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "commvault",
     "knownTargets": {
@@ -97,7 +97,7 @@
   },
   "athenahealth": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "external",
     "knownTargets": {
@@ -109,7 +109,7 @@
   },
   "gehc": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "GEHC_ExternalSite",
     "knownTargets": {
@@ -121,7 +121,7 @@
   },
   "astrazeneca": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "careers",
     "knownTargets": {
@@ -133,7 +133,7 @@
   },
   "argonne": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "Argonne_Careers",
     "knownTargets": {
@@ -145,7 +145,7 @@
   },
   "crowdstrike": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "crowdstrikecareers",
     "knownTargets": {
@@ -157,7 +157,7 @@
   },
   "baxter": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "baxter",
     "knownTargets": {
@@ -169,7 +169,7 @@
   },
   "danaher": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "DanaherJobs",
     "knownTargets": {
@@ -181,7 +181,7 @@
   },
   "biibhr": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "external",
     "knownTargets": {
@@ -193,7 +193,7 @@
   },
   "cae": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "career",
     "knownTargets": {
@@ -205,7 +205,7 @@
   },
   "bmo": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "external",
     "knownTargets": {
@@ -217,7 +217,7 @@
   },
   "bakerhughes": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "bakerhughes",
     "knownTargets": {
@@ -229,7 +229,7 @@
   },
   "amgen": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "careers",
     "knownTargets": {
@@ -241,7 +241,7 @@
   },
   "bristolmyerssquibb": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "BMS",
     "knownTargets": {
@@ -253,7 +253,7 @@
   },
   "bdx": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "EXTERNAL_CAREER_SITE_USA",
     "knownTargets": {
@@ -265,7 +265,7 @@
   },
   "dxctechnology": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "DXCJobs",
     "knownTargets": {
@@ -277,7 +277,7 @@
   },
   "cigna": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "cignacareers",
     "knownTargets": {
@@ -289,7 +289,7 @@
   },
   "abbott": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "abbottcareers2",
     "knownTargets": {
@@ -301,7 +301,7 @@
   },
   "lytx": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "Lytx",
     "knownTargets": {
@@ -313,7 +313,7 @@
   },
   "globalhr": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "REC_RTX_Ext_Gateway",
     "knownTargets": {
@@ -325,7 +325,7 @@
   },
   "marvell": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "marvellcareers",
     "knownTargets": {
@@ -337,7 +337,7 @@
   },
   "micron": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "external",
     "knownTargets": {
@@ -349,7 +349,7 @@
   },
   "mars": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "External",
     "knownTargets": {
@@ -361,7 +361,7 @@
   },
   "mksinst": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "MKSCareersUniversity",
     "knownTargets": {
@@ -373,7 +373,7 @@
   },
   "gilead": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "gileadcareers",
     "knownTargets": {
@@ -385,7 +385,7 @@
   },
   "neurocrine": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "Neurocrinecareers",
     "knownTargets": {
@@ -397,7 +397,7 @@
   },
   "healthcare": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "Search",
     "knownTargets": {
@@ -409,7 +409,7 @@
   },
   "mitre": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "mitre",
     "knownTargets": {
@@ -421,7 +421,7 @@
   },
   "mastercard": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "CorporateCareers",
     "knownTargets": {
@@ -433,7 +433,7 @@
   },
   "keybank": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "External_Career_Site",
     "knownTargets": {
@@ -445,7 +445,7 @@
   },
   "intel": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "external",
     "knownTargets": {
@@ -457,7 +457,7 @@
   },
   "kohls": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "kohlscareers",
     "knownTargets": {
@@ -469,7 +469,7 @@
   },
   "jll": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "jllcareers",
     "knownTargets": {
@@ -481,7 +481,7 @@
   },
   "gsk": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "gskcareers",
     "knownTargets": {
@@ -493,7 +493,7 @@
   },
   "motorolasolutions": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "careers",
     "knownTargets": {
@@ -505,7 +505,7 @@
   },
   "paypal": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "jobs",
     "knownTargets": {
@@ -517,7 +517,7 @@
   },
   "manulife": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "MFCJH_Jobs",
     "knownTargets": {
@@ -529,7 +529,7 @@
   },
   "iqvia": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "iqvia",
     "knownTargets": {
@@ -541,7 +541,7 @@
   },
   "nxp": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "careers",
     "knownTargets": {
@@ -553,7 +553,7 @@
   },
   "mufgub": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "MUFG-Careers",
     "knownTargets": {
@@ -565,7 +565,7 @@
   },
   "medtronic": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "medtroniccareers",
     "knownTargets": {
@@ -577,7 +577,7 @@
   },
   "nvidia": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "NVIDIAExternalCareerSite",
     "knownTargets": {
@@ -589,7 +589,7 @@
   },
   "leidos": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "external",
     "knownTargets": {
@@ -601,7 +601,7 @@
   },
   "regeneron": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "careers",
     "knownTargets": {
@@ -617,7 +617,7 @@
   },
   "shipt": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "Shipt_External",
     "knownTargets": {
@@ -629,7 +629,7 @@
   },
   "shi": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd12",
     "slug": "shicareers",
     "knownTargets": {
@@ -641,7 +641,7 @@
   },
   "salesforce": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd12",
     "slug": "External_Career_Site",
     "knownTargets": {
@@ -653,7 +653,7 @@
   },
   "pwc": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "US_Entry_Level_Careers",
     "knownTargets": {
@@ -665,7 +665,7 @@
   },
   "qualcomm": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd12",
     "slug": "external",
     "knownTargets": {
@@ -677,7 +677,7 @@
   },
   "vrtx": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd501",
     "slug": "Vertex_Careers",
     "knownTargets": {
@@ -689,7 +689,7 @@
   },
   "sprinklr": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "careers",
     "knownTargets": {
@@ -701,7 +701,7 @@
   },
   "tmobile": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "External",
     "knownTargets": {
@@ -713,7 +713,7 @@
   },
   "zendesk": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "zendesk",
     "knownTargets": {
@@ -725,7 +725,7 @@
   },
   "visa": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "visa",
     "knownTargets": {
@@ -737,7 +737,7 @@
   },
   "quickenloans": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "rocket_careers",
     "knownTargets": {
@@ -749,7 +749,7 @@
   },
   "pfizer": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "pfizercareers",
     "knownTargets": {
@@ -761,7 +761,7 @@
   },
   "trimble": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd1",
     "slug": "TrimbleCareers",
     "knownTargets": {
@@ -773,7 +773,7 @@
   },
   "transunion": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "TransUnion",
     "knownTargets": {
@@ -785,7 +785,7 @@
   },
   "troweprice": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "TRowePrice",
     "knownTargets": {
@@ -797,7 +797,7 @@
   },
   "sanofi": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "sanoficareers",
     "knownTargets": {
@@ -809,7 +809,7 @@
   },
   "prudential": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "prudential",
     "knownTargets": {
@@ -821,7 +821,7 @@
   },
   "shell": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "shellcareers",
     "knownTargets": {
@@ -833,7 +833,7 @@
   },
   "pnc": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "external",
     "knownTargets": {
@@ -845,7 +845,7 @@
   },
   "travelers": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "external",
     "knownTargets": {
@@ -857,7 +857,7 @@
   },
   "vanguard": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "vanguard_External",
     "knownTargets": {
@@ -869,7 +869,7 @@
   },
   "relx": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-22",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd3",
     "slug": "ElsevierJobs",
     "knownTargets": {
@@ -885,7 +885,7 @@
   },
   "target": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "targetcareers",
     "knownTargets": {
@@ -897,7 +897,7 @@
   },
   "workday": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "Workday_Early_Career",
     "knownTargets": {
@@ -909,7 +909,7 @@
   },
   "zoom": {
     "zeroCount": 0,
-    "lastAttempt": "2026-04-15",
+    "lastAttempt": "2026-04-23",
     "wdVersion": "wd5",
     "slug": "zoom",
     "knownTargets": {
