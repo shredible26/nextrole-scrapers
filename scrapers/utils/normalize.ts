@@ -1052,18 +1052,63 @@ export function hasTechTitleSignal(title: string): boolean {
  */
 export function inferRoles(title: string): Role[] {
   const lower = title.toLowerCase();
+  const NEGATIVE_SWE_PATTERNS = [
+    /\bhardware engineer\b/i,
+    /\bmechanical engineer\b/i,
+    /\bpcb design engineer\b/i,
+    /\belectrical(?:\s+controls)? engineer\b/i,
+    /\bcivil engineer\b/i,
+    /\bchemical engineer\b/i,
+    /\baerospace engineer\b/i,
+    /\bpropulsion engineer\b/i,
+    /\bfield service engineer\b/i,
+    /\bmanufacturing engineer\b/i,
+    /\bindustrial engineer\b/i,
+    /\bcontrols engineer\b/i,
+    /\bhvac engineer\b/i,
+    /\bstructural engineer\b/i,
+  ] as const;
+  const STRONG_SWE_OVERRIDE_PATTERNS = [
+    /\bsoftware\b/i,
+    /\bfront(?:\s|-)?end\b/i,
+    /\bback(?:\s|-)?end\b/i,
+    /\bfull.?stack\b/i,
+    /\bweb\s+dev(?:eloper|elopment)?\b/i,
+    /\bmobile\b/i,
+    /\bios\b/i,
+    /\bandroid\b/i,
+    /\bfirmware\b/i,
+    /\bembedded(?:\s+software)?\b/i,
+    /\bdevops\b/i,
+    /\bcloud\b/i,
+    /\bplatform engineer\b/i,
+    /\bsite reliability\b/i,
+    /\bsre\b/i,
+    /\bml engineer\b/i,
+    /\bai engineer\b/i,
+    /\bdata engineer\b/i,
+    /\bcomputer vision\b/i,
+    /\bnlp\b/i,
+    /\bmachine learning\b/i,
+  ] as const;
+  const shouldExcludeSwe =
+    NEGATIVE_SWE_PATTERNS.some(pattern => pattern.test(title))
+    && !STRONG_SWE_OVERRIDE_PATTERNS.some(pattern => pattern.test(title));
 
   const matched = (Object.entries(ROLE_KEYWORDS) as [Role, string[]][])
     .filter(([, keywords]) => keywords.some(k => lower.includes(k)))
     .map(([role]) => role);
+  const filteredMatched = shouldExcludeSwe
+    ? matched.filter(role => role !== 'swe')
+    : matched;
 
   // Fallback: title has a tech signal but no keyword matched — default to swe
   // so the job still appears in filtered views rather than disappearing.
-  if (matched.length === 0 && hasTechTitleSignal(title)) {
+  if (filteredMatched.length === 0 && hasTechTitleSignal(title) && !shouldExcludeSwe) {
     return ['swe'];
   }
 
-  return matched;
+  return filteredMatched;
 }
 
 export function inferRemote(location?: string): boolean {
