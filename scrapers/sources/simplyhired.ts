@@ -2,6 +2,7 @@ import { chromium, type Browser, type BrowserContext, type Page } from 'playwrig
 
 import { generateHash } from '../utils/dedup';
 import {
+  finalizeNormalizedJob,
   hasTechTitleSignal,
   inferRoles,
   inferRemote,
@@ -373,7 +374,7 @@ function mapJob(raw: SimplyHiredJobRecord): NormalizedJob | null {
 
   if (!level || !title || !company || !url || !titleHasTechSignal) return null;
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: String(raw.id ?? url),
     title,
@@ -388,7 +389,7 @@ function mapJob(raw: SimplyHiredJobRecord): NormalizedJob | null {
     roles: inferRoles(title),
     posted_at,
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 async function scrapeSimplyHiredInternal(

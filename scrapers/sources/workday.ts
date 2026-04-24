@@ -6,7 +6,13 @@
 
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -1140,7 +1146,7 @@ async function scrapeCompany(
       seen.add(hash);
 
       pendingJobs.push({
-        job: {
+        job: finalizeNormalizedJob({
           source: 'workday',
           source_id: extractWorkdaySourceId(company, title, location, posting),
           title,
@@ -1153,7 +1159,7 @@ async function scrapeCompany(
           roles: inferRoles(title),
           posted_at: parseWorkdayDate(posting.postedOn),
           dedup_hash: hash,
-        },
+        }),
         company,
         wdVersion,
         slug,

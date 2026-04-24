@@ -3,7 +3,13 @@
 // Returns XML with up to 50 items per page; paginate up to page 3.
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const SEARCH_TERMS = [
   'software+engineer+entry+level',
@@ -103,7 +109,7 @@ async function fetchPage(searchTerm: string, page: number): Promise<NormalizedJo
         if (!isNaN(d.getTime())) postedAt = d.toISOString();
       }
 
-      jobs.push({
+      jobs.push(finalizeNormalizedJob({
         source: 'dice_rss',
         source_id: sourceId,
         title,
@@ -116,7 +122,7 @@ async function fetchPage(searchTerm: string, page: number): Promise<NormalizedJo
         roles: inferRoles(title),
         posted_at: postedAt,
         dedup_hash: generateHash(company || 'Unknown', title, location),
-      });
+      }));
     }
 
     return jobs;

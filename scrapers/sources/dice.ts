@@ -1,6 +1,12 @@
 import { pathToFileURL } from 'node:url';
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const SOURCE = 'dice';
@@ -279,7 +285,7 @@ function mapDiceJob(raw: Record<string, unknown>): NormalizedJob | null {
   const experienceLevel = inferExperienceLevel(title, description);
   if (!experienceLevel || !title || !url) return null;
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: String(raw.guid ?? raw.id ?? url),
     title,
@@ -294,7 +300,7 @@ function mapDiceJob(raw: Record<string, unknown>): NormalizedJob | null {
     roles: inferRoles(title),
     posted_at,
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 async function fetchLoggedResponse(

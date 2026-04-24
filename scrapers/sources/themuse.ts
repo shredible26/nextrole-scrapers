@@ -5,7 +5,12 @@
 import { pathToFileURL } from 'node:url';
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  NormalizedJob,
+} from '../utils/normalize';
 import {
   cleanScrapedDescription,
   fetchWithTimeout,
@@ -87,7 +92,7 @@ export async function scrapeTheMuse(): Promise<NormalizedJob[]> {
 
         const location = job.locations?.[0]?.name ?? '';
         results.push({
-          job: {
+          job: finalizeNormalizedJob({
             source: 'themuse',
             source_id: String(job.id),
             title: job.name ?? '',
@@ -104,7 +109,7 @@ export async function scrapeTheMuse(): Promise<NormalizedJob[]> {
               job.name ?? '',
               location,
             ),
-          },
+          }),
           detailId: job.id,
         });
       }

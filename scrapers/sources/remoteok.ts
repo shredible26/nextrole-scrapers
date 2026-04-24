@@ -3,7 +3,12 @@
 // Docs: https://remoteok.com/api
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const TECH_KEYWORDS = [
   'engineer', 'developer', 'scientist', 'analyst',
@@ -28,7 +33,7 @@ export async function scrapeRemoteOK(): Promise<NormalizedJob[]> {
     const level = inferExperienceLevel(title, job.description ?? '');
     if (level === null) continue;
 
-    normalized.push({
+    normalized.push(finalizeNormalizedJob({
       source: 'remoteok',
       source_id: String(job.id),
       title,
@@ -43,7 +48,7 @@ export async function scrapeRemoteOK(): Promise<NormalizedJob[]> {
       roles: inferRoles(title),
       posted_at: new Date(job.epoch * 1000).toISOString(),
       dedup_hash: generateHash(job.company, title, 'Remote'),
-    });
+    }));
   }
   return normalized;
 }

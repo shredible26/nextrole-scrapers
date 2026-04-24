@@ -24,6 +24,7 @@ export type NormalizedJob = {
   company: string;
   location?: string;
   remote: boolean;
+  is_usa: boolean;
   url: string;
   description?: string;
   salary_min?: number;
@@ -48,6 +49,116 @@ export type NormalizeJobInput = {
   roleText?: string | null;
   experienceText?: string | null;
 };
+
+type UsaLocationInput = {
+  location?: string | null;
+  remote?: boolean | null;
+};
+
+const US_STATE_ABBREVIATIONS = [
+  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
+  'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME',
+  'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM',
+  'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX',
+  'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY',
+] as const;
+
+const US_STATE_NAMES = [
+  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado',
+  'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
+  'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+  'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+  'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada',
+  'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
+  'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
+  'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+  'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
+  'West Virginia', 'Wisconsin', 'Wyoming', 'District of Columbia',
+] as const;
+
+const US_BARE_CITY_CODES = [
+  'SF', 'NYC', 'LA', 'DC', 'ATL', 'BOS', 'SEA', 'CHI',
+  'PHX', 'DEN', 'AUS', 'MIA', 'PDX', 'DFW', 'SLC',
+] as const;
+
+const MAJOR_US_CITY_NAMES = [
+  'New York', 'Los Angeles', 'San Francisco', 'Chicago', 'Seattle', 'Boston',
+  'Austin', 'Denver', 'Atlanta', 'Miami', 'Phoenix', 'Dallas', 'Houston',
+  'San Jose', 'San Diego', 'Portland', 'Nashville', 'Minneapolis', 'Detroit',
+  'Philadelphia', 'Charlotte', 'Washington', 'Las Vegas', 'Salt Lake City',
+  'Sacramento', 'Pittsburgh', 'Baltimore', 'Cincinnati', 'Columbus',
+  'Cleveland', 'Indianapolis', 'Kansas City', 'St. Louis', 'Tampa', 'Orlando',
+  'Raleigh', 'Richmond', 'Louisville', 'Memphis', 'Milwaukee', 'Albuquerque',
+  'Tucson', 'Fresno', 'Mesa', 'Omaha', 'Colorado Springs', 'Reno',
+  'Henderson', 'Buffalo', 'Fort Worth', 'El Paso', 'Arlington', 'Irvine',
+  'Madison', 'Durham', 'Lubbock', 'Baton Rouge', 'Fremont', 'Gilbert',
+  'Birmingham', 'Rochester', 'Spokane', 'Des Moines', 'Tacoma', 'Glendale',
+  'Akron', 'Knoxville', 'Providence', 'Grand Rapids', 'Chattanooga',
+  'Fort Lauderdale', 'Santa Clara', 'Sunnyvale', 'Bellevue', 'Redmond',
+  'Menlo Park', 'Palo Alto', 'Mountain View', 'Cupertino', 'Santa Monica',
+  'Burbank', 'Pasadena', 'Scottsdale', 'Tempe', 'Chandler', 'Roseville',
+  'Huntsville', 'Fayetteville', 'Gainesville', 'Tallahassee', 'Jacksonville',
+  'Anchorage', 'Honolulu', 'Lafayette', 'Stennis',
+] as const;
+
+const US_SPECIAL_LOCATION_TERMS = ['AFB', 'Naval', 'Pentagon', 'Quantico', 'Langley'] as const;
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+const US_STATE_ABBREVIATION_RE = new RegExp(
+  `,\\s*(?:${US_STATE_ABBREVIATIONS.join('|')})(?=\\b|\\s|,|$)`,
+  'i',
+);
+
+const US_STATE_NAME_RE = new RegExp(
+  `\\b(?:${US_STATE_NAMES.map(escapeRegex).join('|')})\\b`,
+  'i',
+);
+
+const US_BARE_CITY_CODE_RE = new RegExp(
+  `(?:^|[^a-z])(?:${US_BARE_CITY_CODES.join('|')})(?:[^a-z]|$)`,
+  'i',
+);
+
+const US_COUNTRY_RE = /\b(?:united states|usa)\b|\bu\.s\.a?\.?(?=\s|,|$)/i;
+const WORKDAY_MULTI_LOCATION_RE = /\b\d+\s+locations?\b/i;
+const WORKDAY_US_CITY_RE = /\bUS,\s*[^,]+/i;
+const WORKDAY_STATE_CITY_RE = new RegExp(
+  `\\b(?:${US_STATE_ABBREVIATIONS.join('|')})-[A-Z0-9][A-Z0-9 -]*-\\d+\\b`,
+  'i',
+);
+const PERTH_WA_RE = /\bperth,\s*wa\b/i;
+
+export function isUsaLocation(job: UsaLocationInput): boolean {
+  if (job.remote === true) return true;
+
+  const location = job.location?.trim();
+  if (!location) return true;
+  if (PERTH_WA_RE.test(location)) return false;
+
+  const lower = location.toLowerCase();
+
+  if (US_COUNTRY_RE.test(location)) return true;
+  if (US_STATE_ABBREVIATION_RE.test(location)) return true;
+  if (US_BARE_CITY_CODE_RE.test(location)) return true;
+  if (MAJOR_US_CITY_NAMES.some(city => lower.includes(city.toLowerCase()))) return true;
+  if (US_SPECIAL_LOCATION_TERMS.some(term => lower.includes(term.toLowerCase()))) return true;
+  if (WORKDAY_MULTI_LOCATION_RE.test(location)) return true;
+  if (WORKDAY_US_CITY_RE.test(location)) return true;
+  if (WORKDAY_STATE_CITY_RE.test(location)) return true;
+  if (US_STATE_NAME_RE.test(location)) return true;
+
+  return false;
+}
+
+export function finalizeNormalizedJob(job: Omit<NormalizedJob, 'is_usa'>): NormalizedJob {
+  return {
+    ...job,
+    is_usa: isUsaLocation(job),
+  };
+}
 
 // ---------------------------------------------------------------------------
 // ROLE KEYWORDS
@@ -1162,9 +1273,10 @@ export function normalizeJob(input: NormalizeJobInput): NormalizedJob | null {
   const url = input.url?.trim();
   const location = input.location?.trim() || undefined;
   const description = input.description?.trim() || undefined;
+  const remote = input.remote === true || inferRemote(location);
 
   if (!title || !company || !url) return null;
-  if (location && isNonUsLocation(location)) return null;
+  if (location && isNonUsLocation(location) && !isUsaLocation({ location, remote })) return null;
   if (!passesEarlyCareerFilter(title, input.experienceText ?? description)) return null;
 
   const experienceLevel = inferExperienceLevel(title, input.experienceText ?? description);
@@ -1174,20 +1286,20 @@ export function normalizeJob(input: NormalizeJobInput): NormalizedJob | null {
     ? normalizeRoles(input.roles)
     : inferRoles(input.roleText ?? title);
 
-  return {
+  return finalizeNormalizedJob({
     source: input.source,
     source_id: input.sourceId?.trim() || undefined,
     title,
     company,
     location,
-    remote: input.remote === true || inferRemote(location),
+    remote,
     url,
     description,
     experience_level: experienceLevel,
     roles,
     posted_at: normalizePostedAtValue(input.postedAt),
     dedup_hash: generateHash(company, title, location ?? ''),
-  };
+  });
 }
 
 /**

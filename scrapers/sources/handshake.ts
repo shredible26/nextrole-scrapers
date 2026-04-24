@@ -5,7 +5,13 @@
 // Fallback 2: HTML page parsing (__NEXT_DATA__ / window.__INITIAL_STATE__)
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36';
 
@@ -116,7 +122,7 @@ function mapPosting(posting: any): NormalizedJob | null {
   }
   if (!experienceLevel) return null; // senior — skip
 
-  return {
+  return finalizeNormalizedJob({
     source: 'handshake',
     source_id: String(id),
     title,
@@ -131,7 +137,7 @@ function mapPosting(posting: any): NormalizedJob | null {
     roles: inferRoles(title),
     posted_at: postedAt,
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 // ─── API fetch (primary or fallback URL) ─────────────────────────────────────

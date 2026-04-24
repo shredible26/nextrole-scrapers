@@ -8,6 +8,7 @@ import { join } from 'node:path';
 
 import { generateHash } from '../utils/dedup';
 import {
+  finalizeNormalizedJob,
   type ExperienceLevel,
   inferExperienceLevel,
   inferRemote,
@@ -629,7 +630,7 @@ function normalizeOffer(slug: string, rawOffer: unknown): NormalizedJob | null {
       : inferRemote(location);
   const roles = inferRoles(title);
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: sourceId,
     title,
@@ -642,7 +643,7 @@ function normalizeOffer(slug: string, rawOffer: unknown): NormalizedJob | null {
     roles,
     posted_at: normalizePostedAt(coerceString(offer.created_at) ?? coerceString(offer.published_at)),
     dedup_hash: generateHash(company, title, location ?? ''),
-  };
+  });
 }
 
 async function fetchCompany(slug: string): Promise<NormalizedJob[]> {

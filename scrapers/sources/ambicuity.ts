@@ -1,6 +1,7 @@
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
 import {
+  finalizeNormalizedJob,
   inferExperienceLevel,
   inferRemote,
   inferRoles,
@@ -57,7 +58,7 @@ function normalizeAmbicuityJob(job: AmbicuityJsonJob): NormalizedJob | null {
 
   const experienceLevel = inferExperienceLevel(title, '') ?? 'new_grad';
 
-  return {
+  return finalizeNormalizedJob({
     source: 'ambicuity',
     source_id: url,
     title,
@@ -69,7 +70,7 @@ function normalizeAmbicuityJob(job: AmbicuityJsonJob): NormalizedJob | null {
     roles: inferRoles(title),
     posted_at: job.posted_at ?? parseRelativePostedDate(job.posted_display),
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 function parseMarkdownTable(markdown: string): NormalizedJob[] {

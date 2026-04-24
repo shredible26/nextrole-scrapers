@@ -1,5 +1,6 @@
 import { generateHash } from '../utils/dedup';
 import {
+  finalizeNormalizedJob,
   hasTechTitleSignal,
   inferExperienceLevel,
   inferRoles,
@@ -194,7 +195,7 @@ async function scrapeRolePagesFallback(existingIds: Set<string>): Promise<Normal
       if (!level) continue;
 
       existingIds.add(sourceId);
-      jobs.push({
+      jobs.push(finalizeNormalizedJob({
         source: SOURCE,
         source_id: sourceId,
         title,
@@ -206,7 +207,7 @@ async function scrapeRolePagesFallback(existingIds: Set<string>): Promise<Normal
         experience_level: level,
         roles: inferRoles(title),
         dedup_hash: generateHash(company, title, location),
-      });
+      }));
     }
   }
 
@@ -393,7 +394,7 @@ export async function scrapeWorkAtAStartup(): Promise<NormalizedJob[]> {
         if (!level) continue;
 
         seenIds.add(sourceId);
-        jobs.push({
+        jobs.push(finalizeNormalizedJob({
           source: SOURCE,
           source_id: sourceId,
           title,
@@ -411,7 +412,7 @@ export async function scrapeWorkAtAStartup(): Promise<NormalizedJob[]> {
               ? new Date(hit.created_at * 1000).toISOString()
               : undefined,
           dedup_hash: generateHash(company, title, location),
-        });
+        }));
       }
 
       const totalPages = result.data.nbPages ?? 0;

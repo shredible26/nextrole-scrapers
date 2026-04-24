@@ -6,7 +6,13 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const SLUG_CACHE_PATH = join(process.cwd(), 'scrapers/cache/lever-discovered-slugs.json');
 
@@ -267,7 +273,7 @@ async function fetchCompany(slug: string): Promise<NormalizedJob[]> {
       if (level === null) continue;
 
       const location: string = job.categories?.location ?? job.categories?.allLocations?.[0] ?? '';
-      normalized.push({
+      normalized.push(finalizeNormalizedJob({
         source: 'lever',
         source_id: job.id ?? '',
         title: job.text ?? '',
@@ -281,7 +287,7 @@ async function fetchCompany(slug: string): Promise<NormalizedJob[]> {
         // createdAt is Unix milliseconds
         posted_at: job.createdAt ? new Date(job.createdAt).toISOString() : undefined,
         dedup_hash: generateHash(companyName, job.text ?? '', location),
-      });
+      }));
     }
     return normalized;
   } catch {

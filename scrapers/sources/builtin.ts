@@ -1,5 +1,10 @@
 import { generateHash } from '../utils/dedup';
-import { inferExperienceLevel, inferRoles, type NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferExperienceLevel,
+  inferRoles,
+  type NormalizedJob,
+} from '../utils/normalize';
 
 const SOURCE = 'builtin';
 const API_ENDPOINTS = [
@@ -477,7 +482,7 @@ function normalizeApiJob(job: BuiltInApiJob): NormalizedJob | null {
 
   if (!job.id || !title || !company || !level) return null;
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: String(job.id),
     title,
@@ -494,7 +499,7 @@ function normalizeApiJob(job: BuiltInApiJob): NormalizedJob | null {
     roles: inferRoles(title),
     posted_at: normalizePostedAt(job.datePosted),
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 function normalizeHtmlJob(job: HtmlCardJob): NormalizedJob | null {
@@ -504,7 +509,7 @@ function normalizeHtmlJob(job: HtmlCardJob): NormalizedJob | null {
 
   if (!level) return null;
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: String(job.id),
     title: job.title,
@@ -519,7 +524,7 @@ function normalizeHtmlJob(job: HtmlCardJob): NormalizedJob | null {
     roles: inferRoles(job.title),
     posted_at: job.postedAt,
     dedup_hash: generateHash(job.company, job.title, location),
-  };
+  });
 }
 
 async function scrapeViaApi(endpoint: string, seenIds: Set<number>): Promise<NormalizedJob[]> {

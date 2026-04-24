@@ -2,6 +2,7 @@ import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
 import {
   ExperienceLevel,
+  finalizeNormalizedJob,
   hasTechTitleSignal,
   inferExperienceLevel,
   inferRoles,
@@ -271,7 +272,7 @@ function normalizeComment(comment: HackerNewsItem): NormalizedJob | null {
 
   const url = extractUrls(comment.text)[0] ?? `${FALLBACK_URL_PREFIX}${comment.id}`;
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: String(comment.id),
     title,
@@ -286,7 +287,7 @@ function normalizeComment(comment: HackerNewsItem): NormalizedJob | null {
       ? new Date(comment.time * 1000).toISOString()
       : undefined,
     dedup_hash: generateHash(company, title, location ?? (remote ? 'Remote' : '')),
-  };
+  });
 }
 
 async function fetchJson<T>(

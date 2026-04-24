@@ -3,7 +3,7 @@
 // Experience level: always 'internship' (internship-only repo).
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, NormalizedJob } from '../utils/normalize';
+import { finalizeNormalizedJob, inferRoles, NormalizedJob } from '../utils/normalize';
 
 const RAW_URL =
   'https://raw.githubusercontent.com/vanshb03/Summer2026-Internships/dev/.github/scripts/listings.json';
@@ -18,7 +18,7 @@ export async function scrapeVanshb03Internships(): Promise<NormalizedJob[]> {
     .map((job: any) => {
       const location = job.locations?.[0] ?? 'Remote';
       const remote = job.locations?.some((l: string) => l.toLowerCase().includes('remote')) ?? false;
-      return {
+      return finalizeNormalizedJob({
         source: 'vanshb03_internships',
         source_id: job.id,
         title: job.title,
@@ -32,6 +32,6 @@ export async function scrapeVanshb03Internships(): Promise<NormalizedJob[]> {
           ? new Date(job.date_posted * 1000).toISOString()
           : new Date().toISOString(),
         dedup_hash: generateHash(job.company_name, job.title, location),
-      } satisfies NormalizedJob;
+      });
     });
 }

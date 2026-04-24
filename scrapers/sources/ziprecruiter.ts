@@ -2,7 +2,7 @@ import { spawnSync } from 'child_process'
 import { writeFileSync, readFileSync, unlinkSync, existsSync } from 'fs'
 import { tmpdir } from 'os'
 import { join } from 'path'
-import { inferExperienceLevel, inferRoles, inferRemote } from '../utils/normalize'
+import { finalizeNormalizedJob, inferExperienceLevel, inferRoles, inferRemote } from '../utils/normalize'
 import { generateHash } from '../utils/dedup'
 import type { NormalizedJob } from '../utils/normalize'
 
@@ -82,7 +82,7 @@ except Exception as e:
           const level = inferExperienceLevel(title, description)
           if (!level) continue
           const location = String(job.location ?? '')
-          allJobs.push({
+          allJobs.push(finalizeNormalizedJob({
             source: 'ziprecruiter',
             source_id: id,
             title,
@@ -97,7 +97,7 @@ except Exception as e:
             roles: inferRoles(title),
             posted_at: job.date_posted ? new Date(String(job.date_posted)).toISOString() : undefined,
             dedup_hash: generateHash(String(job.company ?? ''), title, location),
-          })
+          }))
         }
         unlinkSync(tmpFile)
       }

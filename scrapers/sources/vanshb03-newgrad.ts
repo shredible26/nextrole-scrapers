@@ -3,7 +3,12 @@
 // Experience level: 'internship' if title signals it, otherwise 'new_grad'.
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const RAW_URL =
   'https://raw.githubusercontent.com/vanshb03/New-Grad-2026/dev/.github/scripts/listings.json';
@@ -21,7 +26,7 @@ export async function scrapeVanshb03Newgrad(): Promise<NormalizedJob[]> {
       // Keep 'internship' if title signals it; everything else defaults to 'new_grad'
       const inferred = inferExperienceLevel(job.title);
       const experience_level = inferred === 'internship' ? 'internship' : 'new_grad';
-      return {
+      return finalizeNormalizedJob({
         source: 'vanshb03_newgrad',
         source_id: job.id,
         title: job.title,
@@ -35,6 +40,6 @@ export async function scrapeVanshb03Newgrad(): Promise<NormalizedJob[]> {
           ? new Date(job.date_posted * 1000).toISOString()
           : new Date().toISOString(),
         dedup_hash: generateHash(job.company_name, job.title, location),
-      } satisfies NormalizedJob;
+      });
     });
 }

@@ -5,7 +5,13 @@
 import { pathToFileURL } from 'node:url';
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const stripHtml = (html: string): string => html.replace(/<[^>]*>/g, ' ');
@@ -451,7 +457,7 @@ async function fetchCompany(company: string): Promise<NormalizedJob[]> {
             boardValidation.companyName ||
             company;
 
-          normalized.push({
+          normalized.push(finalizeNormalizedJob({
             source: SOURCE,
             source_id: String(job.id),
             title: job.title ?? '',
@@ -464,7 +470,7 @@ async function fetchCompany(company: string): Promise<NormalizedJob[]> {
             roles: inferRoles(job.title ?? ''),
             posted_at: job.updated_at ?? undefined,
             dedup_hash: generateHash(companyName, job.title ?? '', location),
-          });
+          }));
         }
 
         console.log(

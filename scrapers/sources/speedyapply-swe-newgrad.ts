@@ -8,6 +8,7 @@ import {
 } from '../utils/github-curated';
 import { isNonUsLocation } from '../utils/location';
 import {
+  finalizeNormalizedJob,
   inferExperienceLevel,
   inferRemote,
   inferRoles,
@@ -206,7 +207,7 @@ function normalizeRow(row: CuratedRepoRow): NormalizedJob | null {
   const experienceLevel = inferExperienceLevel(title, '');
   if (experienceLevel === null || experienceLevel === 'internship') return null;
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: url,
     title,
@@ -218,7 +219,7 @@ function normalizeRow(row: CuratedRepoRow): NormalizedJob | null {
     roles: inferRoles(title),
     posted_at: parsePostedAt(row.posted),
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 function dedupeByUrl(jobs: NormalizedJob[]): NormalizedJob[] {

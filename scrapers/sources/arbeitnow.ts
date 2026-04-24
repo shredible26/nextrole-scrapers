@@ -5,7 +5,12 @@
 import { pathToFileURL } from 'node:url';
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const TECH_TAGS = [
@@ -50,7 +55,7 @@ export async function scrapeArbeitnow(): Promise<NormalizedJob[]> {
       const level = inferExperienceLevel(job.title ?? '', job.description ?? '');
       if (level === null) continue;
 
-      results.push({
+      results.push(finalizeNormalizedJob({
         source: 'arbeitnow',
         source_id: job.slug,
         title: job.title,
@@ -63,7 +68,7 @@ export async function scrapeArbeitnow(): Promise<NormalizedJob[]> {
         roles: inferRoles(job.title),
         posted_at: new Date(job.created_at * 1000).toISOString(),
         dedup_hash: generateHash(job.company_name, job.title, job.location ?? ''),
-      });
+      }));
     }
 
     page++;

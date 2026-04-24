@@ -1,6 +1,7 @@
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
 import {
+  finalizeNormalizedJob,
   inferExperienceLevel,
   inferRemote,
   inferRoles,
@@ -233,7 +234,7 @@ function normalizeBambooHrJob(company: string, rawJob: ParsedBambooHrJob): Norma
   const experienceLevel = inferExperienceLevel(title);
   if (experienceLevel === null) return null;
 
-  return {
+  return finalizeNormalizedJob({
     source: 'bamboohr',
     source_id: rawJob.id,
     title,
@@ -244,7 +245,7 @@ function normalizeBambooHrJob(company: string, rawJob: ParsedBambooHrJob): Norma
     experience_level: experienceLevel,
     roles: inferRoles(title),
     dedup_hash: generateHash(companyName, title, location),
-  };
+  });
 }
 
 async function fetchCompany(company: string): Promise<NormalizedJob[]> {

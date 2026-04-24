@@ -3,7 +3,13 @@ import { pathToFileURL } from 'node:url';
 
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
-import { inferExperienceLevel, inferRoles, type NormalizedJob, type Role } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferExperienceLevel,
+  inferRoles,
+  type NormalizedJob,
+  type Role,
+} from '../utils/normalize';
 import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
 const SOURCE = 'personio';
@@ -255,7 +261,7 @@ function normalizePosition(slug: string, positionXml: string): NormalizedJob | n
   const remote = hasRemoteSignal(location, description, additionalOffices);
   const sourceId = extractSourceId(url);
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: sourceId,
     title,
@@ -268,7 +274,7 @@ function normalizePosition(slug: string, positionXml: string): NormalizedJob | n
     experience_level: experienceLevel,
     roles: inferPersonioRoles(title, description),
     dedup_hash: generateHash(company, title, location ?? ''),
-  };
+  });
 }
 
 async function fetchCompanyJobs(slug: string): Promise<NormalizedJob[]> {

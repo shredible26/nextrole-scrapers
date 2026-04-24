@@ -6,6 +6,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 import { generateHash } from '../utils/dedup';
 import {
+  finalizeNormalizedJob,
   hasTechTitleSignal,
   inferExperienceLevel,
   inferRemote,
@@ -362,7 +363,7 @@ async function fetchCompany(buildId: string, slug: string): Promise<NormalizedJo
     const location = formatLocations(locations);
     const company = detail?.companyName?.trim() || board?.title?.trim() || fallbackCompanyName(slug);
 
-    normalized.push({
+    normalized.push(finalizeNormalizedJob({
       source: 'rippling',
       source_id: `${slug}:${detail?.uuid ?? jobId}`,
       title,
@@ -375,7 +376,7 @@ async function fetchCompany(buildId: string, slug: string): Promise<NormalizedJo
       roles: inferRoles(title),
       posted_at: toIsoDate(detail?.createdOn),
       dedup_hash: generateHash(company, title, location ?? ''),
-    });
+    }));
   }
 
   if (normalized.length > 0) {

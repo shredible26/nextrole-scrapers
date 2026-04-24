@@ -1,6 +1,7 @@
 import { generateHash } from './dedup';
 import { isNonUsLocation } from './location';
 import {
+  finalizeNormalizedJob,
   inferExperienceLevel,
   inferRemote,
   inferRoles,
@@ -175,7 +176,7 @@ function normalizeRow(source: string, row: CuratedRepoRow): NormalizedJob | null
   const experienceLevel = inferExperienceLevel(title, '') ?? 'new_grad';
   const remoteText = row.remoteHint ? `${location} ${row.remoteHint}` : location;
 
-  return {
+  return finalizeNormalizedJob({
     source,
     source_id: url,
     title,
@@ -187,7 +188,7 @@ function normalizeRow(source: string, row: CuratedRepoRow): NormalizedJob | null
     roles: inferRoles(title),
     posted_at: parsePostedAt(row.posted),
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 function normalizeJsonListing(
@@ -223,7 +224,7 @@ function normalizeJsonListing(
   const remoteHint =
     listing.job_is_remote === true ? 'Remote' : location;
 
-  return {
+  return finalizeNormalizedJob({
     source,
     source_id:
       typeof listing.id === 'string' || typeof listing.id === 'number'
@@ -240,7 +241,7 @@ function normalizeJsonListing(
     roles: inferRoles(title),
     posted_at: postedAtFromJson(listing),
     dedup_hash: generateHash(company, title, location),
-  };
+  });
 }
 
 function dedupeByUrl(jobs: NormalizedJob[]): NormalizedJob[] {

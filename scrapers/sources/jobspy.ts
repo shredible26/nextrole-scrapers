@@ -1,6 +1,12 @@
 import { scrapeJobs } from 'ts-jobspy';
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const SEARCH_TERMS = [
   'software engineer new grad',
@@ -61,7 +67,7 @@ export async function scrapeJobSpy(): Promise<NormalizedJob[]> {
         const experienceLevel = inferExperienceLevel(job.title, job.description ?? '');
         if (experienceLevel === null) continue;
 
-        results.push({
+        results.push(finalizeNormalizedJob({
           source: `jobspy_${job.site ?? 'indeed'}`,
           source_id: job.jobUrl,
           title: job.title,
@@ -78,7 +84,7 @@ export async function scrapeJobSpy(): Promise<NormalizedJob[]> {
             ? new Date(job.datePosted).toISOString()
             : undefined,
           dedup_hash: hash,
-        });
+        }));
       }
 
       await new Promise(r => setTimeout(r, 2000));

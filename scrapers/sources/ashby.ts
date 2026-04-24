@@ -8,7 +8,13 @@ import { dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 import { isNonUsLocation } from '../utils/location';
 import { deactivateStaleJobs, uploadJobs } from '../utils/upload';
 
@@ -864,7 +870,7 @@ async function fetchCompany(slug: string, companyName: string): Promise<Normaliz
       inferRemote(location);
     const { min, max } = parseSalary(job.compensation?.scrapeableCompensationSalarySummary ?? undefined);
 
-    normalized.push({
+    normalized.push(finalizeNormalizedJob({
       source: SOURCE,
       source_id: sourceId,
       title,
@@ -879,7 +885,7 @@ async function fetchCompany(slug: string, companyName: string): Promise<Normaliz
       roles: inferRoles(title),
       posted_at: job.publishedAt ?? undefined,
       dedup_hash: generateHash(companyName, title, location),
-    });
+    }));
   }
 
   if (normalized.length > 0) {

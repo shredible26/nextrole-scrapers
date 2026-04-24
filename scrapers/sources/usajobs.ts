@@ -3,7 +3,14 @@
 // Returns federal tech jobs with GS grade info for seniority filtering.
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, ExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  ExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const BASE_URL = 'https://data.usajobs.gov/api/search';
 
@@ -183,7 +190,7 @@ function processItems(items: USAJobsItem[], out: NormalizedJob[]): void {
       if (!isNaN(max)) salaryMax = Math.round(max);
     }
 
-    out.push({
+    out.push(finalizeNormalizedJob({
       source: 'usajobs',
       source_id: item.MatchedObjectId,
       title,
@@ -198,7 +205,7 @@ function processItems(items: USAJobsItem[], out: NormalizedJob[]): void {
       roles: inferRoles(title),
       posted_at: pubDate ? new Date(pubDate).toISOString() : undefined,
       dedup_hash: generateHash(company, title, location),
-    });
+    }));
   }
 }
 

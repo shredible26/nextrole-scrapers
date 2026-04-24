@@ -3,7 +3,13 @@
 // Returns real job listings, legally, with salary data.
 
 import { generateHash } from '../utils/dedup';
-import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
+import {
+  finalizeNormalizedJob,
+  inferRoles,
+  inferRemote,
+  inferExperienceLevel,
+  NormalizedJob,
+} from '../utils/normalize';
 
 const BASE = 'https://api.adzuna.com/v1/api/jobs/us/search';
 
@@ -59,7 +65,7 @@ export async function scrapeAdzuna(): Promise<NormalizedJob[]> {
           const level = inferExperienceLevel(job.title ?? '', job.description ?? '');
           if (level === null) continue;
 
-          results.push({
+          results.push(finalizeNormalizedJob({
             source: 'adzuna',
             source_id: job.id,
             title: job.title,
@@ -74,7 +80,7 @@ export async function scrapeAdzuna(): Promise<NormalizedJob[]> {
             roles: inferRoles(job.title),
             posted_at: job.created,
             dedup_hash: generateHash(job.company?.display_name ?? '', job.title, location),
-          });
+          }));
         }
 
         await new Promise(r => setTimeout(r, 500)); // be polite between requests

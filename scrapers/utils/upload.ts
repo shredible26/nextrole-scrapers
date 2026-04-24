@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { NormalizedJob } from './normalize';
+import { isUsaLocation, NormalizedJob } from './normalize';
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -391,7 +391,11 @@ export async function uploadJobs(jobs: NormalizedJob[]): Promise<UploadStats> {
     const rowsToUpdate = new Map<string, NormalizedJob & { id: string; is_active: boolean }>();
 
     for (const job of jobChunk) {
-      const payload = { ...job, is_active: true };
+      const payload = {
+        ...job,
+        is_usa: job.is_usa ?? isUsaLocation(job),
+        is_active: true,
+      };
       const existing = existingByHash.get(job.dedup_hash);
 
       if (!existing) {

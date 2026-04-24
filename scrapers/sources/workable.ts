@@ -2,6 +2,7 @@ import { pathToFileURL } from 'node:url';
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
 import {
+  finalizeNormalizedJob,
   inferExperienceLevel,
   inferRemote,
   inferRoles,
@@ -328,7 +329,7 @@ function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
   const experienceLevel = inferExperienceLevel(title, experienceSignalText);
   if (experienceLevel === null) return null;
 
-  return {
+  return finalizeNormalizedJob({
     source: SOURCE,
     source_id: sourceId,
     title,
@@ -341,7 +342,7 @@ function normalizeWorkableJob(job: WorkableJob): NormalizedJob | null {
     roles: inferRoles(title),
     posted_at: normalizePostedAt(job.created ?? job.updated),
     dedup_hash: generateHash(company, title, location ?? ''),
-  };
+  });
 }
 
 async function fetchSearchTerm(term: string): Promise<WorkableSearchTermResult> {

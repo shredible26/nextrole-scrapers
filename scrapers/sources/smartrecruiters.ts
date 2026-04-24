@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { generateHash } from '../utils/dedup';
 import { isNonUsLocation } from '../utils/location';
 import {
+  finalizeNormalizedJob,
   hasTechTitleSignal,
   inferExperienceLevel,
   inferRemote,
@@ -426,7 +427,7 @@ function normalizePosting(
     inferRemote(location);
 
   return {
-    job: {
+    job: finalizeNormalizedJob({
       source: SOURCE,
       source_id: postingId,
       title,
@@ -439,7 +440,7 @@ function normalizePosting(
       roles: inferRoles(title),
       posted_at: posting.releasedDate,
       dedup_hash: generateHash(company, title, location ?? ''),
-    },
+    }),
     companyIdentifier,
     postingId,
   };

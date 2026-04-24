@@ -1,4 +1,4 @@
-import { inferExperienceLevel, inferRoles, inferRemote } from '../utils/normalize'
+import { finalizeNormalizedJob, inferExperienceLevel, inferRoles, inferRemote } from '../utils/normalize'
 import { generateHash } from '../utils/dedup'
 import type { NormalizedJob } from '../utils/normalize'
 
@@ -172,7 +172,7 @@ export async function scrapeCareerjet(): Promise<NormalizedJob[]> {
           const level = inferExperienceLevel(title, description)
           if (!level) continue
           const location = job.locations ?? ''
-          allJobs.push({
+          allJobs.push(finalizeNormalizedJob({
             source: 'careerjet',
             source_id: url,
             title,
@@ -185,7 +185,7 @@ export async function scrapeCareerjet(): Promise<NormalizedJob[]> {
             roles: inferRoles(title),
             posted_at: undefined,
             dedup_hash: generateHash(job.company ?? '', title, location),
-          })
+          }))
         }
 
         if (data.jobs.length < 99) break
