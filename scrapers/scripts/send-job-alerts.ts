@@ -24,6 +24,7 @@ const RESEND_FROM = 'onboarding@resend.dev';
 const RESEND_SUBJECT = 'Your top job matches today — NextRole';
 const RESEND_DAILY_SEND_CAP = 95;
 const JOB_MATCH_LIMIT = 10;
+const JOB_MATCH_QUERY_PAGE_SIZE = 50;
 const JOB_WINDOW_MS = 24 * 60 * 60 * 1000;
 const RESEND_REQUEST_TIMEOUT_MS = 30_000;
 const ANTHROPIC_REQUEST_TIMEOUT_MS = 45_000;
@@ -34,20 +35,21 @@ const USER_AGENT = 'nextrole-job-alerts/1.0';
 const MATCH_GRADES = ['A', 'B', 'C'] as const;
 
 type Grade = (typeof MATCH_GRADES)[number];
+const RECENT_JOB_FALLBACK_GRADE: Grade = 'C';
 
 type ProfileRow = {
   id: string;
   email: string | null;
+  resume_embedding: unknown;
   resume_text: string | null;
-  target_roles: unknown;
   tier: string | null;
 };
 
 type EligibleUser = {
   email: string;
+  hasResumeEmbedding: boolean;
   id: string;
-  resumeText: string;
-  targetRoles: string[];
+  resumeText: string | null;
   tier: string;
 };
 
@@ -62,10 +64,19 @@ type JobRow = {
   url: string | null;
 };
 
+type ApplicationRow = {
+  job_id: string | null;
+};
+
 type JobScoreRow = {
   grade: Grade | null;
   jobs: JobRow | JobRow[] | null;
   [key: string]: unknown;
+};
+
+type QueryError = {
+  code?: string;
+  message: string;
 };
 
 type JobMatch = {
@@ -207,6 +218,24 @@ function normalizeJobRow(row: JobRow | JobRow[] | null): JobRow | null {
   return Array.isArray(row) ? row[0] ?? null : row;
 }
 
+function normalizeJobMatch(job: JobRow, grade: Grade, metric: number | null): JobMatch | null {
+  if (typeof job.url !== 'string' || normalizeWhitespace(job.url) === '') {
+    return null;
+  }
+
+  return {
+    company: normalizeWhitespace(job.company ?? '') || 'Unknown company',
+    description: normalizeWhitespace(job.description ?? ''),
+    grade,
+    id: job.id,
+    location: normalizeWhitespace(job.location ?? '') || 'Location unavailable',
+    metric,
+    title: normalizeWhitespace(job.title ?? '') || 'Untitled role',
+    url: normalizeWhitespace(job.url),
+    whyThisMatches: null,
+  };
+}
+
 function normalizeJobMatches(rows: JobScoreRow[], metricColumn: string): JobMatch[] {
   const matches: JobMatch[] = rows
     .map(row => {
@@ -217,37 +246,29 @@ function normalizeJobMatches(rows: JobScoreRow[], metricColumn: string): JobMatc
         return null;
       }
 
-      if (typeof job.url !== 'string' || normalizeWhitespace(job.url) === '') {
-        return null;
-      }
-
-      const match: JobMatch = {
-        company: normalizeWhitespace(job.company ?? '') || 'Unknown company',
-        description: normalizeWhitespace(job.description ?? ''),
+      return normalizeJobMatch(
+        job,
         grade,
-        id: job.id,
-        location: normalizeWhitespace(job.location ?? '') || 'Location unavailable',
-        metric: typeof row[metricColumn] === 'number' ? (row[metricColumn] as number) : null,
-        title: normalizeWhitespace(job.title ?? '') || 'Untitled role',
-        url: normalizeWhitespace(job.url),
-        whyThisMatches: null,
-      };
-
-      return match;
+        typeof row[metricColumn] === 'number' ? (row[metricColumn] as number) : null,
+      );
     })
     .filter((match): match is JobMatch => match !== null);
 
   return matches;
 }
 
+function normalizeRecentJobMatches(rows: JobRow[]): JobMatch[] {
+  return rows
+    .map(row => normalizeJobMatch(row, RECENT_JOB_FALLBACK_GRADE, null))
+    .filter((match): match is JobMatch => match !== null);
+}
+
 async function fetchEligibleUsers(): Promise<EligibleUser[]> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, email, resume_text, target_roles, tier')
+    .select('id, email, resume_embedding, resume_text, tier')
     .eq('job_alerts_enabled', true)
-    .not('resume_text', 'is', null)
-    .not('email', 'is', null)
-    .not('target_roles', 'is', null);
+    .not('email', 'is', null);
 
   if (error) {
     throw new Error(`Failed to fetch opted-in users: ${error.message}`);
@@ -258,28 +279,51 @@ async function fetchEligibleUsers(): Promise<EligibleUser[]> {
   return rows
     .map(row => {
       const email = typeof row.email === 'string' ? normalizeWhitespace(row.email) : '';
-      const resumeText = typeof row.resume_text === 'string' ? normalizeWhitespace(row.resume_text) : '';
-      const targetRoles = normalizeStringList(row.target_roles);
-
-      if (!email || !resumeText || targetRoles.length === 0) {
+      if (!email) {
         return null;
       }
 
       return {
         email,
+        hasResumeEmbedding: row.resume_embedding != null,
         id: row.id,
-        resumeText,
-        targetRoles,
+        resumeText:
+          typeof row.resume_text === 'string'
+            ? normalizeWhitespace(row.resume_text) || null
+            : null,
         tier: normalizeWhitespace(row.tier ?? 'free').toLowerCase() || 'free',
       } satisfies EligibleUser;
     })
     .filter((user): user is EligibleUser => user !== null);
 }
 
-async function fetchJobMatchesForUser(userId: string): Promise<JobMatch[]> {
-  const cutoff = new Date(Date.now() - JOB_WINDOW_MS).toISOString();
+async function fetchAppliedJobIds(userId: string): Promise<Set<string>> {
+  const { data, error } = await supabase
+    .from('applications')
+    .select('job_id')
+    .eq('user_id', userId);
 
-  const queryMatches = async (metricColumn: 'similarity' | 'score') => {
+  if (error) {
+    throw new Error(`Failed to fetch applied jobs for user ${userId}: ${error.message}`);
+  }
+
+  return new Set(
+    ((data ?? []) as ApplicationRow[])
+      .map(row => row.job_id)
+      .filter((jobId): jobId is string => typeof jobId === 'string' && jobId.length > 0),
+  );
+}
+
+async function collectTopScoredMatches(
+  userId: string,
+  metricColumn: 'similarity' | 'score',
+  appliedJobIds: Set<string>,
+): Promise<{ error: QueryError | null; matches: JobMatch[] }> {
+  const cutoff = new Date(Date.now() - JOB_WINDOW_MS).toISOString();
+  const matches: JobMatch[] = [];
+  const seenJobIds = new Set<string>();
+
+  for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
     const { data, error } = await supabase
       .from('job_scores')
       .select(
@@ -303,14 +347,89 @@ async function fetchJobMatchesForUser(userId: string): Promise<JobMatch[]> {
       .gt('jobs.posted_at', cutoff)
       .eq('jobs.is_active', true)
       .order(metricColumn, { ascending: false })
-      .limit(JOB_MATCH_LIMIT);
+      .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
 
-    return { data: (data ?? []) as JobScoreRow[], error };
-  };
+    if (error) {
+      return {
+        error: {
+          code: error.code,
+          message: error.message,
+        },
+        matches: [],
+      };
+    }
 
-  const preferred = await queryMatches('similarity');
+    const page = normalizeJobMatches((data ?? []) as JobScoreRow[], metricColumn);
+    for (const match of page) {
+      if (appliedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+        continue;
+      }
+
+      seenJobIds.add(match.id);
+      matches.push(match);
+
+      if (matches.length >= JOB_MATCH_LIMIT) {
+        break;
+      }
+    }
+
+    if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
+      break;
+    }
+  }
+
+  return { error: null, matches };
+}
+
+async function fetchRecentJobFallbackMatches(appliedJobIds: Set<string>): Promise<JobMatch[]> {
+  const matches: JobMatch[] = [];
+  const seenJobIds = new Set<string>();
+
+  for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('jobs')
+      .select('id, title, company, location, url, description, posted_at, is_active')
+      .eq('is_active', true)
+      .not('posted_at', 'is', null)
+      .order('posted_at', { ascending: false })
+      .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
+
+    if (error) {
+      throw new Error(`Failed to fetch recent fallback jobs: ${error.message}`);
+    }
+
+    const page = normalizeRecentJobMatches((data ?? []) as JobRow[]);
+    for (const match of page) {
+      if (appliedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+        continue;
+      }
+
+      seenJobIds.add(match.id);
+      matches.push(match);
+
+      if (matches.length >= JOB_MATCH_LIMIT) {
+        break;
+      }
+    }
+
+    if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
+      break;
+    }
+  }
+
+  return matches;
+}
+
+async function fetchJobMatchesForUser(user: EligibleUser): Promise<JobMatch[]> {
+  const appliedJobIds = await fetchAppliedJobIds(user.id);
+
+  if (!user.hasResumeEmbedding) {
+    return fetchRecentJobFallbackMatches(appliedJobIds);
+  }
+
+  const preferred = await collectTopScoredMatches(user.id, 'similarity', appliedJobIds);
   if (!preferred.error) {
-    return normalizeJobMatches(preferred.data, 'similarity');
+    return preferred.matches;
   }
 
   const shouldFallback =
@@ -318,17 +437,17 @@ async function fetchJobMatchesForUser(userId: string): Promise<JobMatch[]> {
     preferred.error.message.toLowerCase().includes('similarity');
 
   if (!shouldFallback) {
-    throw new Error(`Failed to fetch job matches for user ${userId}: ${preferred.error.message}`);
+    throw new Error(`Failed to fetch job matches for user ${user.id}: ${preferred.error.message}`);
   }
 
   console.warn('[alerts] job_scores.similarity missing, falling back to score ordering.');
 
-  const fallback = await queryMatches('score');
+  const fallback = await collectTopScoredMatches(user.id, 'score', appliedJobIds);
   if (fallback.error) {
-    throw new Error(`Failed to fetch job matches for user ${userId}: ${fallback.error.message}`);
+    throw new Error(`Failed to fetch job matches for user ${user.id}: ${fallback.error.message}`);
   }
 
-  return normalizeJobMatches(fallback.data, 'score');
+  return fallback.matches;
 }
 
 async function generateWhyThisMatches(resumeText: string, match: JobMatch): Promise<string | null> {
@@ -518,13 +637,13 @@ async function main(): Promise<void> {
     processedUsers += 1;
 
     try {
-      const matches = await fetchJobMatchesForUser(user.id);
+      const matches = await fetchJobMatchesForUser(user);
       if (matches.length === 0) {
         console.log(`[alerts] ${user.id}: no matches for user, skipping`);
         continue;
       }
 
-      if (user.tier === 'pro') {
+      if (user.tier === 'pro' && user.resumeText && user.hasResumeEmbedding) {
         for (const [index, match] of matches.entries()) {
           if (ANTHROPIC_API_KEY && index > 0) {
             await sleep(ANTHROPIC_REQUEST_DELAY_MS);

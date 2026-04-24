@@ -149,6 +149,8 @@ const DEFAULT_SCRAPER_TIMEOUT_MS = 120_000;
 
 function getScraperTimeoutMs(name: string): number {
   switch (name) {
+    case 'ashby':
+      return 900_000;
     case 'lever':
       return 600_000;
     case 'simplyhired':

@@ -4,8 +4,8 @@
 // scrape the verified boards in batches.
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { dirname } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { generateHash } from '../utils/dedup';
 import { inferRoles, inferRemote, inferExperienceLevel, NormalizedJob } from '../utils/normalize';
@@ -338,11 +338,8 @@ const GITHUB_SOURCE_URLS = [
   'https://raw.githubusercontent.com/ReaVNaiL/New-Grad-2024/main/README.md',
   'https://raw.githubusercontent.com/speedyapply/JobSpy/main/README.md',
 ] as const;
-const ASHBY_VALID_SLUG_CACHE_PATH = join(
-  process.cwd(),
-  'scrapers',
-  'cache',
-  'ashby-valid-slugs.json',
+const ASHBY_VALID_SLUG_CACHE_PATH = fileURLToPath(
+  new URL('../cache/ashby-valid-slugs.json', import.meta.url),
 );
 const ASHBY_URL_REGEX = /https?:\/\/jobs\.ashbyhq\.com\/[^\s)"'\]]+/gi;
 const USER_AGENT = 'NextRole Job Aggregator (+https://nextrole-phi.vercel.app)';
@@ -601,7 +598,16 @@ async function loadAshbyValidSlugCache(): Promise<AshbyValidSlugCache> {
   try {
     const raw = await readFile(ASHBY_VALID_SLUG_CACHE_PATH, 'utf8');
     const parsed = JSON.parse(raw) as unknown;
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    if (Array.isArray(parsed)) {
+      return Object.fromEntries(
+        parsed
+          .map(value => (typeof value === 'string' ? normalizeAshbySlug(value) : null))
+          .filter((slug): slug is string => slug !== null)
+          .map(slug => [slug, COMPANIES[slug] ?? humanizeAshbySlug(slug)]),
+      );
+    }
+
+    if (!parsed || typeof parsed !== 'object') {
       return {};
     }
 
@@ -624,7 +630,7 @@ async function loadAshbyValidSlugCache(): Promise<AshbyValidSlugCache> {
 }
 
 async function saveAshbyValidSlugCache(cache: AshbyValidSlugCache): Promise<void> {
-  await mkdir(join(process.cwd(), 'scrapers', 'cache'), { recursive: true });
+  await mkdir(dirname(ASHBY_VALID_SLUG_CACHE_PATH), { recursive: true });
   await writeFile(ASHBY_VALID_SLUG_CACHE_PATH, `${JSON.stringify(cache, null, 2)}\n`);
 }
 
@@ -912,45 +918,35 @@ export async function scrapeAshby(): Promise<NormalizedJob[]> {
   );
   console.log(`  [${SOURCE}] Cached valid slugs loaded: ${cachedSlugs.size}`);
 
-  let commonCrawlSlugs = new Set<string>();
-  let githubSlugs = new Set<string>();
-  let candidateSlugs: string[] = [];
-  let slugsToValidate: string[] = [];
+  const [commonCrawlSlugs, githubSlugs] = await Promise.all([
+    discoverAshbySlugsFromCommonCrawl(),
+    discoverAshbySlugsFromGitHub(),
+  ]);
+
+  const candidateSlugs = Array.from(
+    new Set<string>([
+      ...existingSeedSlugs,
+      ...commonCrawlSlugs,
+      ...githubSlugs,
+      ...curatedSlugs,
+      ...cachedSlugs,
+    ]),
+  );
+  const slugsToValidate = candidateSlugs.filter(slug => !cachedValidSlugs[slug]);
   const newlyValidatedSlugs: AshbyValidSlugCache = {};
 
-  if (!SHOULD_REFRESH_CACHE && cachedSlugs.size > 0) {
-    candidateSlugs = Array.from(cachedSlugs);
-    console.log(`  [${SOURCE}] Using cached valid slugs only for standard run; skipping discovery and validation`);
-  } else {
-    [commonCrawlSlugs, githubSlugs] = await Promise.all([
-      discoverAshbySlugsFromCommonCrawl(),
-      discoverAshbySlugsFromGitHub(),
-    ]);
+  for (let index = 0; index < slugsToValidate.length; index += VALIDATION_BATCH_SIZE) {
+    const batch = slugsToValidate.slice(index, index + VALIDATION_BATCH_SIZE);
+    const results = await Promise.all(batch.map(validateAshbySlug));
 
-    candidateSlugs = Array.from(
-      new Set<string>([
-        ...existingSeedSlugs,
-        ...commonCrawlSlugs,
-        ...githubSlugs,
-        ...curatedSlugs,
-        ...cachedSlugs,
-      ]),
-    );
-    slugsToValidate = candidateSlugs.filter(slug => !cachedValidSlugs[slug]);
-
-    for (let index = 0; index < slugsToValidate.length; index += VALIDATION_BATCH_SIZE) {
-      const batch = slugsToValidate.slice(index, index + VALIDATION_BATCH_SIZE);
-      const results = await Promise.all(batch.map(validateAshbySlug));
-
-      for (const result of results) {
-        if (result.companyName) {
-          newlyValidatedSlugs[result.slug] = result.companyName;
-        }
+    for (const result of results) {
+      if (result.companyName) {
+        newlyValidatedSlugs[result.slug] = result.companyName;
       }
+    }
 
-      if (index + VALIDATION_BATCH_SIZE < slugsToValidate.length) {
-        await sleep(VALIDATION_BATCH_DELAY_MS);
-      }
+    if (index + VALIDATION_BATCH_SIZE < slugsToValidate.length) {
+      await sleep(VALIDATION_BATCH_DELAY_MS);
     }
   }
 
@@ -960,9 +956,7 @@ export async function scrapeAshby(): Promise<NormalizedJob[]> {
         ...cachedValidSlugs,
         ...newlyValidatedSlugs,
       };
-  if (SHOULD_REFRESH_CACHE || Object.keys(newlyValidatedSlugs).length > 0) {
-    await saveAshbyValidSlugCache(validSlugCache);
-  }
+  await saveAshbyValidSlugCache(validSlugCache);
 
   const validSlugEntries = candidateSlugs.reduce<Array<{ companyName: string; slug: string }>>(
     (entries, slug) => {
