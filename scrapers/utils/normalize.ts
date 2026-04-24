@@ -56,8 +56,15 @@ export type NormalizeJobInput = {
 const ROLE_KEYWORDS: Record<Role, string[]> = {
   swe: [
     // Core titles
-    'software engineer', 'software developer', 'software programmer',
-    'swe', 'sde', 'sde i', 'swe i',
+    'software engineer', 'software engineering', 'software developer', 'software programmer',
+    'software eng', 'software engg', 'software development engineer', 'software design engineer',
+    'swe', 'sde', 'se i', 'sde i', 'swe i', 'engineer i', 'engineer 1',
+    'product engineer', 'product software engineer', 'product software developer',
+    'computer engineer', 'computer scientist',
+    'graduate software engineer', 'new grad software', 'software new grad',
+    'associate software engineer', 'associate software developer',
+    'software engineering intern', 'swe intern', 'sde intern',
+    'engineer, software', 'developer, software',
     // Full stack
     'full stack', 'fullstack', 'full-stack',
     // Frontend
@@ -74,10 +81,17 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'php developer', '.net developer', 'scala developer', 'rust developer',
     // Systems / Platform / Infra (non-DevOps)
     'systems engineer', 'systems developer', 'systems programmer',
-    'systems software', 'operating systems',
-    'software/platform', 'platform software',
+    'systems software', 'systems software engineer', 'systems software developer',
+    'operating systems', 'distributed systems', 'distributed systems engineer',
+    'software/platform', 'platform software', 'platform software engineer',
+    'backend platform engineer', 'infrastructure software engineer',
     'application developer', 'application engineer', 'applications engineer',
     'application software', 'software application',
+    'internal tools engineer', 'developer productivity engineer',
+    'tools engineer', 'developer tools', 'developer experience', 'dx engineer',
+    'tooling engineer', 'integrations engineer', 'integration engineer',
+    'integration developer', 'integration software',
+    'microservices engineer', 'microservices developer',
     // Mobile
     'mobile engineer', 'mobile developer', 'mobile software',
     'ios engineer', 'ios developer', 'ios software',
@@ -88,18 +102,26 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'firmware engineer', 'firmware developer', 'firmware software',
     'hardware engineer', 'hardware developer',
     'fpga engineer', 'fpga developer',
-    'rtos engineer', 'bare metal',
+    'rtos engineer', 'bare metal', 'low level engineer',
+    'kernel developer', 'kernel engineer', 'driver developer',
+    'protocol engineer', 'rf engineer', 'radio frequency engineer',
+    'photonics engineer', 'optical engineer',
     // Specialized engineering
     'simulation engineer', 'robotics engineer', 'robotics software',
-    'graphics engineer', 'rendering engineer', 'shader engineer',
+    'visualization engineer', 'graphics engineer', 'graphics programmer',
+    'rendering engineer', 'shader engineer',
     'game engineer', 'game developer', 'gameplay engineer', 'engine developer',
     'compiler engineer', 'programming language',
-    'distributed systems', 'storage engineer', 'database engineer',
+    'numerical methods', 'scientific computing',
+    'storage engineer', 'database engineer',
     'growth engineer', 'platform engineer', 'infrastructure engineer',
     'reliability engineer', 'site reliability', 'sre',
-    'tools engineer', 'developer tools', 'developer experience', 'dx engineer',
-    'tooling engineer', 'forward deployed engineer', 'field engineer',
+    'performance engineer', 'capacity engineer',
+    'forward deployed engineer', 'field engineer',
     'build engineer', 'release engineer',
+    'spacecraft software', 'avionics software', 'flight software',
+    'vehicle software', 'vehicle software engineer',
+    'api software', 'api software engineer',
     // QA / Testing
     'qa engineer', 'quality engineer', 'quality assurance',
     'test engineer', 'sdet', 'software test', 'software quality',
@@ -107,7 +129,6 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     // Solutions / Implementation
     'solutions engineer', 'solutions developer',
     'implementation engineer', 'implementation developer',
-    'integration engineer', 'integration developer',
     'technical support engineer', 'support engineer',
     // Catch-all architect (non-senior)
     'software architect',
@@ -116,41 +137,56 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
   ],
   ds: [
     // Core data science
-    'data scientist', 'data science',
-    'staff data scientist',
+    'data scientist', 'data science', 'data science analyst',
+    'staff data scientist', 'junior data scientist', 'associate data scientist',
+    'quantitative data scientist', 'analytics scientist',
+    'experimentation scientist', 'measurement scientist',
     // Research science
     'research scientist', 'applied scientist', 'applied research scientist',
     'research engineer', 'applied researcher',
     'computational scientist', 'computational researcher',
+    'causal inference scientist', 'causal inference engineer',
     // Data engineering
-    'data engineer', 'data engineering',
-    'analytics engineer', 'analytics engineering',
+    'data engineer', 'staff data engineer', 'data engineering',
+    'data science intern', 'data engineer intern',
+    'analytics engineer', 'analytics engineering', 'analytics intern',
     'data platform engineer', 'data infrastructure',
     'etl developer', 'etl engineer', 'pipeline engineer',
     'data pipeline', 'data warehouse', 'data lake',
+    'database analyst', 'database developer', 'sql developer', 'sql engineer',
+    'hadoop engineer', 'spark engineer', 'kafka engineer',
+    'ml data engineer', 'machine learning data',
     // Statistics
     'statistician', 'statistical analyst', 'statistical researcher',
-    'biostatistician', 'econometrician',
+    'biostatistician', 'econometrician', 'econometrics analyst',
     // Quant research (overlap with finance but data-heavy)
     'quantitative researcher', 'quant researcher',
-    'quantitative scientist', 'computational researcher',
-    'decision scientist',
+    'quantitative scientist', 'decision scientist',
+    'operations research analyst', 'operations research engineer',
     // Other data
     'data modeler', 'data architect', 'data solutions',
     'reporting engineer', 'bi engineer', 'bi developer',
-    'business intelligence', 'reporting analyst',
+    'business intelligence', 'reporting analyst', 'reporting specialist',
     'insights analyst', 'strategy analyst',
     'business intelligence engineer', 'business intelligence developer',
+    'experimentation analyst', 'measurement analyst',
+    'dashboard analyst', 'data reporting',
+    'data quality analyst', 'master data analyst',
+    'spatial analyst', 'geospatial analyst', 'gis analyst', 'gis developer',
   ],
   ml: [
     // Core ML
-    'machine learning', 'ml engineer', 'ml developer',
-    'mlops', 'ml ops', 'ml platform', 'ml infrastructure',
+    'machine learning', 'machine learning intern', 'ml engineer', 'ml developer', 'ml intern',
+    'applied machine learning engineer', 'applied ml engineer', 'applied ml intern',
+    'mlops', 'ml ops', 'ml platform', 'ml platform engineer',
+    'ml infrastructure', 'ml infrastructure engineer',
     'machine learning platform', 'ai engineer', 'ai/ml',
-    'ml systems', 'ml research', 'ml scientist',
+    'ml systems', 'ml systems engineer', 'ml research', 'ml scientist',
     // Model / training
-    'model engineer', 'model developer', 'training engineer',
-    'inference engineer', 'model deployment',
+    'model engineer', 'model developer', 'training engineer', 'model training engineer',
+    'training infrastructure', 'inference engineer', 'model deployment',
+    'model serving', 'model serving engineer', 'serving engineer',
+    'feature store engineer',
     // Recommendation / ranking / search
     'recommendation engineer', 'recommendation scientist',
     'recommendation systems',
@@ -163,34 +199,53 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'natural language processing', 'natural language understanding',
     'speech engineer', 'speech scientist', 'speech recognition',
     'audio engineer', 'audio ml',
+    'vision-language', 'text-to-image', 'text-to-speech',
+    'multimodal engineer', 'multimodal researcher',
     // Autonomous / Robotics ML
     'perception engineer', 'perception scientist',
     'autonomous', 'autonomy engineer', 'autonomy scientist',
     'self-driving', 'slam engineer',
+    'robotics learning engineer', 'autonomous systems ml',
     // Other ML specializations
-    'deep learning',
-    'anomaly detection', 'forecasting engineer',
-    'feature engineer', 'feature platform',
+    'deep learning', 'trustworthy ai', 'responsible ai', 'ai safety engineer',
+    'anomaly detection', 'forecasting engineer', 'time series engineer',
+    'signal processing engineer', 'feature engineer', 'feature platform',
+    'synthetic data engineer', 'data annotation engineer', 'gpu engineer',
   ],
   ai: [
     // Core AI
     'ai engineer', 'ai developer', 'ai scientist',
-    'artificial intelligence',
-    'ai researcher', 'ai research',
+    'artificial intelligence', 'artificial intelligence intern',
+    'ai researcher', 'ai research', 'ai intern', 'ai/ml intern',
     'ai infrastructure', 'ai platform',
     'ai systems', 'ai solutions',
     // Deep learning
     'deep learning', 'neural network',
     // LLM / GenAI
-    'llm', 'large language model',
-    'generative ai', 'gen ai', 'genai',
-    'foundation model', 'transformer',
-    'diffusion model', 'multimodal',
+    'llm', 'large language model', 'llm engineer', 'language model engineer',
+    'generative ai', 'generative ai engineer', 'gen ai', 'genai', 'genai engineer',
+    'foundation model', 'foundation model engineer', 'model adaptation engineer',
+    'fine-tuning engineer', 'finetuning engineer',
+    'transformer', 'diffusion model', 'multimodal',
+    'synthetic data engineer', 'data curation engineer',
+    'knowledge graph', 'ontology engineer', 'embeddings engineer',
     // Agents / Prompting
-    'ai agent', 'agentic', 'agent engineer',
-    'prompt engineer', 'prompt engineering',
+    'ai agent', 'agentic', 'agent engineer', 'agentic ai engineer',
+    'prompt engineer', 'prompt engineering', 'prompt designer',
     // Reinforcement learning
     'reinforcement learning', 'rl engineer', 'rl researcher',
+    'rlhf trainer', 'rlhf engineer', 'rlhf researcher',
+    // Evaluation / safety / alignment
+    'ai evaluator', 'model evaluator', 'llm evaluator', 'response evaluator',
+    'ai trainer', 'ai rater', 'human-in-the-loop trainer',
+    'ai red teamer', 'ai red team', 'adversarial ml engineer',
+    'ai safety', 'ai safety researcher', 'ai alignment', 'alignment researcher',
+    'model alignment engineer', 'model quality engineer', 'ai quality engineer',
+    // AI applications
+    'conversational ai engineer', 'chatbot engineer', 'chatbot developer',
+    'reasoning engineer', 'reasoning researcher',
+    'ai automation', 'intelligent automation',
+    'virtual assistant engineer', 'virtual assistant developer',
     // Combined labels
     'ai/ml', 'ml/ai',
     // AI architect
@@ -202,18 +257,25 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'business analyst', 'business analysis',
     'business intelligence analyst', 'bi analyst',
     'analytics analyst', 'analytics associate',
-    'insights analyst', 'reporting analyst',
+    'insights analyst', 'reporting analyst', 'reporting specialist',
+    'dashboard analyst', 'data reporting',
+    'database analyst', 'data quality analyst', 'measurement analyst',
+    'analyst intern', 'data analyst intern', 'business analyst intern',
+    'junior analyst', 'associate analyst',
     // Product analytics
     'product analyst', 'growth analyst', 'marketing analyst',
-    'consumer insights', 'market research analyst',
+    'consumer insights', 'customer insights', 'customer analytics',
+    'market research analyst',
     // Operations
     'operations analyst', 'ops analyst',
     'operational analyst', 'process analyst',
     'supply chain analyst', 'logistics analyst',
+    'supply chain data', 'logistics data',
     'pricing analyst', 'revenue analyst',
     // Systems / IT
     'systems analyst', 'it analyst',
-    'functional analyst',
+    'functional analyst', 'web analyst', 'digital analyst',
+    'seo analyst', 'sem analyst',
     'technology analyst', 'technical analyst',
     // Strategy
     'strategy analyst', 'strategic analyst',
@@ -225,10 +287,17 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'corporate finance analyst', 'investment analyst',
     'research analyst', 'equity research analyst',
     'credit analyst', 'loan analyst',
+    'economic analyst', 'economist',
     // Policy / program
     'policy analyst', 'program analyst',
     'intelligence analyst', 'research associate',
-    'trust and safety',
+    'trust and safety', 'healthcare analyst',
+    'clinical data analyst', 'clinical analyst',
+    'real estate analyst', 'asset analyst',
+    'workforce analyst', 'people analytics', 'hr analyst', 'people data',
+    'ux researcher', 'user researcher', 'ux research',
+    'environmental analyst', 'sustainability analyst',
+    'media analyst', 'advertising analyst',
     // Catch-all with word boundary guard
     ' analyst',
   ],
@@ -237,17 +306,21 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'product manager', 'product management',
     'associate product manager', 'associate pm', 'apm',
     'product analyst', 'product operations', 'product specialist',
+    'growth product manager', 'growth pm',
+    'consumer product manager', 'enterprise product manager',
+    'rotational product manager', 'rpm',
     // Technical PM
     'technical product manager', 'technical pm',
     'technical program manager', 'tpm',
-    'platform product manager',
+    'platform product manager', 'platform pm',
     // Program management (non-TPM)
-    'program manager',
+    'program manager', 'associate program manager',
     // Product owner
-    'product owner',
-    'product lead',
+    'product owner', 'product strategy',
+    'product lead', 'product development manager',
     // Intern variants
-    'product intern', 'pm intern', 'apm intern',
+    'product intern', 'product management intern', 'product manager intern',
+    'pm intern', 'apm intern',
     // Catch-all
     ' pm ',
   ],
@@ -271,43 +344,51 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     // Application / Product security
     'application security', 'appsec', 'app security',
     'product security', 'software security',
-    'web application security',
+    'web application security', 'security software engineer',
     // Cloud security
-    'cloud security', 'cloud security engineer',
+    'cloud security', 'cloud security engineer', 'cloud security analyst',
     // DevSecOps
     'devsecops', 'dev sec ops',
     // SOC / Operations
     'soc analyst', 'soc engineer',
     'security operations center', 'threat analyst',
     'incident response', 'incident responder',
-    'security incident',
+    'security incident', 'security automation engineer',
+    'security intern', 'cybersecurity intern', 'security engineer intern',
     // Penetration testing
     'penetration tester', 'penetration testing', 'pen tester', 'pen test',
     'ethical hacker', 'red team', 'blue team', 'purple team',
+    'ai red teamer',
     // Vulnerability / Risk
     'vulnerability', 'vulnerability analyst', 'vulnerability engineer',
     'vulnerability researcher',
     'risk analyst', 'risk engineer', 'risk management engineer',
-    'security risk',
+    'security risk', 'fraud engineer', 'anti-fraud engineer',
     // Identity / Access
     'identity engineer', 'iam engineer', 'identity and access',
-    'access management',
+    'access management', 'zero trust', 'zero trust engineer',
+    'endpoint security', 'endpoint engineer', 'endpoint analyst',
     // Cryptography / Privacy
     'cryptography', 'cryptographic engineer',
-    'privacy engineer', 'trust and safety engineer',
+    'privacy engineer', 'privacy analyst',
+    'trust and safety engineer', 'trust and safety analyst',
     // Compliance / GRC
     'compliance engineer', 'compliance analyst',
     'grc analyst', 'governance risk',
     // Digital forensics
     'digital forensics', 'forensic analyst', 'forensics engineer',
     'malware analyst', 'threat intelligence',
+    'reverse engineer', 'reverse engineering',
+    'threat hunter', 'threat hunting',
     // Catch-all
     'cyber analyst', 'cyber engineer',
   ],
   devops: [
     // Core DevOps
     'devops', 'dev ops', 'devops engineer', 'devops developer',
-    'devops associate', 'junior devops',
+    'devops associate', 'associate devops',
+    'junior devops', 'junior devops engineer',
+    'devops intern', 'platform intern', 'cloud intern', 'infrastructure intern',
     // SRE
     'site reliability', 'sre', 'reliability engineer',
     'site reliability engineer',
@@ -315,18 +396,23 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'platform engineer', 'platform developer',
     'infrastructure engineer', 'infrastructure developer',
     'infrastructure as code', 'iac engineer',
+    'terraform engineer', 'ansible engineer', 'puppet engineer', 'chef engineer',
     // Cloud operations
     'cloud engineer', 'cloud developer', 'cloud operations',
     'cloud infrastructure', 'cloud devops',
     'aws engineer', 'azure engineer', 'gcp engineer',
+    'cloud practitioner',
     'cloud support engineer', 'cloud support associate',
     'cloud systems administrator', 'cloud administrator',
     // Systems administration
     'systems administrator', 'sysadmin', 'sys admin',
-    'systems reliability',
+    'systems reliability', 'linux engineer',
+    'linux administrator', 'linux systems',
+    'virtualization engineer', 'vmware engineer',
     // Network / IT ops
     'network engineer', 'network administrator', 'network developer',
     'network operations', 'it operations', 'it infrastructure',
+    'technical operations', 'tech ops',
     // Database administration
     'database administrator', 'dba', 'database engineer',
     // Automation / CI/CD
@@ -336,19 +422,23 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'kubernetes engineer', 'k8s engineer',
     'container engineer', 'docker engineer',
     // Monitoring / observability
-    'observability engineer', 'monitoring engineer',
+    'observability engineer', 'monitoring engineer', 'chaos engineer',
     // DevSecOps (also in security — intentional overlap)
     'devsecops',
     // Cloud-native / GitOps
     'cloud native', 'gitops', 'platform operations',
+    'service mesh engineer', 'istio engineer',
     // Storage / compute
     'storage engineer', 'compute engineer',
+    'backup engineer', 'disaster recovery engineer',
     // MLOps (overlap with ml — intentional)
     'mlops', 'dataops',
   ],
   consulting: [
     // Generic consulting
     'consultant', 'consulting',
+    'consulting intern', 'consultant intern', 'strategy intern',
+    'junior consultant', 'entry consultant',
     'technology consultant', 'tech consultant',
     'it consultant', 'it consulting',
     // Management / Strategy consulting
@@ -363,8 +453,10 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'analyst consultant',
     'associate consultant',
     'consulting analyst',
-    'technology analyst',
+    'technology analyst', 'technology associate',
+    'business technology analyst',
     'consulting associate',
+    'associate program',
     // Implementation / solutions consulting
     'implementation consultant', 'implementation specialist',
     'solutions consultant', 'solutions specialist',
@@ -393,17 +485,19 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'quantitative trader', 'quant trader',
     'quantitative engineer', 'quant engineer',
     'quantitative strategist', 'quant strategist',
-    'quantitative associate',
+    'quantitative associate', 'quant intern', 'junior quant',
     // Trading
-    'algorithmic trading', 'algo trading', 'algo trader',
+    'algorithmic trading', 'algorithmic trading engineer',
+    'algo trading', 'algo trader',
     'electronic trading', 'systematic trading',
     'trading analyst', 'trading associate', 'trading developer',
-    'execution trader', 'derivatives analyst',
+    'trading intern', 'execution trader', 'junior trader', 'derivatives analyst',
     // Financial engineering / strats
-    'financial engineer', 'financial engineering',
+    'financial engineer', 'financial engineering', 'financial software engineer',
     'strats', 'digital strats', 'multi asset',
     'structured products', 'fixed income analyst',
     'rates analyst', 'credit analyst', 'fx analyst',
+    'investment banking analyst', 'investment banking intern',
     // Investment / research
     'investment analyst', 'equity research', 'credit research',
     'portfolio analyst', 'portfolio associate',
@@ -417,8 +511,10 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'fintech', 'financial technology',
     'payments engineer', 'payments analyst',
     'banking technology', 'capital markets technology',
+    'blockchain developer', 'smart contract developer', 'web3 developer', 'defi engineer',
+    'crypto analyst', 'crypto engineer', 'cryptocurrency analyst',
     // Treasury / Corporate Finance
-    'treasury analyst', 'corporate finance analyst',
+    'treasury analyst', 'corporate finance analyst', 'finance intern',
     'fp&a', 'fpa analyst', 'financial planning',
     // Actuarial
     'actuarial analyst', 'actuary', 'actuarial associate',
@@ -427,7 +523,7 @@ const ROLE_KEYWORDS: Record<Role, string[]> = {
     'staff accountant', 'accounting analyst',
     'audit associate', 'audit analyst', 'external audit',
     'internal audit', 'tax analyst', 'tax associate',
-    'controller', 'accounting associate',
+    'controller', 'accounting associate', 'summer analyst',
   ],
 };
 
@@ -499,8 +595,10 @@ const ROLE_ALIASES: Record<string, Role> = {
 
 const TARGET_ROLE_KEYWORDS: Record<(typeof TARGET_ROLE_VALUES)[number], string[]> = {
   swe: [
-    'software engineer', 'software developer', 'software development engineer',
-    'software programmer', 'developer', 'swe', 'sde',
+    'software engineer', 'software engineering', 'software developer',
+    'software development engineer', 'software programmer', 'software eng',
+    'developer', 'swe', 'sde',
+    'product engineer', 'computer engineer',
     'frontend engineer', 'frontend developer', 'front end engineer', 'front-end engineer',
     'backend engineer', 'backend developer', 'back end engineer', 'back-end engineer',
     'full stack engineer', 'full stack developer', 'fullstack engineer', 'fullstack developer',
@@ -508,32 +606,52 @@ const TARGET_ROLE_KEYWORDS: Record<(typeof TARGET_ROLE_VALUES)[number], string[]
     'mobile engineer', 'mobile developer', 'ios engineer', 'ios developer',
     'android engineer', 'android developer',
     'application engineer', 'application developer',
-    'platform software', 'api engineer', 'api developer',
+    'platform software', 'platform software engineer',
+    'distributed systems engineer', 'systems software engineer',
+    'internal tools engineer', 'microservices engineer',
+    'api engineer', 'api developer', 'api software engineer',
+    'software engineering intern', 'graduate software engineer',
   ],
   ds: [
     'data scientist', 'data science', 'data engineer', 'analytics engineer',
     'data analyst', 'business intelligence', 'bi analyst', 'bi engineer',
     'research scientist', 'applied scientist', 'applied research scientist',
+    'data science analyst', 'analytics scientist',
     'decision scientist', 'quantitative analyst', 'quant analyst',
+    'operations research analyst', 'data science intern',
+    'database analyst', 'sql developer', 'geospatial analyst',
   ],
   ml: [
     'machine learning', 'ml engineer', 'ml scientist', 'ml researcher',
     'ml developer', 'deep learning', 'nlp engineer', 'nlp scientist',
-    'computer vision', 'cv engineer', 'cv scientist', 'mlops',
+    'machine learning intern', 'applied machine learning engineer',
+    'ml platform engineer', 'ml systems engineer',
+    'computer vision', 'cv engineer', 'cv scientist',
+    'model serving engineer', 'feature store engineer',
+    'multimodal engineer', 'text-to-image', 'mlops',
   ],
   ai: [
     'artificial intelligence', 'ai engineer', 'ai scientist', 'ai researcher',
     'llm', 'large language model', 'generative ai', 'genai', 'gen ai',
-    'foundation model', 'prompt engineer', 'agent engineer', 'ai/ml', 'ml/ai',
+    'ai intern', 'artificial intelligence intern',
+    'generative ai engineer', 'llm engineer', 'foundation model',
+    'foundation model engineer', 'prompt engineer', 'prompt designer',
+    'agent engineer', 'ai safety', 'conversational ai engineer',
+    'reasoning engineer', 'embeddings engineer', 'ai/ml', 'ml/ai',
   ],
   analyst: [
     'data analyst', 'business analyst', 'business intelligence analyst',
     'bi analyst', 'analytics analyst', 'product analyst', 'technical analyst',
     'technology analyst', 'research analyst', 'strategy analyst', 'operations analyst',
+    'dashboard analyst', 'reporting specialist', 'healthcare analyst',
+    'workforce analyst', 'ux researcher', 'customer insights',
   ],
   pm: [
     'product manager', 'product management', 'associate product manager',
     'apm', 'technical product manager', 'product analyst',
+    'product management intern', 'product manager intern',
+    'rotational product manager', 'rpm', 'growth product manager',
+    'platform pm', 'product strategy', 'associate program manager',
   ],
 };
 
@@ -566,14 +684,18 @@ const EXCLUSION_KEYWORDS = [
   // Staff / Principal / Distinguished
   'staff engineer', 'staff software', 'staff data', 'staff ml', 'staff machine',
   'staff product', 'staff analyst', 'staff developer',
+  'senior staff', 'senior principal',
   'principal engineer', 'principal software', 'principal data', 'principal ml',
   'principal scientist', 'principal architect', 'principal analyst',
-  'distinguished engineer', 'distinguished scientist',
-  ' fellow,', 'google fellow', 'ieee fellow',
+  'distinguished engineer', 'distinguished scientist', 'distinguished member',
+  'senior member of technical staff', '\\bsmts\\b',
+  'technical fellow', 'google fellow', 'ieee fellow',
   // Management / Leadership
-  'engineering manager', 'engineering director', 'director of engineering',
+  'engineering manager', 'manager, software', 'manager of engineering', 'manager of software',
+  'engineering director', 'director of engineering',
   'director of software', 'director of data', 'director of ml',
   'director of product', 'director of analytics',
+  'group manager', 'area manager', 'engagement manager',
   'vp of engineering', 'vp of software', 'vice president',
   'head of engineering', 'head of software', 'head of data',
   'head of product', 'head of ml', 'head of ai',
@@ -592,13 +714,20 @@ const EXCLUSION_KEYWORDS = [
   'scientist ii', 'scientist 2', 'scientist iii', 'scientist 3',
   'analyst ii', 'analyst 2', 'analyst iii', 'analyst 3',
   'software development engineer ii', 'software development engineer 2',
+  'mts ii', 'mts 2',
+  'specialist ii', 'specialist 2', 'specialist iii', 'specialist 3',
   // L-level (Google style)
   ' l4 ', ' l5 ', ' l6 ', ' l7 ', ' l8 ',
   // E-level (Meta style)
   ' e4 ', ' e5 ', ' e6 ', ' e7 ',
+  // P / M / G levels
+  ' p2 ', ' p3 ', ' p4 ', ' p5 ',
+  ' m1 ', ' m2 ',
+  ' g7+ ', ' g8+ ',
   // Generic mid-level phrasing
   'mid-level', 'mid level', 'midlevel',
-  '3+ years', '4+ years', '5+ years', '6+ years', '7+ years', '8+ years', '10+ years',
+  '3+ years', '4+ years', '5+ years', '6+ years', '7+ years', '8+ years',
+  '10+ years', '12+ years', '15+ years',
   // Senior associate (finance / consulting)
   'senior associate',
   // Architects (usually 5+ YOE)
@@ -616,24 +745,41 @@ const EXCLUSION_KEYWORDS = [
   'senior research', 'senior applied',
   'senior analytics', 'senior business analyst',
   'senior consultant', 'managing consultant', 'manager consultant',
-  'principal consultant', 'engagement manager',
-  'senior quant', 'managing director', 'vice president', 'vp ',
+  'principal consultant',
+  'senior quant', 'managing director', 'vp ',
   ' md ', 'director of',
+  'postdoc', 'post-doc', 'postdoctoral',
   'senior technical program',
 ];
 
 const INTERNSHIP_KEYWORDS = [
   'intern ', ' intern', 'internship', 'interns,',
   'co-op', 'coop', 'co op', 'co-operative',
+  'fall co-op', 'spring co-op', 'engineering co-op', 'software engineering co-op',
+  'co-op student', 'cooperative education student', 'coop student',
   'summer 2025', 'summer 2026', 'summer 2027',
+  'summer intern', 'summer analyst',
   'fall 2025', 'fall 2026', 'winter 2026',
+  'winter intern',
   'spring 2026', 'spring 2027',
+  'january 2026', 'may 2026', 'june 2026', 'july 2026',
+  'august 2026', 'september 2026', 'january 2027',
+  '2025 intern', '2026 intern', '2027 intern',
+  'software engineering intern', 'software engineer, internship', 'intern - software engineer',
+  'vehicle software engineering intern',
+  'swe intern', 'sde intern', 'ai/ml intern', 'data science intern',
+  'security intern', 'design intern',
   'student developer', 'student engineer', 'student researcher',
-  'student analyst', 'student scientist',
+  'student analyst', 'student scientist', 'student programmer',
+  'student fellow', 'undergraduate fellow',
   'undergrad researcher', 'undergraduate researcher',
-  'phd intern', 'research intern', 'software intern',
+  'phd intern', 'doctoral intern', 'graduate intern', 'research intern', 'software intern',
   'engineering intern', 'data intern', 'product intern',
   'ml intern', 'ai intern', 'pm intern',
+  'intern program', 'internship program', 'internship rotation',
+  'university intern', 'rotational intern',
+  'practicum', 'extern', 'externship',
+  'apprentice', 'apprenticeship',
   'part-time student', 'part time student',
   'werkstudent', // German internship term common in EU companies
 ];
@@ -641,32 +787,37 @@ const INTERNSHIP_KEYWORDS = [
 const NEW_GRAD_KEYWORDS = [
   // Explicit new grad signals
   'new grad', 'new graduate', 'new-grad', 'new-graduate',
-  'new college grad', 'new college graduate',
-  'college grad', 'college graduate',
-  'university grad', 'university graduate',
+  'new college grad', 'new college graduate', 'new college hire',
+  'college grad', 'college graduate', 'college hire',
+  'university grad', 'university graduate', 'university new grad', 'university grad hire',
   'campus hire', 'campus recruit', 'campus entry',
   'campus recruiting',
-  'early career', 'early-career',
+  'early career', 'early-career', 'early professional', 'early-professional',
   'university hire', 'university recruiting',
   'graduate program', 'graduate leadership', 'graduate rotational',
   'rotational program', 'rotation program',
   'phd graduate', 'ms graduate', 'bachelor graduate',
   'grad hire', 'hire program',
   'graduate scheme', // UK term
-  '2025 grad', '2026 grad', '2025 graduate', '2026 graduate',
-  '2027 grad', '2027 graduate',
-  'class of 2025', 'class of 2026', 'class of 2027',
+  '2023 grad', '2024 grad', '2025 grad', '2026 grad', '2027 grad',
+  '2023 graduate', '2024 graduate', '2025 graduate', '2026 graduate', '2027 graduate',
+  'class of 2023', 'class of 2024', 'class of 2025', 'class of 2026', 'class of 2027',
+  'recently graduated', 'fresh graduate', 'fresher',
+  'bachelor new grad', 'masters new grad',
   // Level I patterns (company-specific new grad level naming)
   'software engineer i', 'software engineer i ',
   'software engineer 1', 'software engineer 1 ',
   'sde i', 'sde i ', 'sde1', 'sde 1',
   'swe i', 'swe i ', 'swe1', 'swe 1',
+  'se i ',
   'software development engineer i', 'software development engineer 1',
-  'engineer i ', 'engineer 1 ',
+  'engineer i ', 'engineer 1 ', 'engineer level i', 'engineer level 1',
   'developer i ', 'developer 1 ',
   'analyst i ', 'analyst 1 ',
   'scientist i ', 'scientist 1 ',
+  'pm 1 ', 'apm 1',
   'level 1', 'level i',
+  'ic1', 'ic2',
   // Junior signals
   'junior ', 'jr. ', 'jr ',
   // Associate signals (specific enough to avoid false positives)
@@ -677,29 +828,34 @@ const NEW_GRAD_KEYWORDS = [
   'associate analyst', 'associate scientist', 'associate researcher',
   'associate engineer', 'entry engineer',
   // Company-specific new grad patterns
+  'graduate software engineer', 'graduate engineer',
   'new grad software', 'new grad engineer', 'new grad data',
   'new grad ml', 'new grad swe', 'new grad sde',
   'software engineer new grad', 'software ai engineer new grad',
   '2025 new grad', '2026 new grad', '2025 start', '2026 start',
+  'summer 2026 new grad', 'winter 2026 new grad',
   // FAANG level patterns
   'l3 software', 'l3 engineer',   // Google L3
   'e3 engineer', 'e3 software',   // Meta E3
+  'l3 ', 'e3 ',
   // Named programs that are always new grad
   'edp ', 'yfir',
   'leap program', 'ignite program', 'spark program',
   'launch program', 'ascend program', 'propel program',
+  'associate program', 'analyst program', 'engineer program', 'developer program',
   'technology analyst program', 'technology analyst 20',
+  'technology analyst 2025', 'technology analyst 2026',
   'it analyst 20', 'software analyst 20',
   'americas technology full-time analyst',
   'technology full-time analyst',
   'quant researcher new', 'quant developer new',
   'new college grad 2025', 'new college grad 2026', 'new college grad 2027',
+  'student to professional', 'campus to career',
   'early career engineer', 'early career developer',
   'early career software', 'early career data',
   // Boundary-safe short forms
   '\\bng(?:\\b|,|-)',
   '\\bl1\\b', '\\bl2\\b', '\\bl3\\b',
-  '\\bmts\\b',
 ];
 
 const ENTRY_LEVEL_KEYWORDS = [
@@ -710,21 +866,23 @@ const ENTRY_LEVEL_KEYWORDS = [
   // Experience range patterns
   '0-1 year', '0-2 year', '0-3 year',
   '0 to 1 year', '0 to 2 year', '0 to 3 year',
+  '0-1 years experience', '0-2 years experience', '0-3 years experience',
   '1-2 year', '1-3 year', '1 to 2 year', '1 to 3 year',
-  'up to 2 years', 'up to 3 years',
-  'less than 2 years', 'less than 3 years',
+  'up to 1 year', 'up to 2 years', 'up to 3 years',
+  'less than 1 year', 'less than 2 years', 'less than 3 years',
   'no experience required', 'no prior experience',
   // Recent grad signals
   'recent graduate', 'recent grad', 'recently graduated',
   'bs/ms', 'b.s./m.s.', 'bachelor\'s or master\'s',
   // Finance/consulting analyst programs (entry level)
-  'full-time analyst', 'fulltime analyst', 'analyst program',
+  'full-time analyst', 'fulltime analyst', 'analyst program', 'engineer program',
   'technology analyst', 'software analyst',
   // Other entry level signals
   'campus entry-level', 'campus entry level',
-  'emerging talent', 'emerging engineer',
+  'emerging talent', 'emerging engineer', 'emerging professional',
   'software engineer early career',
-  'early career opportunity',
+  'early career opportunity', 'early professional', 'early-professional',
+  'associate engineer', 'associate developer',
   'fresh graduate', 'fresher',
   // Graduation signals
   '2025 graduates', '2026 graduates', '2027 graduates',
@@ -741,19 +899,33 @@ const NEW_GRAD_DESC_KEYWORDS = [
   'graduating in 2025', 'graduating in 2026', 'graduating in 2027',
   'graduate of 2025', 'graduate of 2026', 'graduate of 2027',
   'class of 2025', 'class of 2026', 'class of 2027',
+  'graduating december 2025', 'graduating may 2026',
+  'graduating december 2026', 'graduating may 2027',
+  'planning on graduating in 2026', 'planning on graduating in 2027',
+  'expected graduation', 'anticipated graduation',
+  'degree candidate', 'bachelor\'s degree candidate',
+  'final year student', 'final-year student',
   // Experience range signals (0–2 years maps to new grad in context)
   '0-1 year', '0-2 year', '0 to 1 year', '0 to 2 year',
+  '0-1 years', '0-3 years',
   // Explicit new grad language
   'recent graduate', 'recent grad', 'new graduate', 'new grad',
+  'recent graduates encouraged', 'first full-time role',
+  'limited prior professional experience',
   // No-experience signals
   'no prior experience required', 'no experience required',
+  'no experience necessary', 'no prior work experience',
   // Recruiting program signals
   'campus recruit', 'university recruit', 'college recruit',
   // Start-year signals
   '2025 start', '2026 start', '2027 start',
   // Program / career stage signals
   'early career', 'rotational program', 'graduate program',
-  'graduate scheme',
+  'graduate scheme', 'training program', 'rotational engineer', 'new hire program',
+  // Degree completion signals
+  'must have completed degree', 'completed degree by',
+  'eligible to work full-time after graduation',
+  'this should be your final internship',
 ];
 
 // Signals in descriptions that rescue an otherwise excluded title.
@@ -761,9 +933,13 @@ const NEW_GRAD_DESC_KEYWORDS = [
 // still carries senior wording, but the role is clearly junior-targeted.
 const EXCLUDED_TITLE_RESCUE_KEYWORDS = [
   'new grad', 'new graduate', 'recent graduate', 'recent grad',
+  'no experience', 'no prior experience',
   'bachelor', 'bs/ms', 'b.s.', 'b.s ',
+  'degree candidate', 'student',
+  '0-2', '0-3', '0 to 2', '0 to 3',
   '0-2 years', '0-3 years', '0 to 2 years', '0 to 3 years',
   'no experience required',
+  'will train', 'training provided',
   'entry level', 'entry-level',
   'early career', 'early-career',
   'class of 2025', 'class of 2026',
@@ -776,11 +952,15 @@ const STRICT_TITLE_EXCLUSION_PATTERNS = [
   /\bstaff\b/i,
   /\bprincipal\b/i,
   /\blead\b/i,
+  /\bmanager\b/i,
   /\bdirector\b/i,
   /\bhead\b/i,
   /\bchief\b/i,
   /\bvice president\b/i,
   /\bvp\b/i,
+  /\btechnical fellow\b/i,
+  /\bgoogle fellow\b/i,
+  /\bpost-?doc(?:toral)?\b/i,
   /\bexperienced\b/i,
   /\bmid(?:-|\s)?level\b/i,
   /\bexpert\b/i,
@@ -796,16 +976,25 @@ const EARLY_CAREER_RESCUE_PATTERNS = [
   /\bentry(?:-|\s)?level/i,
   /\brecent grad/i,
   /\brecent graduate/i,
-  /\bearly career/i,
+  /\bearly(?:-|\s)?career/i,
+  /\bearly(?:-|\s)?professional/i,
   /\bjunior\b/i,
   /\bassociate\b/i,
   /\bapm\b/i,
+  /\bintern(?:ship)?\b/i,
+  /\bco(?:-|\s)?op\b/i,
+  /\bapprentice(?:ship)?\b/i,
+  /\brotational\b/i,
+  /\brpm\b/i,
+  /\bpm\s*1\b/i,
+  /\b0\s*(?:-|to)\s*1\b/i,
   /\b0\s*(?:-|to)\s*2\b/i,
   /\b0\s*(?:-|to)\s*3\b/i,
   /\b1\s*(?:-|to)\s*2\b/i,
 ];
 
 const DISALLOWED_EXPERIENCE_PATTERNS = [
+  /\b2\+\s*years?\s+(?:of\s+)?experience\b/i,
   /\b(?:minimum|at least|over|more than)?\s*3\+?\s+years?\s+(?:of\s+)?experience\b/i,
   /\b(?:minimum|at least|over|more than)?\s*4\+?\s+years?\s+(?:of\s+)?experience\b/i,
   /\b(?:minimum|at least|over|more than)?\s*5\+?\s+years?\s+(?:of\s+)?experience\b/i,
@@ -814,6 +1003,11 @@ const DISALLOWED_EXPERIENCE_PATTERNS = [
   /\b(?:minimum|at least|over|more than)?\s*8\+?\s+years?\s+(?:of\s+)?experience\b/i,
   /\b(?:minimum|at least|over|more than)?\s*9\+?\s+years?\s+(?:of\s+)?experience\b/i,
   /\b(?:minimum|at least|over|more than)?\s*10\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*12\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\b(?:minimum|at least|over|more than)?\s*15\+?\s+years?\s+(?:of\s+)?experience\b/i,
+  /\bminimum\s+3\s+years?\b/i,
+  /\bminimum\s+4\s+years?\b/i,
+  /\bminimum\s+5\s+years?\b/i,
   /\b3\s*(?:-|to)\s*5\s+years?\s+(?:of\s+)?experience\b/i,
   /\b4\s*(?:-|to)\s*6\s+years?\s+(?:of\s+)?experience\b/i,
   /\b5\s*(?:-|to)\s*7\s+years?\s+(?:of\s+)?experience\b/i,
