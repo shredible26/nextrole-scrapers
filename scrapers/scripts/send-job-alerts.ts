@@ -33,6 +33,14 @@ const JOB_DESCRIPTION_PROMPT_LIMIT = 8_000;
 const RESUME_PROMPT_LIMIT = 10_000;
 const USER_AGENT = 'nextrole-job-alerts/1.0';
 const MATCH_GRADES = ['A', 'B', 'C'] as const;
+const TARGET_LEVEL_TO_EXPERIENCE_LEVEL: Record<string, string> = {
+  'Entry Level': 'entry_level',
+  Internship: 'internship',
+  'New Grad': 'new_grad',
+  entry_level: 'entry_level',
+  internship: 'internship',
+  new_grad: 'new_grad',
+};
 
 type Grade = (typeof MATCH_GRADES)[number];
 const RECENT_JOB_FALLBACK_GRADE: Grade = 'C';
@@ -42,6 +50,8 @@ type ProfileRow = {
   email: string | null;
   resume_embedding: unknown;
   resume_text: string | null;
+  target_levels: unknown;
+  target_roles: unknown;
   tier: string | null;
 };
 
@@ -50,16 +60,21 @@ type EligibleUser = {
   hasResumeEmbedding: boolean;
   id: string;
   resumeText: string | null;
+  targetExperienceLevels: string[];
+  targetRoles: string[];
   tier: string;
 };
 
 type JobRow = {
   company: string | null;
   description: string | null;
+  experience_level: string | null;
   id: string;
   is_active: boolean | null;
+  is_usa: boolean | null;
   location: string | null;
   posted_at: string | null;
+  roles: string[] | null;
   title: string | null;
   url: string | null;
 };
@@ -154,6 +169,18 @@ function normalizeStringList(value: unknown): string[] {
     .filter((item): item is string => typeof item === 'string')
     .map(item => normalizeWhitespace(item))
     .filter(Boolean);
+}
+
+function uniqueStringList(values: string[]): string[] {
+  return [...new Set(values)];
+}
+
+function mapTargetLevelsToExperienceLevels(targetLevels: string[]): string[] {
+  return uniqueStringList(
+    targetLevels
+      .map(level => TARGET_LEVEL_TO_EXPERIENCE_LEVEL[level])
+      .filter((level): level is string => typeof level === 'string'),
+  );
 }
 
 function getGradeColor(grade: Grade): string {
@@ -266,7 +293,7 @@ function normalizeRecentJobMatches(rows: JobRow[]): JobMatch[] {
 async function fetchEligibleUsers(): Promise<EligibleUser[]> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, email, resume_embedding, resume_text, tier')
+    .select('id, email, resume_embedding, resume_text, target_levels, target_roles, tier')
     .eq('job_alerts_enabled', true)
     .not('email', 'is', null);
 
@@ -291,6 +318,10 @@ async function fetchEligibleUsers(): Promise<EligibleUser[]> {
           typeof row.resume_text === 'string'
             ? normalizeWhitespace(row.resume_text) || null
             : null,
+        targetExperienceLevels: mapTargetLevelsToExperienceLevels(
+          normalizeStringList(row.target_levels),
+        ),
+        targetRoles: uniqueStringList(normalizeStringList(row.target_roles)),
         tier: normalizeWhitespace(row.tier ?? 'free').toLowerCase() || 'free',
       } satisfies EligibleUser;
     })
@@ -318,13 +349,15 @@ async function collectTopScoredMatches(
   userId: string,
   metricColumn: 'similarity' | 'score',
   appliedJobIds: Set<string>,
+  targetRoles: string[],
+  targetExperienceLevels: string[],
 ): Promise<{ error: QueryError | null; matches: JobMatch[] }> {
   const cutoff = new Date(Date.now() - JOB_WINDOW_MS).toISOString();
   const matches: JobMatch[] = [];
   const seenJobIds = new Set<string>();
 
   for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
-    const { data, error } = await supabase
+    let query = supabase
       .from('job_scores')
       .select(
         `
@@ -338,7 +371,10 @@ async function collectTopScoredMatches(
             url,
             description,
             posted_at,
-            is_active
+            is_active,
+            is_usa,
+            experience_level,
+            roles
           )
         `,
       )
@@ -346,6 +382,17 @@ async function collectTopScoredMatches(
       .in('grade', MATCH_GRADES)
       .gt('jobs.posted_at', cutoff)
       .eq('jobs.is_active', true)
+      .eq('jobs.is_usa', true);
+
+    if (targetExperienceLevels.length > 0) {
+      query = query.in('jobs.experience_level', targetExperienceLevels);
+    }
+
+    if (targetRoles.length > 0) {
+      query = query.overlaps('jobs.roles', targetRoles);
+    }
+
+    const { data, error } = await query
       .order(metricColumn, { ascending: false })
       .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
 
@@ -381,16 +428,33 @@ async function collectTopScoredMatches(
   return { error: null, matches };
 }
 
-async function fetchRecentJobFallbackMatches(appliedJobIds: Set<string>): Promise<JobMatch[]> {
+async function fetchRecentJobFallbackMatches(
+  appliedJobIds: Set<string>,
+  targetRoles: string[],
+  targetExperienceLevels: string[],
+): Promise<JobMatch[]> {
   const matches: JobMatch[] = [];
   const seenJobIds = new Set<string>();
 
   for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
-    const { data, error } = await supabase
+    let query = supabase
       .from('jobs')
-      .select('id, title, company, location, url, description, posted_at, is_active')
+      .select(
+        'id, title, company, location, url, description, posted_at, is_active, is_usa, experience_level, roles',
+      )
       .eq('is_active', true)
-      .not('posted_at', 'is', null)
+      .eq('is_usa', true)
+      .not('posted_at', 'is', null);
+
+    if (targetExperienceLevels.length > 0) {
+      query = query.in('experience_level', targetExperienceLevels);
+    }
+
+    if (targetRoles.length > 0) {
+      query = query.overlaps('roles', targetRoles);
+    }
+
+    const { data, error } = await query
       .order('posted_at', { ascending: false })
       .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
 
@@ -424,10 +488,20 @@ async function fetchJobMatchesForUser(user: EligibleUser): Promise<JobMatch[]> {
   const appliedJobIds = await fetchAppliedJobIds(user.id);
 
   if (!user.hasResumeEmbedding) {
-    return fetchRecentJobFallbackMatches(appliedJobIds);
+    return fetchRecentJobFallbackMatches(
+      appliedJobIds,
+      user.targetRoles,
+      user.targetExperienceLevels,
+    );
   }
 
-  const preferred = await collectTopScoredMatches(user.id, 'similarity', appliedJobIds);
+  const preferred = await collectTopScoredMatches(
+    user.id,
+    'similarity',
+    appliedJobIds,
+    user.targetRoles,
+    user.targetExperienceLevels,
+  );
   if (!preferred.error) {
     return preferred.matches;
   }
@@ -442,7 +516,13 @@ async function fetchJobMatchesForUser(user: EligibleUser): Promise<JobMatch[]> {
 
   console.warn('[alerts] job_scores.similarity missing, falling back to score ordering.');
 
-  const fallback = await collectTopScoredMatches(user.id, 'score', appliedJobIds);
+  const fallback = await collectTopScoredMatches(
+    user.id,
+    'score',
+    appliedJobIds,
+    user.targetRoles,
+    user.targetExperienceLevels,
+  );
   if (fallback.error) {
     throw new Error(`Failed to fetch job matches for user ${user.id}: ${fallback.error.message}`);
   }
