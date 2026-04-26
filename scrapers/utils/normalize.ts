@@ -102,6 +102,7 @@ const MAJOR_US_CITY_NAMES = [
 ] as const;
 
 const US_SPECIAL_LOCATION_TERMS = ['AFB', 'Naval', 'Pentagon', 'Quantico', 'Langley'] as const;
+const USA_BARE_LOCATION_LOOKUP = new Set(['us', 'hybrid', 'remote', 'huntington beach']);
 
 function escapeRegex(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -140,6 +141,7 @@ export function isUsaLocation(job: UsaLocationInput): boolean {
 
   const lower = location.toLowerCase();
 
+  if (USA_BARE_LOCATION_LOOKUP.has(lower)) return true;
   if (US_COUNTRY_RE.test(location)) return true;
   if (US_STATE_ABBREVIATION_RE.test(location)) return true;
   if (US_BARE_CITY_CODE_RE.test(location)) return true;
