@@ -25,7 +25,6 @@ const RESEND_SUBJECT = 'Your top job matches today — NextRole';
 const RESEND_DAILY_SEND_CAP = 95;
 const JOB_MATCH_LIMIT = 10;
 const JOB_MATCH_QUERY_PAGE_SIZE = 50;
-const JOB_WINDOW_MS = 24 * 60 * 60 * 1000;
 const RESEND_REQUEST_TIMEOUT_MS = 30_000;
 const ANTHROPIC_REQUEST_TIMEOUT_MS = 45_000;
 const ANTHROPIC_REQUEST_DELAY_MS = 15_000;
@@ -83,15 +82,14 @@ type ApplicationRow = {
   job_id: string | null;
 };
 
+type AlertSentJobRow = {
+  job_id: string | null;
+};
+
 type JobScoreRow = {
   grade: Grade | null;
   jobs: JobRow | JobRow[] | null;
   [key: string]: unknown;
-};
-
-type QueryError = {
-  code?: string;
-  message: string;
 };
 
 type JobMatch = {
@@ -104,6 +102,13 @@ type JobMatch = {
   title: string;
   url: string;
   whyThisMatches: string | null;
+};
+
+type JobMatchResult = {
+  alreadySentCount: number;
+  appliedCount: number;
+  excludedCount: number;
+  matches: JobMatch[];
 };
 
 type AnthropicMessageResponse = {
@@ -345,14 +350,29 @@ async function fetchAppliedJobIds(userId: string): Promise<Set<string>> {
   );
 }
 
+async function fetchAlreadySentJobIds(userId: string): Promise<Set<string>> {
+  const { data, error } = await supabase
+    .from('alert_sent_jobs')
+    .select('job_id')
+    .eq('user_id', userId);
+
+  if (error) {
+    throw new Error(`Failed to fetch already sent jobs for user ${userId}: ${error.message}`);
+  }
+
+  return new Set(
+    ((data ?? []) as AlertSentJobRow[])
+      .map(row => row.job_id)
+      .filter((jobId): jobId is string => typeof jobId === 'string' && jobId.length > 0),
+  );
+}
+
 async function collectTopScoredMatches(
   userId: string,
-  metricColumn: 'similarity' | 'score',
-  appliedJobIds: Set<string>,
+  excludedJobIds: Set<string>,
   targetRoles: string[],
   targetExperienceLevels: string[],
-): Promise<{ error: QueryError | null; matches: JobMatch[] }> {
-  const cutoff = new Date(Date.now() - JOB_WINDOW_MS).toISOString();
+): Promise<JobMatch[]> {
   const matches: JobMatch[] = [];
   const seenJobIds = new Set<string>();
 
@@ -362,7 +382,7 @@ async function collectTopScoredMatches(
       .select(
         `
           grade,
-          ${metricColumn},
+          similarity,
           jobs!inner (
             id,
             title,
@@ -380,7 +400,6 @@ async function collectTopScoredMatches(
       )
       .eq('user_id', userId)
       .in('grade', MATCH_GRADES)
-      .gt('jobs.posted_at', cutoff)
       .eq('jobs.is_active', true)
       .eq('jobs.is_usa', true);
 
@@ -389,82 +408,23 @@ async function collectTopScoredMatches(
     }
 
     if (targetRoles.length > 0) {
-      query = query.overlaps('jobs.roles', targetRoles);
+      const normalizedRoles = targetRoles.map((r) => r.toLowerCase());
+      query = query.overlaps('jobs.roles', normalizedRoles);
     }
 
     const { data, error } = await query
-      .order(metricColumn, { ascending: false })
+      .order('similarity', { ascending: false })
       .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
 
     if (error) {
-      return {
-        error: {
-          code: error.code,
-          message: error.message,
-        },
-        matches: [],
-      };
+      throw new Error(
+        `Failed to fetch job_scores similarity matches for user ${userId}: ${error.message}`,
+      );
     }
 
-    const page = normalizeJobMatches((data ?? []) as JobScoreRow[], metricColumn);
+    const page = normalizeJobMatches((data ?? []) as JobScoreRow[], 'similarity');
     for (const match of page) {
-      if (appliedJobIds.has(match.id) || seenJobIds.has(match.id)) {
-        continue;
-      }
-
-      seenJobIds.add(match.id);
-      matches.push(match);
-
-      if (matches.length >= JOB_MATCH_LIMIT) {
-        break;
-      }
-    }
-
-    if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
-      break;
-    }
-  }
-
-  return { error: null, matches };
-}
-
-async function fetchRecentJobFallbackMatches(
-  appliedJobIds: Set<string>,
-  targetRoles: string[],
-  targetExperienceLevels: string[],
-): Promise<JobMatch[]> {
-  const matches: JobMatch[] = [];
-  const seenJobIds = new Set<string>();
-
-  for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
-    let query = supabase
-      .from('jobs')
-      .select(
-        'id, title, company, location, url, description, posted_at, is_active, is_usa, experience_level, roles',
-      )
-      .eq('is_active', true)
-      .eq('is_usa', true)
-      .not('posted_at', 'is', null);
-
-    if (targetExperienceLevels.length > 0) {
-      query = query.in('experience_level', targetExperienceLevels);
-    }
-
-    if (targetRoles.length > 0) {
-      query = query.overlaps('roles', targetRoles);
-    }
-
-    const { data, error } = await query
-      .order('posted_at', { ascending: false })
-      .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
-
-    if (error) {
-      throw new Error(`Failed to fetch recent fallback jobs: ${error.message}`);
-    }
-
-    const page = normalizeRecentJobMatches((data ?? []) as JobRow[]);
-    for (const match of page) {
-      if (appliedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+      if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
         continue;
       }
 
@@ -484,50 +444,97 @@ async function fetchRecentJobFallbackMatches(
   return matches;
 }
 
-async function fetchJobMatchesForUser(user: EligibleUser): Promise<JobMatch[]> {
-  const appliedJobIds = await fetchAppliedJobIds(user.id);
+async function fetchRecentJobFallbackMatches(
+  excludedJobIds: Set<string>,
+  targetRoles: string[],
+  targetExperienceLevels: string[],
+): Promise<JobMatch[]> {
+  const matches: JobMatch[] = [];
+  const seenJobIds = new Set<string>();
+
+  for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
+    let query = supabase
+      .from('jobs')
+      .select(
+        'id, title, company, location, url, description, posted_at, is_active, is_usa, experience_level, roles',
+      )
+      .eq('is_active', true)
+      .eq('is_usa', true)
+      .not('posted_at', 'is', null)
+      .gte(
+        'posted_at',
+        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      );
+
+    if (targetExperienceLevels.length > 0) {
+      query = query.in('experience_level', targetExperienceLevels);
+    }
+
+    if (targetRoles.length > 0) {
+      const normalizedRoles = targetRoles.map((r) => r.toLowerCase());
+      query = query.overlaps('roles', normalizedRoles);
+    }
+
+    const { data, error } = await query
+      .order('posted_at', { ascending: false })
+      .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
+
+    if (error) {
+      throw new Error(`Failed to fetch recent fallback jobs: ${error.message}`);
+    }
+
+    const page = normalizeRecentJobMatches((data ?? []) as JobRow[]);
+    for (const match of page) {
+      if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+        continue;
+      }
+
+      seenJobIds.add(match.id);
+      matches.push(match);
+
+      if (matches.length >= JOB_MATCH_LIMIT) {
+        break;
+      }
+    }
+
+    if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
+      break;
+    }
+  }
+
+  return matches;
+}
+
+async function fetchJobMatchesForUser(user: EligibleUser): Promise<JobMatchResult> {
+  const [appliedJobIds, alreadySentJobIds] = await Promise.all([
+    fetchAppliedJobIds(user.id),
+    fetchAlreadySentJobIds(user.id),
+  ]);
+  const excludedJobIds = new Set([...appliedJobIds, ...alreadySentJobIds]);
+  const counts = {
+    alreadySentCount: alreadySentJobIds.size,
+    appliedCount: appliedJobIds.size,
+    excludedCount: excludedJobIds.size,
+  };
 
   if (!user.hasResumeEmbedding) {
-    return fetchRecentJobFallbackMatches(
-      appliedJobIds,
+    const matches = await fetchRecentJobFallbackMatches(
+      excludedJobIds,
       user.targetRoles,
       user.targetExperienceLevels,
     );
+
+    return { ...counts, matches };
   }
 
-  const preferred = await collectTopScoredMatches(
+  const matches = await collectTopScoredMatches(
     user.id,
-    'similarity',
-    appliedJobIds,
+    excludedJobIds,
     user.targetRoles,
     user.targetExperienceLevels,
   );
-  if (!preferred.error) {
-    return preferred.matches;
-  }
 
-  const shouldFallback =
-    preferred.error.code === '42703' &&
-    preferred.error.message.toLowerCase().includes('similarity');
-
-  if (!shouldFallback) {
-    throw new Error(`Failed to fetch job matches for user ${user.id}: ${preferred.error.message}`);
-  }
-
-  console.warn('[alerts] job_scores.similarity missing, falling back to score ordering.');
-
-  const fallback = await collectTopScoredMatches(
-    user.id,
-    'score',
-    appliedJobIds,
-    user.targetRoles,
-    user.targetExperienceLevels,
-  );
-  if (fallback.error) {
-    throw new Error(`Failed to fetch job matches for user ${user.id}: ${fallback.error.message}`);
-  }
-
-  return fallback.matches;
+  return { ...counts, matches };
 }
 
 async function generateWhyThisMatches(resumeText: string, match: JobMatch): Promise<string | null> {
@@ -706,6 +713,41 @@ async function sendJobAlertEmail(user: EligibleUser, matches: JobMatch[]): Promi
   return payload.id;
 }
 
+async function recordSentJobAlerts(userId: string, matches: JobMatch[]): Promise<void> {
+  const rows = matches.map(match => ({
+    user_id: userId,
+    job_id: match.id,
+  }));
+
+  if (rows.length === 0) {
+    return;
+  }
+
+  try {
+    const { error } = await supabase
+      .from('alert_sent_jobs')
+      .upsert(rows, { onConflict: 'user_id,job_id', ignoreDuplicates: true });
+
+    if (error) {
+      console.warn(
+        `[alerts] ${userId}: failed to upsert sent job IDs to alert_sent_jobs (${error.message})`,
+      );
+      return;
+    }
+  } catch (error) {
+    console.warn(
+      `[alerts] ${userId}: failed to upsert sent job IDs to alert_sent_jobs (${getErrorMessage(error)})`,
+    );
+    return;
+  }
+
+  console.log(
+    `[alerts] ${userId}: upserted ${rows.length} sent job IDs to alert_sent_jobs (${rows
+      .map(row => row.job_id)
+      .join(', ')})`,
+  );
+}
+
 async function main(): Promise<void> {
   const users = await fetchEligibleUsers();
   console.log(`[alerts] eligible users: ${users.length}`);
@@ -717,11 +759,18 @@ async function main(): Promise<void> {
     processedUsers += 1;
 
     try {
-      const matches = await fetchJobMatchesForUser(user);
+      const { alreadySentCount, appliedCount, excludedCount, matches } =
+        await fetchJobMatchesForUser(user);
       if (matches.length === 0) {
-        console.log(`[alerts] ${user.id}: no matches for user, skipping`);
+        console.log(
+          `[alerts] ${user.id}: no matches (applied=${appliedCount}, already_sent=${alreadySentCount}, excluded=${excludedCount})`,
+        );
         continue;
       }
+
+      console.log(
+        `[alerts] ${user.id}: ${matches.length} matches (applied=${appliedCount}, already_sent=${alreadySentCount}, excluded=${excludedCount})`,
+      );
 
       if (user.tier === 'pro' && user.resumeText && user.hasResumeEmbedding) {
         for (const [index, match] of matches.entries()) {
@@ -736,6 +785,7 @@ async function main(): Promise<void> {
       const resendId = await sendJobAlertEmail(user, matches);
       emailsSent += 1;
       console.log(`[alerts] ${user.id}: sent email to ${user.email} (${resendId})`);
+      await recordSentJobAlerts(user.id, matches);
 
       if (emailsSent >= RESEND_DAILY_SEND_CAP) {
         console.warn('Approaching Resend daily limit, stopping.');
