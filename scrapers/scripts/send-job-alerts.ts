@@ -99,6 +99,7 @@ type JobMatch = {
   id: string;
   location: string;
   metric: number | null;
+  postedAt: string;
   title: string;
   url: string;
   whyThisMatches: string | null;
@@ -216,6 +217,21 @@ function buildCompanyLocationHtml(company: string, location: string): string {
   return `${escapeHtml(company)} &middot; ${escapeHtml(location)}`;
 }
 
+function formatPostedAtDate(postedAt: string): string {
+  const date = new Date(postedAt);
+
+  if (Number.isNaN(date.getTime())) {
+    return 'Posted date unavailable';
+  }
+
+  return `Posted ${new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'UTC',
+    year: 'numeric',
+  }).format(date)}`;
+}
+
 function buildUnsubscribeToken(userId: string, resendApiKey: string): string {
   const signature = createHmac('sha256', resendApiKey).update(userId).digest('hex');
   return Buffer.from(`${userId}.${signature}`).toString('base64url');
@@ -250,6 +266,79 @@ function normalizeJobRow(row: JobRow | JobRow[] | null): JobRow | null {
   return Array.isArray(row) ? row[0] ?? null : row;
 }
 
+function normalizeDedupeText(value: string): string {
+  return normalizeWhitespace(value)
+    .toLowerCase()
+    .replace(/&amp;/g, '&')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function normalizeDedupeUrl(value: string): string {
+  const normalizedValue = normalizeWhitespace(value);
+
+  try {
+    const url = new URL(normalizedValue);
+    url.hash = '';
+    return url.toString().replace(/\/+$/, '').toLowerCase();
+  } catch {
+    return normalizedValue.replace(/\/+$/, '').toLowerCase();
+  }
+}
+
+function getCompanyRootDedupeText(company: string): string {
+  const businessSuffixes = new Set([
+    'co',
+    'company',
+    'corp',
+    'corporation',
+    'gmbh',
+    'healthcare',
+    'inc',
+    'incorporated',
+    'llc',
+    'ltd',
+    'plc',
+  ]);
+  const tokens = normalizeDedupeText(company)
+    .split(' ')
+    .filter(token => token.length > 0 && !businessSuffixes.has(token));
+
+  return tokens.slice(0, 2).join(' ');
+}
+
+function getJobMatchDedupeKeys(match: JobMatch): string[] {
+  const title = normalizeDedupeText(match.title);
+  const company = normalizeDedupeText(match.company);
+  const companyRoot = getCompanyRootDedupeText(match.company);
+  const description = normalizeDedupeText(match.description);
+  const keys = [`id:${match.id}`, `url:${normalizeDedupeUrl(match.url)}`];
+
+  if (title && company) {
+    keys.push(`title-company:${title}|${company}`);
+  }
+
+  if (title && companyRoot) {
+    keys.push(`title-company-root:${title}|${companyRoot}`);
+  }
+
+  if (title && description) {
+    keys.push(`title-description:${title}|${description.slice(0, 500)}`);
+  }
+
+  return keys;
+}
+
+function hasSeenJobMatch(match: JobMatch, seenJobKeys: Set<string>): boolean {
+  return getJobMatchDedupeKeys(match).some(key => seenJobKeys.has(key));
+}
+
+function markSeenJobMatch(match: JobMatch, seenJobKeys: Set<string>): void {
+  for (const key of getJobMatchDedupeKeys(match)) {
+    seenJobKeys.add(key);
+  }
+}
+
 function normalizeJobMatch(job: JobRow, grade: Grade, metric: number | null): JobMatch | null {
   if (typeof job.url !== 'string' || normalizeWhitespace(job.url) === '') {
     return null;
@@ -262,6 +351,7 @@ function normalizeJobMatch(job: JobRow, grade: Grade, metric: number | null): Jo
     id: job.id,
     location: normalizeWhitespace(job.location ?? '') || 'Location unavailable',
     metric,
+    postedAt: job.posted_at ?? '',
     title: normalizeWhitespace(job.title ?? '') || 'Untitled role',
     url: normalizeWhitespace(job.url),
     whyThisMatches: null,
@@ -383,7 +473,7 @@ async function collectTopScoredMatches(
     const cutoff = new Date(Date.now() - windowMs).toISOString();
     const windowDays = windowMs / (24 * 60 * 60 * 1000);
     const matches: JobMatch[] = [];
-    const seenJobIds = new Set<string>();
+    const seenJobKeys = new Set<string>();
 
     for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
       let query = supabase
@@ -434,11 +524,11 @@ async function collectTopScoredMatches(
 
       const page = normalizeJobMatches((data ?? []) as JobScoreRow[], 'similarity');
       for (const match of page) {
-        if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+        if (excludedJobIds.has(match.id) || hasSeenJobMatch(match, seenJobKeys)) {
           continue;
         }
 
-        seenJobIds.add(match.id);
+        markSeenJobMatch(match, seenJobKeys);
         matches.push(match);
 
         if (matches.length >= JOB_MATCH_LIMIT) {
@@ -483,7 +573,7 @@ async function fetchRecentJobFallbackMatches(
     const cutoff = new Date(Date.now() - windowMs).toISOString();
     const windowDays = windowMs / (24 * 60 * 60 * 1000);
     const matches: JobMatch[] = [];
-    const seenJobIds = new Set<string>();
+    const seenJobKeys = new Set<string>();
 
     for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
       let query = supabase
@@ -515,11 +605,11 @@ async function fetchRecentJobFallbackMatches(
 
       const page = normalizeRecentJobMatches((data ?? []) as JobRow[]);
       for (const match of page) {
-        if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+        if (excludedJobIds.has(match.id) || hasSeenJobMatch(match, seenJobKeys)) {
           continue;
         }
 
-        seenJobIds.add(match.id);
+        markSeenJobMatch(match, seenJobKeys);
         matches.push(match);
 
         if (matches.length >= JOB_MATCH_LIMIT) {
@@ -649,6 +739,7 @@ function buildEmailHtml(matches: JobMatch[], unsubscribeUrl: string): string {
   const jobMarkup = matches
     .map((match, index) => {
       const dividerStyle = index === 0 ? '' : 'border-top:1px solid #232533;';
+      const postedAtText = formatPostedAtDate(match.postedAt);
       const whyThisMatchesMarkup = match.whyThisMatches
         ? `<div style="margin-top:12px;font-size:14px;line-height:1.6;color:#818cf8;font-style:italic;">${escapeHtml(match.whyThisMatches)}</div>`
         : '';
@@ -660,7 +751,16 @@ function buildEmailHtml(matches: JobMatch[], unsubscribeUrl: string): string {
           <div style="margin-top:6px;font-size:14px;line-height:1.5;color:#9ca3af;">${buildCompanyLocationHtml(match.company, match.location)}</div>
           ${whyThisMatchesMarkup}
           <div style="margin-top:18px;">
-            <a href="${escapeHtml(match.url)}" style="display:inline-block;padding:12px 16px;background-color:#4f46e5;border-radius:9999px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;">View &amp; Apply &rarr;</a>
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+              <tr>
+                <td style="vertical-align:middle;padding:0;">
+                  <a href="${escapeHtml(match.url)}" style="display:inline-block;padding:10px 12px;background-color:#4f46e5;border-radius:9999px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;line-height:1.2;">View &amp; Apply &rarr;</a>
+                </td>
+                <td align="right" style="vertical-align:middle;padding:0 0 0 12px;font-size:12px;line-height:1.4;color:#9ca3af;white-space:nowrap;">
+                  ${escapeHtml(postedAtText)}
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       `;
@@ -702,7 +802,7 @@ function buildEmailText(matches: JobMatch[], unsubscribeUrl: string): string {
       return [
         `${match.grade} - ${match.title}`,
         buildCompanyLocationText(match.company, match.location),
-        `${whyLine}\nView & Apply: ${match.url}`.trim(),
+        `${whyLine}\n${formatPostedAtDate(match.postedAt)}\nView & Apply: ${match.url}`.trim(),
       ].join('\n');
     })
     .join('\n\n');
