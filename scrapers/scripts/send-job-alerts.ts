@@ -373,136 +373,179 @@ async function collectTopScoredMatches(
   targetRoles: string[],
   targetExperienceLevels: string[],
 ): Promise<JobMatch[]> {
-  const matches: JobMatch[] = [];
-  const seenJobIds = new Set<string>();
+  const TIME_WINDOWS_MS = [
+    3 * 24 * 60 * 60 * 1000,   // 3 days
+    7 * 24 * 60 * 60 * 1000,   // 7 days
+    14 * 24 * 60 * 60 * 1000,  // 14 days
+  ];
 
-  for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
-    let query = supabase
-      .from('job_scores')
-      .select(
-        `
-          grade,
-          similarity,
-          jobs!inner (
-            id,
-            title,
-            company,
-            location,
-            url,
-            description,
-            posted_at,
-            is_active,
-            is_usa,
-            experience_level,
-            roles
-          )
-        `,
-      )
-      .eq('user_id', userId)
-      .in('grade', MATCH_GRADES)
-      .eq('jobs.is_active', true)
-      .eq('jobs.is_usa', true);
+  for (const windowMs of TIME_WINDOWS_MS) {
+    const cutoff = new Date(Date.now() - windowMs).toISOString();
+    const windowDays = windowMs / (24 * 60 * 60 * 1000);
+    const matches: JobMatch[] = [];
+    const seenJobIds = new Set<string>();
 
-    if (targetExperienceLevels.length > 0) {
-      query = query.in('jobs.experience_level', targetExperienceLevels);
-    }
+    for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
+      let query = supabase
+        .from('job_scores')
+        .select(
+          `
+            grade,
+            similarity,
+            jobs!inner (
+              id,
+              title,
+              company,
+              location,
+              url,
+              description,
+              posted_at,
+              is_active,
+              is_usa,
+              experience_level,
+              roles
+            )
+          `,
+        )
+        .eq('user_id', userId)
+        .in('grade', MATCH_GRADES)
+        .eq('jobs.is_active', true)
+        .eq('jobs.is_usa', true)
+        .gt('jobs.posted_at', cutoff);
 
-    if (targetRoles.length > 0) {
-      const normalizedRoles = targetRoles.map((r) => r.toLowerCase());
-      query = query.overlaps('jobs.roles', normalizedRoles);
-    }
-
-    const { data, error } = await query
-      .order('similarity', { ascending: false })
-      .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
-
-    if (error) {
-      throw new Error(
-        `Failed to fetch job_scores similarity matches for user ${userId}: ${error.message}`,
-      );
-    }
-
-    const page = normalizeJobMatches((data ?? []) as JobScoreRow[], 'similarity');
-    for (const match of page) {
-      if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
-        continue;
+      if (targetExperienceLevels.length > 0) {
+        query = query.in('jobs.experience_level', targetExperienceLevels);
       }
 
-      seenJobIds.add(match.id);
-      matches.push(match);
+      if (targetRoles.length > 0) {
+        const normalizedRoles = targetRoles.map((r) => r.toLowerCase());
+        query = query.overlaps('jobs.roles', normalizedRoles);
+      }
 
-      if (matches.length >= JOB_MATCH_LIMIT) {
+      const { data, error } = await query
+        .order('similarity', { ascending: false })
+        .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
+
+      if (error) {
+        throw new Error(
+          `Failed to fetch job_scores similarity matches for user ${userId}: ${error.message}`,
+        );
+      }
+
+      const page = normalizeJobMatches((data ?? []) as JobScoreRow[], 'similarity');
+      for (const match of page) {
+        if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+          continue;
+        }
+
+        seenJobIds.add(match.id);
+        matches.push(match);
+
+        if (matches.length >= JOB_MATCH_LIMIT) {
+          console.log(
+            `[alerts] ${userId}: using ${windowDays}-day scored posted_at window (${matches.length} matches)`,
+          );
+          return matches;
+        }
+      }
+
+      if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
         break;
       }
     }
 
-    if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
-      break;
+    if (matches.length > 0) {
+      console.log(
+        `[alerts] ${userId}: using ${windowDays}-day scored posted_at window (${matches.length} matches)`,
+      );
+      return matches;
     }
+
+    console.log(`[alerts] ${userId}: 0 scored matches in ${windowDays}-day posted_at window`);
   }
 
-  return matches;
+  return [];
 }
 
 async function fetchRecentJobFallbackMatches(
+  userId: string,
   excludedJobIds: Set<string>,
   targetRoles: string[],
   targetExperienceLevels: string[],
 ): Promise<JobMatch[]> {
-  const matches: JobMatch[] = [];
-  const seenJobIds = new Set<string>();
+  const TIME_WINDOWS_MS = [
+    3 * 24 * 60 * 60 * 1000,   // 3 days
+    7 * 24 * 60 * 60 * 1000,   // 7 days
+    14 * 24 * 60 * 60 * 1000,  // 14 days
+  ];
 
-  for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
-    let query = supabase
-      .from('jobs')
-      .select(
-        'id, title, company, location, url, description, posted_at, is_active, is_usa, experience_level, roles',
-      )
-      .eq('is_active', true)
-      .eq('is_usa', true)
-      .not('posted_at', 'is', null)
-      .gte(
-        'posted_at',
-        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-      );
+  for (const windowMs of TIME_WINDOWS_MS) {
+    const cutoff = new Date(Date.now() - windowMs).toISOString();
+    const windowDays = windowMs / (24 * 60 * 60 * 1000);
+    const matches: JobMatch[] = [];
+    const seenJobIds = new Set<string>();
 
-    if (targetExperienceLevels.length > 0) {
-      query = query.in('experience_level', targetExperienceLevels);
-    }
+    for (let offset = 0; matches.length < JOB_MATCH_LIMIT; offset += JOB_MATCH_QUERY_PAGE_SIZE) {
+      let query = supabase
+        .from('jobs')
+        .select(
+          'id, title, company, location, url, description, posted_at, is_active, is_usa, experience_level, roles',
+        )
+        .eq('is_active', true)
+        .eq('is_usa', true)
+        .not('posted_at', 'is', null)
+        .gt('posted_at', cutoff);
 
-    if (targetRoles.length > 0) {
-      const normalizedRoles = targetRoles.map((r) => r.toLowerCase());
-      query = query.overlaps('roles', normalizedRoles);
-    }
-
-    const { data, error } = await query
-      .order('posted_at', { ascending: false })
-      .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
-
-    if (error) {
-      throw new Error(`Failed to fetch recent fallback jobs: ${error.message}`);
-    }
-
-    const page = normalizeRecentJobMatches((data ?? []) as JobRow[]);
-    for (const match of page) {
-      if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
-        continue;
+      if (targetExperienceLevels.length > 0) {
+        query = query.in('experience_level', targetExperienceLevels);
       }
 
-      seenJobIds.add(match.id);
-      matches.push(match);
+      if (targetRoles.length > 0) {
+        const normalizedRoles = targetRoles.map((r) => r.toLowerCase());
+        query = query.overlaps('roles', normalizedRoles);
+      }
 
-      if (matches.length >= JOB_MATCH_LIMIT) {
+      const { data, error } = await query
+        .order('posted_at', { ascending: false })
+        .range(offset, offset + JOB_MATCH_QUERY_PAGE_SIZE - 1);
+
+      if (error) {
+        throw new Error(`Failed to fetch recent fallback jobs: ${error.message}`);
+      }
+
+      const page = normalizeRecentJobMatches((data ?? []) as JobRow[]);
+      for (const match of page) {
+        if (excludedJobIds.has(match.id) || seenJobIds.has(match.id)) {
+          continue;
+        }
+
+        seenJobIds.add(match.id);
+        matches.push(match);
+
+        if (matches.length >= JOB_MATCH_LIMIT) {
+          console.log(
+            `[alerts] ${userId}: using ${windowDays}-day fallback posted_at window (${matches.length} matches)`,
+          );
+          return matches;
+        }
+      }
+
+      if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
         break;
       }
     }
 
-    if ((data ?? []).length < JOB_MATCH_QUERY_PAGE_SIZE) {
-      break;
+    if (matches.length > 0) {
+      console.log(
+        `[alerts] ${userId}: using ${windowDays}-day fallback posted_at window (${matches.length} matches)`,
+      );
+      return matches;
     }
+
+    console.log(`[alerts] ${userId}: 0 fallback matches in ${windowDays}-day posted_at window`);
   }
 
-  return matches;
+  return [];
 }
 
 async function fetchJobMatchesForUser(user: EligibleUser): Promise<JobMatchResult> {
@@ -519,6 +562,7 @@ async function fetchJobMatchesForUser(user: EligibleUser): Promise<JobMatchResul
 
   if (!user.hasResumeEmbedding) {
     const matches = await fetchRecentJobFallbackMatches(
+      user.id,
       excludedJobIds,
       user.targetRoles,
       user.targetExperienceLevels,
