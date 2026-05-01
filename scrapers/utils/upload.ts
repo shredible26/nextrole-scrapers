@@ -25,6 +25,7 @@ type ExistingJobRow = {
   dedup_hash: string;
   source: string;
   is_active: boolean;
+  posted_at: string | null;
 };
 
 type SupabaseError = {
@@ -380,7 +381,7 @@ export async function uploadJobs(jobs: NormalizedJob[]): Promise<UploadStats> {
       () =>
         supabase
           .from('jobs')
-          .select('id, dedup_hash, source, is_active')
+          .select('id, dedup_hash, source, is_active, posted_at')
           .in('dedup_hash', dedupHashes),
     );
 
@@ -408,6 +409,24 @@ export async function uploadJobs(jobs: NormalizedJob[]): Promise<UploadStats> {
         continue;
       }
 
+      // Cross-source duplicate — update posted_at if incoming is newer,
+      // and always ensure is_active = true
+      const incomingDate = job.posted_at ? new Date(job.posted_at).getTime() : 0;
+      const existingDate = existing.posted_at ? new Date(existing.posted_at).getTime() : 0;
+      if (incomingDate > existingDate) {
+        rowsToUpdate.set(existing.id, {
+          id: existing.id,
+          ...payload,
+          posted_at: job.posted_at,
+        });
+      } else {
+        // Still mark active even if we don't update posted_at
+        rowsToUpdate.set(existing.id, {
+          id: existing.id,
+          ...payload,
+          posted_at: existing.posted_at ?? job.posted_at,
+        });
+      }
       stats.preservedConflicts += 1;
     }
 
