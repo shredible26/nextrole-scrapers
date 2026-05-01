@@ -18,7 +18,7 @@ const EMBEDDING_DIMENSIONS = 1536;
 const EMBEDDING_MODEL = 'text-embedding-3-small';
 const OPENAI_EMBEDDINGS_URL = 'https://api.openai.com/v1/embeddings';
 const REQUEST_TIMEOUT_MS = 60_000;
-const SUPABASE_RETRY_ATTEMPTS = 3;
+const SUPABASE_RETRY_ATTEMPTS = 5;
 const AVERAGE_TOKENS_PER_JOB = 300;
 const MAX_ESTIMATED_TOKENS = 30_000_000;
 const COST_PER_MILLION_TOKENS_USD = 0.02;
@@ -234,7 +234,7 @@ async function withSupabaseRetry<T>(
     }
 
     if (attempt < SUPABASE_RETRY_ATTEMPTS) {
-      await sleep(250 * attempt);
+      await sleep(500 * attempt);
     }
   }
 
@@ -520,40 +520,62 @@ function logEstimate(totalAvailable: number, totalToProcess: number, options: Cl
 
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
-  const totalAvailable = await countTargetJobs();
-  const totalToProcess = options.limit === null
-    ? totalAvailable
-    : Math.min(totalAvailable, options.limit);
-  const estimatedTokens = totalToProcess * AVERAGE_TOKENS_PER_JOB;
+  let totalAvailable: number | null;
 
-  logEstimate(totalAvailable, totalToProcess, options);
+  try {
+    totalAvailable = await countTargetJobs();
+  } catch {
+    console.warn('[embeddings] count query failed, proceeding without total estimate');
+    totalAvailable = null;
+  }
 
-  if (totalToProcess === 0) {
+  const countBasedTotalToProcess = totalAvailable === null
+    ? null
+    : options.limit === null
+      ? totalAvailable
+      : Math.min(totalAvailable, options.limit);
+  const countBasedEstimatedTokens = countBasedTotalToProcess === null
+    ? null
+    : countBasedTotalToProcess * AVERAGE_TOKENS_PER_JOB;
+
+  if (totalAvailable !== null && countBasedTotalToProcess !== null) {
+    logEstimate(totalAvailable, countBasedTotalToProcess, options);
+  }
+
+  if (countBasedTotalToProcess === 0) {
     console.log('Nothing to do.');
     return;
   }
 
-  if (options.dryRun) {
+  if (options.dryRun && totalAvailable !== null) {
     console.log('Dry run complete. No API calls were made and no database rows were updated.');
     return;
   }
 
-  if (!OPENAI_API_KEY) {
+  if (!options.dryRun && !OPENAI_API_KEY) {
     throw new Error('OPENAI_API_KEY must be set unless you are using --dry-run');
   }
 
-  if (estimatedTokens > MAX_ESTIMATED_TOKENS && !options.force) {
+  if (countBasedEstimatedTokens !== null && countBasedEstimatedTokens > MAX_ESTIMATED_TOKENS && !options.force) {
     throw new Error(
-      `Estimated usage is ${formatInteger(estimatedTokens)} tokens, above the hard cap of ${formatInteger(MAX_ESTIMATED_TOKENS)}. Re-run with --force to continue.`,
+      `Estimated usage is ${formatInteger(countBasedEstimatedTokens)} tokens, above the hard cap of ${formatInteger(MAX_ESTIMATED_TOKENS)}. Re-run with --force to continue.`,
     );
   }
 
   // Collect the target set up front so range pagination does not skip rows as embeddings are written.
   const prioritizedJobs = await fetchTargetJobs();
+  const totalToProcess = countBasedTotalToProcess ?? (options.limit === null
+    ? prioritizedJobs.length
+    : Math.min(prioritizedJobs.length, options.limit));
   const jobs = prioritizedJobs.slice(0, totalToProcess);
 
   if (jobs.length === 0) {
     console.log('No jobs were returned from Supabase after the initial count. Nothing to do.');
+    return;
+  }
+
+  if (options.dryRun) {
+    console.log('Dry run complete. No API calls were made and no database rows were updated.');
     return;
   }
 
